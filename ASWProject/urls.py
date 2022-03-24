@@ -21,6 +21,7 @@ from .pages import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('submit/', views.submit),
-    #path('news/', submit.site.urls),
-    #path('newest/', submit.site.urls),
+    path('news/', views.news),
+    path('newest/', views.newest),
+    path('', views.news),
 ]

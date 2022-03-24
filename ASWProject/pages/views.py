@@ -8,3 +8,11 @@ def index(request):
 
 def submit(request):
     return render(request, "submit.html")
+
+
+def news(request):
+    return render(request, "news.html")
+
+
+def newest(request):
+    return render(request, "newest.html")
