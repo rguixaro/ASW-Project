@@ -30,5 +30,10 @@ def news(request):
 def newest(request):
     return render(request, "newest.html")
 
-def user(request):
-    return render(request, "user.html")
+def user(request, user_id):
+    #return HttpResponse("user %s" % user_id)
+    template = loader.get_template('user.html')
+    context = {
+        'user' : user,
+    }
+    return HttpResponse(template.render(context, request))

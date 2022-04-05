@@ -25,8 +25,17 @@ class Submission(models.Model):
     type = models.CharField(default="url", max_length=3)
     points = models.IntegerField(default=0)
     author = models.CharField(default="", max_length=15)
+    comments = models.IntegerField(default=0)
     posted_at = models.DateTimeField(default=timezone.now)
     
+    def url_domain(self):
+        return (self.url).replace('https://www.','')
+
+    def age(self):
+        dt =  timezone.now() - self.posted_at
+        hours = int(dt.seconds / 60 / 60)
+        #check days, weeks, etc...
+        return hours
 
     def __str__(self):
         return self.title
