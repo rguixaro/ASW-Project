@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -12,7 +13,7 @@ class User(models.Model):
     maxvisit = models.CharField(max_length=16) #integerField?
     minaway = models.CharField(max_length=16)
     delay = models.CharField(max_length=16)
-    created_at = models.TextField(default="")
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.username
@@ -21,6 +22,11 @@ class Submission(models.Model):
     title = models.CharField(max_length=50, default="")
     url = models.URLField(max_length=50, default="")
     text = models.TextField(default="")
+    type = models.CharField(default="url", max_length=3)
+    points = models.IntegerField(default=0)
+    author = models.CharField(default="", max_length=15)
+    posted_at = models.DateTimeField(default=timezone.now)
+    
 
     def __str__(self):
         return self.title
