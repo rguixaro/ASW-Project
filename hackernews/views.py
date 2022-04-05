@@ -1,5 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.template import loader
+
+from hackernews.models import Submission
 
 
 def index(request):
@@ -11,8 +14,26 @@ def submit(request):
 
 
 def news(request):
-    return render(request, "news.html")
+    #shows submissions with id=1
+    #submissions = Submission.objects.filter(id=1)
+    #output = ', '.join([sub.text for sub in submissions])
+    #return HttpResponse(output)
+    #return render(request, "news.html")
+    submissions_list = Submission.objects.order_by('-points')
+    template = loader.get_template('news.html')
+    context = {
+        'submissions_list' : submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
 
 
 def newest(request):
     return render(request, "newest.html")
+
+def user(request, user_id):
+    #return HttpResponse("user %s" % user_id)
+    template = loader.get_template('user.html')
+    context = {
+        'user' : user,
+    }
+    return HttpResponse(template.render(context, request))
