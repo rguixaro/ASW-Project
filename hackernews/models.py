@@ -14,14 +14,20 @@ class User(models.Model):
     delay = models.CharField(max_length=16)
     created_at = models.TextField(default="")
 
+    def __str__(self):
+        return self.username
+
 class Submission(models.Model):
     title = models.CharField(max_length=50, default="")
     url = models.URLField(max_length=50, default="")
     text = models.TextField(default="")
 
+    def __str__(self):
+        return self.title
+
 
 #Change your models (in models.py).
-#Run python manage.py makemigrations to create migrations for those changes
-#Run (optional) py manage.py sqlmigrate hackernews 000x 
-#Run python manage.py migrate to apply those changes to the database.
+#Run python manage.py makemigrations hackernews             to create migrations for those changes
+#Run (optional) py manage.py sqlmigrate hackernews 000x     to check what would that migration make to the db
+#Run python manage.py migrate                               to apply those changes to the database.
 #https://docs.djangoproject.com/en/4.0/intro/tutorial02/
