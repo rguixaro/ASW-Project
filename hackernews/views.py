@@ -24,6 +24,7 @@ def news(request):
 def newsUser(request, username):
     submissions_list = Submission.objects.filter(author=username)
     template = loader.get_template('news.html')
+    print('hhhhhhhhhhhh')
     context = {
         'submissions_list' : submissions_list,
     }
@@ -32,6 +33,7 @@ def newsUser(request, username):
 def newsDate(request, date):
     submissions_list = Submission.objects.filter(posted_at_date=date)
     template = loader.get_template('news.html')
+    print('newsDate')
     context = {
         'submissions_list' : submissions_list,
     }
