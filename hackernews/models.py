@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from datetime import date, datetime
 
 # Create your models here.
 
@@ -13,13 +14,19 @@ class User(models.Model):
     maxvisit = models.CharField(max_length=16) #integerField?
     minaway = models.CharField(max_length=16)
     delay = models.CharField(max_length=16)
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at_date = models.DateField(default=timezone.now)
+    created_at_time = models.TimeField(default=timezone.now)
 
     def age(self):
-        dt =  timezone.now() - self.created_at
-        hours = int(dt.seconds / 60 / 60)
+        today = date.today()
+        days = today.day - self.created_at_date.day
+        result = str(days)+" days ago"
+        if(days == 0):
+            time = datetime.now()
+            hours = time.hour - self.created_at_time.hour
+            result = str(hours)+" hours ago"
         #check days, weeks, etc...
-        return hours
+        return result
 
     def __str__(self):
         return self.username
@@ -32,16 +39,22 @@ class Submission(models.Model):
     points = models.IntegerField(default=0)
     author = models.CharField(default="", max_length=15)
     comments = models.IntegerField(default=0)
-    posted_at = models.DateTimeField(default=timezone.now)
+    posted_at_date = models.DateField(default=timezone.now)
+    posted_at_time = models.TimeField(default=timezone.now)
     
     def url_domain(self):
         return (self.url).replace('https://www.','')
 
     def age(self):
-        dt =  timezone.now() - self.posted_at
-        hours = int(dt.seconds / 60 / 60)
+        today = date.today()
+        days = today.day - self.posted_at_date.day
+        result = str(days)+" days ago"
+        if(days == 0):
+            time = datetime.now()
+            hours = time.hour - self.posted_at_time.hour
+            result = str(hours)+" hours ago"
         #check days, weeks, etc...
-        return hours
+        return result
 
     def __str__(self):
         return self.title

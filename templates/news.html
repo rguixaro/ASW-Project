@@ -75,7 +75,7 @@
                                     </td>
                                     <td class="title">
     									<a
-										    href="{{submission.url}}"
+										    href="{{ submission.url }}"
 										    class="titlelink"
 										    >{{ submission.title }}</a
 									    >
@@ -92,7 +92,7 @@
                                             <span class="score" id="score_30784939">{{ submission.points }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
                                             <span class="age" title="2022-03-23T23:36:00">
-                                                <a href="item?id=30784939">{{ submission.age }} hours ago</a>
+                                                <a href="item?id=30784939">{{ submission.age }}</a>
                                             </span>|
                                             <a href="hide?id=30784939&amp;goto=news">hide</a>|
                                             <a href="item?id=30784939">{{ submission.comments }}&nbsp;comments</a>

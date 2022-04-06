@@ -14,11 +14,6 @@ def submit(request):
 
 
 def news(request):
-    #shows submissions with id=1
-    #submissions = Submission.objects.filter(id=1)
-    #output = ', '.join([sub.text for sub in submissions])
-    #return HttpResponse(output)
-    #return render(request, "news.html")
     submissions_list = Submission.objects.order_by('-points')
     template = loader.get_template('news.html')
     context = {
@@ -27,12 +22,15 @@ def news(request):
     return HttpResponse(template.render(context, request))
 
 def newsUser(request, username):
-    #shows submissions with id=1
-    #submissions = Submission.objects.filter(id=1)
-    #output = ', '.join([sub.text for sub in submissions])
-    #return HttpResponse(output)
-    #return render(request, "news.html")
     submissions_list = Submission.objects.filter(author=username)
+    template = loader.get_template('news.html')
+    context = {
+        'submissions_list' : submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+def newsDate(request, date):
+    submissions_list = Submission.objects.filter(posted_at_date=date)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,

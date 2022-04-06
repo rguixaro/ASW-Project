@@ -78,8 +78,8 @@
 							<tr>
 								<td valign="top">created:</td>
 								<td>
-									<a href="front?day=2022-04-05&birth=ivanosqui"
-										>{{ user.age }} hours ago</a
+									<a href="{% url 'news-date' user.created_at_date %}"
+										>{{ user.age }}</a
 									>
 								</td>
 							</tr>
