@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from hackernews.models import Submission
+from hackernews.models import Submission, User
 
 
 def index(request):
@@ -26,14 +26,27 @@ def news(request):
     }
     return HttpResponse(template.render(context, request))
 
+def newsUser(request, username):
+    #shows submissions with id=1
+    #submissions = Submission.objects.filter(id=1)
+    #output = ', '.join([sub.text for sub in submissions])
+    #return HttpResponse(output)
+    #return render(request, "news.html")
+    submissions_list = Submission.objects.filter(author=username)
+    template = loader.get_template('news.html')
+    context = {
+        'submissions_list' : submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
+
 
 def newest(request):
     return render(request, "newest.html")
 
-def user(request, user_id):
-    #return HttpResponse("user %s" % user_id)
+def user(request, username):
+    u = User.objects.get(username=username)
     template = loader.get_template('user.html')
     context = {
-        'user' : user,
+        'user' : u,
     }
     return HttpResponse(template.render(context, request))

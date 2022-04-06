@@ -15,6 +15,12 @@ class User(models.Model):
     delay = models.CharField(max_length=16)
     created_at = models.DateTimeField(default=timezone.now)
 
+    def age(self):
+        dt =  timezone.now() - self.created_at
+        hours = int(dt.seconds / 60 / 60)
+        #check days, weeks, etc...
+        return hours
+
     def __str__(self):
         return self.username
 
