@@ -5,7 +5,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="{% static 'css/news.css' %}" />
 		<link rel="shortcut icon" href="favicon.ico" />
-		<title>Profile: ivanosqui | Hacker News</title>
+		<title>Profile: | Hacker News</title>
 	</head>
 	<body>
 		<center>
@@ -50,7 +50,8 @@
 								</td>
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
-										<a id="me" href="user?id=rguixaro">rguixaro</a> (1) |
+										<a id="me" href="user?id="></a>
+										(1) |
 										<a
 											id="logout"
 											href="logout?auth=51f8c506bb11bff38a0dd6629fb3db0521534dca&amp;goto=user%3Fid%3Divanosqui"
@@ -62,48 +63,54 @@
 						</table>
 					</td>
 				</tr>
-				<tr id="pagespace" title="Profile: ivanosqui" style="height: 10px"></tr>
+				<tr id="pagespace" title="Profile: " style="height: 10px"></tr>
 				<tr>
 					<td>
 						<table border="0">
 							<tr class="athing">
 								<td valign="top">user:</td>
 								<td timestamp="1649185047">
-									<a href="user?id=ivanosqui" class="hnuser"
-										><font color="#3c963c">ivanosqui</font></a
+									<a href="{% url 'user' user.username %}" class="hnuser"
+										><font color="#3c963c">{{ user.username }}</font></a
 									>
 								</td>
 							</tr>
 							<tr>
 								<td valign="top">created:</td>
 								<td>
-									<a href="front?day=2022-04-05&birth=ivanosqui">1 hour ago</a>
+									<a href="{% url 'newsDate' user.created_at_date %}"
+										>{{ user.age }}</a
+									>
 								</td>
 							</tr>
 							<tr>
 								<td valign="top">karma:</td>
-								<td>0</td>
+								<td>{{ user.karma }}</td>
 							</tr>
 							<tr>
 								<td valign="top">about:</td>
-								<td style="overflow: hidden"></td>
+								<td style="overflow: hidden">{{ user.about }}</td>
 							</tr>
 							<tr>
 								<td></td>
 								<td>
-									<a href="submitted?id=ivanosqui"><u>submissions</u></a>
+									<a href="{% url 'newsUser' user.username %}"
+										><u>submissions</u></a
+									>
 								</td>
 							</tr>
 							<tr>
 								<td></td>
 								<td>
-									<a href="threads?id=ivanosqui"><u>comments</u></a>
+									<a href="threads?id={{ user.username }}"><u>comments</u></a>
 								</td>
 							</tr>
 							<tr>
 								<td></td>
 								<td>
-									<a href="favorites?id=ivanosqui"><u>favorites</u></a>
+									<a href="{% url 'favorites' user.username %}"
+										><u>favorites</u></a
+									>
 								</td>
 							</tr>
 						</table>
