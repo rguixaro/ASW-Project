@@ -24,7 +24,6 @@ def news(request):
 def newsUser(request, username):
     submissions_list = Submission.objects.filter(author=username)
     template = loader.get_template('news.html')
-    print('hhhhhhhhhhhh')
     context = {
         'submissions_list' : submissions_list,
     }
@@ -33,7 +32,14 @@ def newsUser(request, username):
 def newsDate(request, date):
     submissions_list = Submission.objects.filter(posted_at_date=date)
     template = loader.get_template('news.html')
-    print('newsDate')
+    context = {
+        'submissions_list' : submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+def newsByDate(request, date, username):
+    submissions_list = Submission.objects.filter(posted_at_date=date)
+    template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
     }
@@ -46,6 +52,14 @@ def newest(request):
 def user(request, username):
     u = User.objects.get(username=username)
     template = loader.get_template('user.html')
+    context = {
+        'user' : u,
+    }
+    return HttpResponse(template.render(context, request))
+
+def favorites(request, username):
+    u = User.objects.get(username=username)
+    template = loader.get_template('favorites.html')
     context = {
         'user' : u,
     }

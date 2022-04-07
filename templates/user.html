@@ -82,6 +82,11 @@
 										>{{ user.age }}</a
 									>
 								</td>
+								<td>
+									<a href="front?day={{ user.created_at_date }}"
+										>{{ user.age }}</a
+									>
+								</td>
 							</tr>
 							<tr>
 								<td valign="top">karma:</td>
@@ -94,7 +99,7 @@
 							<tr>
 								<td></td>
 								<td>
-									<a href="{% url 'newsUser' username=user.username %}"
+									<a href="{% url 'newsUser' user.username %}"
 										><u>submissions</u></a
 									>
 								</td>
@@ -102,13 +107,15 @@
 							<tr>
 								<td></td>
 								<td>
-									<a href="threads?id=ivanosqui"><u>comments</u></a>
+									<a href="threads?id={{ user.username }}"><u>comments</u></a>
 								</td>
 							</tr>
 							<tr>
 								<td></td>
 								<td>
-									<a href="favorites?id=ivanosqui"><u>favorites</u></a>
+									<a href="{% url 'favorites' user.username %}"
+										><u>favorites</u></a
+									>
 								</td>
 							</tr>
 						</table>
