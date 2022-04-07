@@ -4,7 +4,7 @@
 		<meta name="referrer" content="origin" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="{% static 'css/news.css' %}" />
-		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="shortcut icon" href="{% static 'gif/favicon.ico' %}" />
 		<link rel="alternate" type="application/rss+xml" title="RSS" href="rss" />
 		<title>Hacker News</title>
 	</head>
@@ -29,7 +29,7 @@
 						>
 							<tr>
 								<td style="width: 18px; padding-right: 4px">
-									<a href="https://news.ycombinator.com"
+									<a href="/"
 										><img
 											src="y18.gif"
 											width="18"
@@ -39,11 +39,11 @@
 								</td>
 								<td style="line-height: 12pt; height: 10px">
 									<span class="pagetop">
-										<b class="hnname"><a href="news">Hacker News</a></b>
-										<a href="newest">new</a> | <a href="front">past</a> |
-										<a href="newcomments">comments</a> | <a href="ask">ask</a> |
-										<a href="show">show</a> | <a href="jobs">jobs</a> |
-										<a href="submit">submit</a>
+										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
+										<a href="{% url 'newest' %}">new</a> | <a href="{% url 'front' %}">past</a> |
+										<a href="{% url 'newcomments' %}">comments</a> | <a href="{% url 'ask' %}">ask</a> |
+										<a href="{% url 'show' %}">show</a> | <a href="{% url 'jobs' %}">jobs</a> |
+										<a href="{% url 'submit' %}">submit</a>
 									</span>
 								</td>
 								<td style="text-align: right; padding-right: 4px">
