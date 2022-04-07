@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.utils import timezone
 from datetime import date, datetime
@@ -37,7 +38,7 @@ class Submission(models.Model):
     text = models.TextField(default="")
     type = models.CharField(default="url", max_length=3)
     points = models.IntegerField(default=0)
-    author = models.CharField(default="", max_length=15)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     comments = models.IntegerField(default=0)
     posted_at_date = models.DateField(default=timezone.now)
     posted_at_time = models.TimeField(default=timezone.now)
@@ -59,6 +60,27 @@ class Submission(models.Model):
     def __str__(self):
         return self.title
 
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
+    posted_at_date = models.DateField(default=timezone.now)
+    posted_at_time = models.TimeField(default=timezone.now)
+    text = models.TextField(default="")
+    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
+
+    def age(self):
+        today = date.today()
+        days = today.day - self.posted_at_date.day
+        result = str(days)+" days ago"
+        if(days == 0):
+            time = datetime.now()
+            hours = time.hour - self.posted_at_time.hour
+            result = str(hours)+" hours ago"
+        #check days, weeks, etc...
+        return result
 
 #Change your models (in models.py).
 #Run python manage.py makemigrations hackernews             to create migrations for those changes
