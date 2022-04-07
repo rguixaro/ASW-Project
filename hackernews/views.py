@@ -12,7 +12,6 @@ def index(request):
 def submit(request):
     return render(request, "submit.html")
 
-
 def news(request):
     submissions_list = Submission.objects.order_by('-points')
     template = loader.get_template('news.html')
@@ -44,7 +43,6 @@ def newsByDate(request, date, username):
         'submissions_list' : submissions_list,
     }
     return HttpResponse(template.render(context, request))
-
 
 def newest(request):
     return render(request, "newest.html")

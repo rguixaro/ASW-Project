@@ -70,7 +70,7 @@
 							<tr class="athing">
 								<td valign="top">user:</td>
 								<td timestamp="1649185047">
-									<a href="user?id=ivanosqui" class="hnuser"
+									<a href="{% url 'user' user.username %}" class="hnuser"
 										><font color="#3c963c">{{ user.username }}</font></a
 									>
 								</td>
@@ -79,11 +79,6 @@
 								<td valign="top">created:</td>
 								<td>
 									<a href="{% url 'newsDate' user.created_at_date %}"
-										>{{ user.age }}</a
-									>
-								</td>
-								<td>
-									<a href="front?day={{ user.created_at_date }}"
 										>{{ user.age }}</a
 									>
 								</td>
