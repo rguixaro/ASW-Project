@@ -45,7 +45,12 @@ def newsByDate(request, date, username):
     return HttpResponse(template.render(context, request))
 
 def newest(request):
-    return render(request, "newest.html")
+    submissions_list = Submission.objects.order_by('created_at_date', 'created_at_time')
+    template = loader.get_template('news.html')
+    context = {
+        'submissions_list': submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
 
 def user(request, username):
     u = User.objects.get(username=username)
