@@ -67,3 +67,4 @@ def favorites(request, username):
         'user' : u,
     }
     return HttpResponse(template.render(context, request))
+
