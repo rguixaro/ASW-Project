@@ -45,7 +45,7 @@ def newsByDate(request, date, username):
     return HttpResponse(template.render(context, request))
 
 def newest(request):
-    submissions_list = Submission.objects.order_by('created_at_date', 'created_at_time')
+    submissions_list = Submission.objects.order_by('-posted_at_date', '-posted_at_time')
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
@@ -68,3 +68,10 @@ def favorites(request, username):
     }
     return HttpResponse(template.render(context, request))
 
+def ask(request):
+    submissions_list = Submission.objects.get(type="ask")
+    template = loader.get_template('ask.html')
+    context = {
+        'submissions_list': submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
