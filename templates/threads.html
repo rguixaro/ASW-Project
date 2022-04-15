@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load mptt_tags %}
 <html lang="en" op="threads">
 	<head>
 		<meta name="referrer" content="origin" />
@@ -135,84 +135,13 @@
 											<br />
 											<div class="comment">
 												<span class="commtext c00"> {{ comment.text }} </span>
-												{% if comment.children.exists %}
-												<table border="0" class="comment-tree">
-													{% for children in comment.children.all %}
-													<table border="0">
-														<tr>
-															<td class="ind" indent="0">
-																<img src="s.gif" height="1" width="0" />
-															</td>
-															<td valign="top" class="votelinks">
-																<center>
-																	<a
-																		id="up_30941363"
-																		class="clicky"
-																		href="vote?id=30941363&amp;how=up&amp;auth=482f403908f4d550e110c56dd7a18064e8c0faf7&amp;goto=threads%3Fid%3DMaxLeiter#30941363"
-																	>
-																		<div class="votearrow" title="upvote"></div>
-																	</a>
-																</center>
-															</td>
-															<td class="default">
-																<div
-																	style="margin-top: 2px; margin-bottom: -10px"
-																>
-																	<span class="comhead">
-																		<a
-																			href="{% url 'user' children.author.username %}"
-																			class="hnuser"
-																			>{{ children.author.username}}</a
-																		>
-																		<span
-																			class="age"
-																			title="2022-04-07T06:44:03"
-																			><a href="item?id=30941363"
-																				>{{ children.age }}</a
-																			></span
-																		>
-																		<span id="unv_30941363"></span>
-																		<span class="navs">
-																			| <a href="item?id=30934529">parent</a> |
-																			<a
-																				href="context?id=30941363"
-																				rel="nofollow"
-																				>context</a
-																			>
-																			|
-																			<a
-																				href="#30938812"
-																				class="clicky"
-																				aria-hidden="true"
-																				>next</a
-																			>
-																		</span>
-																		<a
-																			class="togg clicky"
-																			id="30941363"
-																			n="5"
-																			href="javascript:void(0)"
-																			>[–]</a
-																		><span class="onstory">
-																			| on:
-																			<a href="item?id=30934529"
-																				>Ask HN: Share your personal site</a
-																			></span
-																		>
-																	</span>
-																</div>
-																<br />
-																<div class="comment">
-																	<span class="commtext c00">
-																		{{ children.text }}
-																	</span>
-																</div>
-															</td>
-														</tr>
-													</table>
-
-													{% endfor %}
-												</table>
+												{% recursetree comment %}
+												<li>{{ node.text}}</li>
+												{% if not node.is_leaf_node %}
+												<ul>
+													{{ children }}
+												</ul>
+												{% endif %} {% endrecursetree %}
 												<div class="reply">
 													<p>
 														<font size="1">
@@ -225,9 +154,6 @@
 														</font>
 													</p>
 												</div>
-												{% else %}
-												<p>No children available.</p>
-												{% endif %}
 											</div>
 										</td>
 									</tr>
