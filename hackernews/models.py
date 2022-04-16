@@ -68,8 +68,15 @@ class Comment(models.Model):
     text = models.TextField(default="")
     parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.text
+    @property
+    def comment_id(self):
+        return self.id
+
+    def get_root(self):
+        comment = self
+        while comment.parent is not None:
+            comment = comment.parent
+        return comment.comment_id
 
     def age(self):
         today = date.today()
@@ -81,12 +88,6 @@ class Comment(models.Model):
             result = str(hours)+" hours ago"
         #check days, weeks, etc...
         return result
-
-    def hierarchy(self, n):
-        if(self.parent):
-            return self.hierarchy(self.parent, n+1)
-        else:
-            return n
 
 #Change your models (in models.py).
 #Run python manage.py makemigrations hackernews             to create migrations for those changes
