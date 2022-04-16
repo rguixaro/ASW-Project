@@ -84,6 +84,9 @@ class Comment(MPTTModel):
         root = self.get_root()
         return root.comment_id
 
+    def descendant_count(self):
+        return self.get_descendant_count()+1
+
     def age(self):
         today = date.today()
         days = today.day - self.posted_at_date.day

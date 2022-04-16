@@ -16,7 +16,6 @@
 				<td class="default">
 					<div style="margin-top: 2px; margin-bottom: -10px">
 						<span class="comhead">
-							<a href="#google">hola</a>
 							<a href="{% url 'user' comment.author.username %}" class="hnuser">{{ comment.author.username }}</a>
 							<span class="age" title={{ comment.posted_at_date }}
 								><a href="item?id=30983757">{{ comment.age }}</a></span
@@ -29,25 +28,26 @@
 								{% if forloop.counter == 0 %}
 								| <a href="item?id=30983269">parent</a> 
 								{% else %}
-								| <a href="item?id=30983269" class="clicky" aria-hidden="true">parent</a> 
+								| <a href="#{{ coment.parent }}" class="clicky" aria-hidden="true">parent</a> 
 								{% endif %}
 								{% if idx == 0 %}
 								| <a href="context" rel="nofollow"> context</a>
 								{% endif %}
-								{% if forloop.counter != 1 %}
+								{% if not forloop.first %}
 								{% with comments_list|prev:forloop.counter0 as prev %}
-								| <a href="#{{ prev.comment_id }}" class="clicky" aria-hidden="true">prev{{prev.comment_id}}</a>
+								| <a href="#{{ prev.comment_id }}" class="clicky" aria-hidden="true">prev{{ prev.comment_id }}</a>
 								{% endwith %}
 								{% endif %}
+								{% if not forloop.last %}
 								{% with comments_list|next:forloop.counter0 as next %}
-								| <a href="#{{ next.comment_id }}" class="clicky" aria-hidden="true">next{{next.comment_id}}</a> 
+								| <a href="#{{ next.comment_id }}" class="clicky" aria-hidden="true">next{{ next.comment_id }}</a> 
 								{% endwith %}
+								{% endif %}
 							</span>
-							<a class="togg clicky" id="30983757" n="2" href="javascript:void(0)">[-]</a>	
+							<a class="togg clicky" id="{{ comment.comment_id }}" n="{{ comment.descendant_count }}" href="javascript:void(0)">[-]</a>	
 							{% if idx == 0 %}
 							<span class="onstory"> | on: <a href="item?id=30983269">{{ comment.submission.title }}</a> </span>
 							{% endif %}
-							<div id="google">eeeeee</div>
 						</span>
 					</div>
 					<br />
