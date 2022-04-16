@@ -68,3 +68,9 @@ def favorites(request, username):
     }
     return HttpResponse(template.render(context, request))
 
+def upvote(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    s.points += 1
+    #s.save() ??? 
+    return HttpResponse.get_template('news.html')
+

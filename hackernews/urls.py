@@ -12,4 +12,5 @@ urlpatterns = [
     path('users/<username>/favorites', views.favorites, name='favorites'),
     path('users/<username>/submissions', views.newsUser, name='newsUser'),
     path('users/<username>/<date>', views.newsByDate, name='newsByDate'),
+    path('vote?id=<submission_id>&how=up&goto=news', views.upvote, name='upvote'),
 ]

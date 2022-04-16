@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from datetime import date, datetime
+import numpy as np
 
 # Create your models here.
 
@@ -16,6 +17,7 @@ class User(models.Model):
     delay = models.CharField(max_length=16)
     created_at_date = models.DateField(default=timezone.now)
     created_at_time = models.TimeField(default=timezone.now)
+    id_submissions_upvotes = numpy.array([]) #arreglar!! + mirar import
 
     def age(self):
         today = date.today()
@@ -31,7 +33,7 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
-class Submission(models.Model):
+class Submission(models.Model): #posar id_submission ??
     title = models.CharField(max_length=50, default="")
     url = models.URLField(max_length=50, default="")
     text = models.TextField(default="")
