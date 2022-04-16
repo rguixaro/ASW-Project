@@ -4,11 +4,6 @@ from django.template import loader
 
 from hackernews.models import Submission, User, Comment
 
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
-
-
 def submit(request):
     return render(request, "submit.html")
 
@@ -42,7 +37,7 @@ def newsDate(request, date):
     return HttpResponse(template.render(context, request))
 
 def newest(request):
-    submissions_list = Submission.objects.order_by('created_at_date', 'created_at_time')
+    submissions_list = Submission.objects.order_by('-posted_at_date', '-posted_at_time')
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,

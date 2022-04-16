@@ -1,71 +1,52 @@
-{% load static %}
-<table border="0">
-	<tr>
-		<td class="ind" indent="0">
-			<img src="s.gif" height="1" width="0" />
-		</td>
-		<td valign="top" class="votelinks">
-			<center>
-				<a
-					id="up_30941363"
-					class="clicky"
-					href="vote?id=30941363&amp;how=up&amp;auth=482f403908f4d550e110c56dd7a18064e8c0faf7&amp;goto=threads%3Fid%3DMaxLeiter#30941363"
-				>
-					<div class="votearrow" title="upvote"></div>
-				</a>
-			</center>
-		</td>
-		<td class="default">
-			<div style="margin-top: 2px; margin-bottom: -10px">
-				<span class="comhead">
-					<a href="{% url 'user' comment.author.username %}" class="hnuser"
-						>{{ comment.author.username}}</a
-					>
-					<span class="age" title="2022-04-07T06:44:03"
-						><a href="item?id=30941363">{{ comment.age }}</a></span
-					>
-					<span id="unv_30941363"></span>
-					<span class="navs">
-						| <a href="item?id=30934529">parent</a> |
-						<a href="context?id=30941363" rel="nofollow">context</a>
-						|
-						<a href="#30938812" class="clicky" aria-hidden="true">next</a>
-					</span>
-					<a class="togg clicky" id="30941363" n="5" href="javascript:void(0)"
-						>[–]</a
-					><span class="onstory">
-						| on:
-						<a href="item?id=30934529"
-							>Ask HN: Share your personal site</a
-						></span
-					>
-				</span>
-			</div>
-			<br />
-			<div class="comment">
-				<span class="commtext c00"> {{ comment.text }} </span>
-				{% if comment.children.exists %}
-				<table border="0" class="comment-tree">
-					{% for children in comment.chsssildren.all %} {%with node=children
-					template_name="threads.html" %} {%include template_name%} {%endwith%}
-					{% endfor %}
-				</table>
-				<div class="reply">
-					<p>
-						<font size="1">
-							<u
-								><a
-									href="reply?id=30941363&amp;goto=threads%3Fid%3DMaxLeiter%2330941363"
-									>reply</a
-								></u
+{% load static %} {% for comment in comments_list %}
+<tr class="athing comtr" id="30983757">
+	<td>
+		<table border="0">
+			<tr>
+				<td class="ind" indent="0"><img src="s.gif" height="1" width={{ idx }} /></td>
+				<td valign="top" class="votelinks">
+					<center>
+						<a id="up_30983757" class="clicky" href="vote?id=30983757&amp;how=up&amp;auth=a6b1&apm;goto=threads%3Fid%3Dchizhik-pyzhik#30983757">
+							<div class="votearrow" title="upvote"></div>
+						</a>
+					</center>
+				</td>
+				<td class="default">
+					<div style="margin-top: 2px; margin-bottom: -10px">
+						<span class="comhead">
+							<a href="user?id=chizhik-pyzhik" class="hnuser">{{ comment.author.username }}</a>
+							<span class="age" title={{ comment.posted_at_date }}
+								><a href="item?id=30983757">{{ comment.age }}</a></span
 							>
-						</font>
-					</p>
-				</div>
-				{% else %}
-				<p>No children available.</p>
-				{% endif %}
-			</div>
-		</td>
-	</tr>
-</table>
+							<span id="unv_30983269"></span>	
+							<span class="navs">
+								<a href="item?id=30983269">parent</a> <a href="context" rel="nofollow">context</a> | <a href="#30902466" class="cliky" aria-hidden="true">next</a> 
+							</span>
+							<a class="togg clicky" id="30983757" n="2" href="javascript:void(0)">[-]</a>	
+							<span class="onstory"> | on: <a href="item?id=30983269">{{ comment.text }}</a> </span>
+						</span>
+					</div>
+					<br />
+					<div class="comment">
+						<span class="commtext c00">
+							{{ comment.text }}
+						</span>
+						<div class="reply">
+							<p>
+								<font size="1">
+									<u><a href="reply?id=30983757&amp;goto=threads%3Fid%3Dchizhik-pyzhik%2330983757">reply</a></u>
+								</font>
+							</p>
+						</div>		
+							
+					</div>
+					
+				</td>
+				
+			</tr>
+			
+		</table>
+		{% include "comment.html" with comments_list=comment.children.all idx=idx|add:20 %}
+	</td>
+</tr>
+{% endfor %}

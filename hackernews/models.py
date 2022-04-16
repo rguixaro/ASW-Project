@@ -82,6 +82,12 @@ class Comment(models.Model):
         #check days, weeks, etc...
         return result
 
+    def hierarchy(self, n):
+        if(self.parent):
+            return self.hierarchy(self.parent, n+1)
+        else:
+            return n
+
 #Change your models (in models.py).
 #Run python manage.py makemigrations hackernews             to create migrations for those changes
 #Run (optional) py manage.py sqlmigrate hackernews 000x     to check what would that migration make to the db

@@ -71,118 +71,32 @@
 				></tr>
 				<tr>
 					<td>
-						{% if comments_list %}
-						<tr class="athing comtr" id="30941363">
-							<td>
-								{% for comment in comments_list %}
-								<table border="0">
-									<tr>
-										<td class="ind" indent="0">
-											<img src="s.gif" height="1" width="0" />
-										</td>
-										<td valign="top" class="votelinks">
-											<center>
+						<table border="0">
+							{% if comments_list %}
+									{% include "comment.html" with idx=0 %}								
+							{% else %}
+							<p>No submissions available.</p>
+							{% endif %}
+							<tr class="morespace" style="height: 10px"></tr>
+							<tr>
+								<td>
+									<table border="0">
+										<tr>
+											<td><img src="s.gif" height="1" width="0" /></td>
+											<td><img src="s.gif" height="1" width="14" /></td>
+											<td class="title">
 												<a
-													id="up_30941363"
-													class="clicky"
-													href="vote?id=30941363&amp;how=up&amp;auth=482f403908f4d550e110c56dd7a18064e8c0faf7&amp;goto=threads%3Fid%3DMaxLeiter#30941363"
+													href="threads?id=MaxLeiter&amp;next=30863538"
+													class="morelink"
+													rel="next"
+													>More</a
 												>
-													<div class="votearrow" title="upvote"></div>
-												</a>
-											</center>
-										</td>
-										<td class="default">
-											<div style="margin-top: 2px; margin-bottom: -10px">
-												<span class="comhead">
-													<a
-														href="{% url 'user' comment.author.username %}"
-														class="hnuser"
-														>{{ comment.author.username}}</a
-													>
-													<span class="age" title="2022-04-07T06:44:03"
-														><a href="item?id=30941363"
-															>{{ comment.age }}</a
-														></span
-													>
-													<span id="unv_30941363"></span>
-													<span class="navs">
-														| <a href="item?id=30934529">parent</a> |
-														<a href="context?id=30941363" rel="nofollow"
-															>context</a
-														>
-														|
-														<a
-															href="#30938812"
-															class="clicky"
-															aria-hidden="true"
-															>next</a
-														>
-													</span>
-													<a
-														class="togg clicky"
-														id="30941363"
-														n="5"
-														href="javascript:void(0)"
-														>[–]</a
-													><span class="onstory">
-														| on:
-														<a href="item?id=30934529"
-															>Ask HN: Share your personal site</a
-														></span
-													>
-												</span>
-											</div>
-											<br />
-											<div class="comment">
-												<span class="commtext c00"> {{ comment.text }} </span>
-												{% recursetree comment %}
-												<li>{{ node.text}}</li>
-												{% if not node.is_leaf_node %}
-												<ul>
-													{{ children }}
-												</ul>
-												{% endif %} {% endrecursetree %}
-												<div class="reply">
-													<p>
-														<font size="1">
-															<u
-																><a
-																	href="reply?id=30941363&amp;goto=threads%3Fid%3DMaxLeiter%2330941363"
-																	>reply</a
-																></u
-															>
-														</font>
-													</p>
-												</div>
-											</div>
-										</td>
-									</tr>
-								</table>
-							</td>
-							{% endfor %}
-						</tr>
-						{% else %}
-						<p>No submissions available.</p>
-						{% endif %}
-						<tr class="morespace" style="height: 10px"></tr>
-						<tr>
-							<td>
-								<table border="0">
-									<tr>
-										<td><img src="s.gif" height="1" width="0" /></td>
-										<td><img src="s.gif" height="1" width="14" /></td>
-										<td class="title">
-											<a
-												href="threads?id=MaxLeiter&amp;next=30863538"
-												class="morelink"
-												rel="next"
-												>More</a
-											>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
+											</td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						<table border="0">
 					</td>
 				</tr>
 				<tr>
