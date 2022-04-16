@@ -2,6 +2,7 @@ from statistics import mode
 from django.db import models
 from django.utils import timezone
 from datetime import date, datetime
+from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
 
@@ -60,23 +61,28 @@ class Submission(models.Model):
     def __str__(self):
         return self.title
 
-class Comment(models.Model):
+
+class Comment(MPTTModel):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     submission = models.ForeignKey(Submission, on_delete=models.CASCADE)
     posted_at_date = models.DateField(default=timezone.now)
     posted_at_time = models.TimeField(default=timezone.now)
     text = models.TextField(default="")
-    parent = models.ForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+    parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ('-posted_at_date', '-posted_at_time')
+
+    def _str_(self):
+        return self.comment_id
 
     @property
     def comment_id(self):
         return self.id
 
-    def get_root(self):
-        comment = self
-        while comment.parent is not None:
-            comment = comment.parent
-        return comment.comment_id
+    def root(self):
+        root = self.get_root()
+        return root.comment_id
 
     def age(self):
         today = date.today()
