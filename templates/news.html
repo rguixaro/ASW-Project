@@ -1,4 +1,5 @@
 {% load static %}
+{% load hackernews_extras %}
 <html lang="en" op="news">
 	<head>
 		<meta name="referrer" content="origin" />
@@ -39,15 +40,31 @@
 								</td>
 								<td style="line-height: 12pt; height: 10px">
 									<span class="pagetop">
-										<b class="hnname"><a href="../news">Hacker News</a></b>
-										<a href="../newest">new</a> | <a href="../front">past</a> |
-										<a href="../newcomments">comments</a> | <a href="../ask">ask</a> |
-										<a href="../show">show</a> | <a href="../jobs">jobs</a> |
-										<a href= "../submit" >submit</a>
+										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
+										<a href="{% url 'newest' %}">new</a> |
+                    					<a href="{% url 'threads' user.username %}">threads</a> |
+										{% yesterday as the_time %}
+										<a href="{% url 'newsDate' the_time %}">past</a> |
+										<a href="{% url 'newest' %}">comments</a> | 
+										<a href="{% url 'ask' %}">ask</a> |
+										<a href="{% url 'newest' %}">show</a> | 
+										<a href="{% url 'newest' %}">jobs</a> |
+										<a href="{% url 'submit' %}">submit</a>
+										{% if title %}
+										|
+										<font color="#ffffff"> {{ title }}</font>
+										{% endif %}
 									</span>
 								</td>
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
+										<a id="me" href="{{user.username}}">{{user.username}}</a>
+										<span id="karma">({{user.karma}})</span> |
+										<a
+											id="logout"
+											href="logout?auth=51f8c506bb11bff38a0dd6629fb3db0521534dca&amp;goto=threads%3Fid%3DMaxLeiter"
+											>logout</a
+										>
 										<a href="login?goto=news">login</a>
 									</span>
 								</td>
