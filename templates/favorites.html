@@ -81,14 +81,19 @@
 								<td>
 									<a href="favorites?id=MakisH">submissions</a> |
 									<a href="favorites?id=MakisH&amp;comments=t">comments</a>
-									<p>
-										{{ user.username }} hasn't added any favorite submissions
-										yet.
-									</p>
-									<p>
-										To add one to your own favorites, click on its timestamp to
-										go to its page, then click 'favorite' at the top.
-									</p>
+                            		{% if favorites %}
+										<tr>
+											{% for favorite in favorites %}
+											<a>{{favorite.content_object}}</a>
+											{% endfor %}
+										</tr>
+									{% else %}
+                            			<p>{{ user.username }} hasn't added any favorite submissions yet.</p>
+										<p>
+											To add one to your own favorites, click on its timestamp to
+											go to its page, then click 'favorite' at the top.
+										</p>
+                            		{% endif %}
 								</td>
 							</tr>
 							<tr style="height: 12px"></tr>

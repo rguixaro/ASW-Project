@@ -1,15 +1,16 @@
 from ast import Sub
+from re import sub
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from hackernews.models import Submission, User, Comment
+from hackernews.models import Submission, User, Comment, Action
 
 def submit(request):
     return render(request, "submit.html")
 
 def news(request):
-    submissions_list = Submission.objects.order_by('-points')
+    submissions_list = set(Submission.objects.order_by('-upvotes'))
     user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
     context = {
@@ -24,6 +25,7 @@ def newsWelcome(request):
 
 def newsUser(request, username):
     submissions_list = Submission.objects.filter(author__username=username)
+    print("hola")
     user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
     context = {
@@ -65,9 +67,11 @@ def user(request, username):
 
 def favorites(request, username):
     u = User.objects.get(username=username)
+    favorites = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
     template = loader.get_template('favorites.html')
     context = {
         'user' : u,
+        'favorites' : favorites
     }
     return HttpResponse(template.render(context, request))
 
