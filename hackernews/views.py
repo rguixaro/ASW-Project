@@ -10,10 +10,12 @@ def submit(request):
 
 def news(request):
     submissions_list = Submission.objects.order_by('-points')
+    user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
-    print("newspage")
     context = {
         'submissions_list' : submissions_list,
+        'title' : '',
+        'user' : user
     }
     return HttpResponse(template.render(context, request))
 
@@ -22,26 +24,34 @@ def newsWelcome(request):
 
 def newsUser(request, username):
     submissions_list = Submission.objects.filter(author__username=username)
+    user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
+        'title' : username+"'s submissions",
+        'user' : user
     }
     return HttpResponse(template.render(context, request))
 
 def newsDate(request, date):
     submissions_list = Submission.objects.filter(posted_at_date=date)
+    user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
-    print("hola "+ date)
     context = {
         'submissions_list' : submissions_list,
+        'title' : date,
+        'user' : user
     }
     return HttpResponse(template.render(context, request))
 
 def newest(request):
     submissions_list = Submission.objects.order_by('-posted_at_date', '-posted_at_time')
+    user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
+        'title' : '',
+        'user' : user
     }
     return HttpResponse(template.render(context, request))
 

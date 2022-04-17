@@ -1,4 +1,5 @@
 {% load static %}
+{% load hackernews_extras %}
 <html lang="en" op="user">
 	<head>
 		<meta name="referrer" content="origin" />
@@ -28,7 +29,7 @@
 						>
 							<tr>
 								<td style="width: 18px; padding-right: 4px">
-									<a href="../"
+									<a href="{% url 'main' %}"
 										><img
 											src="/static/gif/y18.gif"
 											width="18"
@@ -38,13 +39,14 @@
 								</td>
 								<td style="line-height: 12pt; height: 10px">
 									<span class="pagetop">
-										<b class="hnname"><a href="{% url 'news'}">Hacker News</a></b>
-										<a href="{% url 'newest'}">new</a> | 
-                    <a href="threads?id={{user.username}}">threads</a> |
-                    <a href="{% url 'front'}">past</a> |
-										<a href="{% url 'newcomments'}">comments</a> | <a href="{% url 'ask'}">ask</a> |
-										<a href="{% url 'newest'}">show</a> | <a href="{% url 'jobs'}">jobs</a> |
-										<a href="{% url 'submit'}">submit</a>
+										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
+										<a href="{% url 'newest' %}">new</a> | 
+                    					<a href="{% url 'threads' user.username %}">threads</a> |
+										{% yesterday as the_time %}
+										<a href="{% url 'newsDate' the_time %}">past</a> |										<a href="{% url 'newcomments'}">comments</a> | <a href="{% url 'ask'}">ask</a> |
+										<a href="{% url 'newest' %}">show</a> | 
+										<a href="{% url 'newest' %}">jobs</a> |
+										<a href="{% url 'submit' %}">submit</a>
 									</span>
 								</td>
 								<td style="text-align: right; padding-right: 4px">
