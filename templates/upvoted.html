@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="{% static 'css/news.css' %}" />
 		<link rel="shortcut icon" href="/static/gif/y18.gif" />
-		<title>{{ user.username }}'s favorites | Hacker News</title>
+		<title>upvoted | Hacker News</title>
 	</head>
 	<body>
 		<center>
@@ -39,17 +39,17 @@
 								</td>
 								<td style="line-height: 12pt; height: 10px">
 									<span class="pagetop">
-										<b class="hnname"><a href="{% url 'news'}">Hacker News</a></b>
+										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
 										<a href="{% url 'newest' %}">new</a> |
-                    					<a href="threads?id={{user.username}}">threads</a> |
+                    					<a href="{% url 'threads' user.username %}">threads</a> |
 										{% yesterday as the_time %}
 										<a href="{% url 'newsDate' the_time %}">past</a> |
-										<a href="{% url 'newest' %}">comments</a> | 
+										<a href="{% url 'newest' %}">comments</a> |
 										<a href="{% url 'ask' %}">ask</a> |
-										<a href="{% url 'newest' %}">show</a> | 
+										<a href="{% url 'newest' %}">show</a> |
 										<a href="{% url 'newest' %}">jobs</a> |
 										<a href="{% url 'submit' %}">submit</a> |
-										<font color="#ffffff">{{ user.username }} favorites</font>
+										<font color="#ffffff">upvoted</font>
 									</span>
 								</td>
 								<td style="text-align: right; padding-right: 4px">
@@ -69,26 +69,63 @@
 				</tr>
 				<tr
 					id="pagespace"
-					title="{{ user.username }}&#x27;s favorites"
+					title="Upvoted submissions"
 					style="height: 10px"
 				></tr>
 				<tr>
 					<td>
 						<table border="0" cellpadding="0" cellspacing="0" class="itemlist">
+							{% if favorites %}
+								<tr>
+									{% for favorite in favorites %}
+									<tr class="athing" id="{{ favorite.content_object.id }}">
+									<td align="right" valign="top" class="title">
+										<span class="rank">{{ forloop.counter }}.</span>
+									</td>
+                                	<td valign="top" class="votelinks">
+										<center>
+                                        	<a id="up_{{ favorite.content_object.id }}" class="clicky nosee" href="vote?id=31061604&amp;how=up&amp;auth=19deddabdf5eebe190b2bd9b224129db19d1b040&amp;goto=upvoted%3Fid%3Duser1">
+                                            	<div class="votearrow" title="upvote"></div>
+	                                        </a>
+                                    	</center>
+                                	</td>
+										<td class="title">
+										<a href="{{ favorite.content_object.url }}" class="titlelink" rel="nofollow">
+											{{ favorite.content_object.title }}
+										</a>
+										<span class="sitebit comhead">
+											(<a href="https://www.{{ favorite.content_object.url }}"><span class="sitestr">{{ favorite.content_object.url_domain }}</span></a>)
+										</span>
+										</tr>
+										<tr>
+											<td colspan="2"></td>
+											<td class="subtext">
+												<span class="score" id="score_{{ favorite.content_object.upvotes }}">{{ favorite.content_object.upvotes.count }} points</span> by
+												<a href="{% url 'user' favorite.user %}" class="hnuser">{{ favorite.user.username }}</a>
+												<span class="age" title="{{ favorite.date }}">
+													<a href="item?id=31061604">{{ favorite.content_object.age }}</a>
+												</span>
+												<span id="unv_{{ favorite.content_object.id }}"> | 
+													<a id="un_31061604" class="clicky" href="vote?id=31061604&amp;how=un&amp;auth=19deddabdf5eebe190b2bd9b224129db19d1b040&amp;goto=upvoted%3Fid%3Duser">unvote</a>
+												</span> |
+												<a href="item?id=31061604">{{ favorite.content_object.comment_set.count }} comments</a>
+											</td>
+										</tr>
+										<tr class="spacer" style="height: 5px;"></tr>
+                                	</td>
+									{% endfor %}
+								</tr>
+							{% else %}
+								<p>{{ user.username }} hasn't added any favorite submissions yet.</p>
+								<p>
+									To add one to your own favorites, click on its timestamp to
+									go to its page, then click 'favorite' at the top.
+								</p>
+							{% endif %}
 							<tr style="height: 6px"></tr>
 							<tr>
 								<td colspan="2">&nbsp;&nbsp;&nbsp;</td>
 								<td>
-									<a href="favorites?id=MakisH">submissions</a> |
-									<a href="favorites?id=MakisH&amp;comments=t">comments</a>
-									<p>
-										{{ user.username }} hasn't added any favorite submissions
-										yet.
-									</p>
-									<p>
-										To add one to your own favorites, click on its timestamp to
-										go to its page, then click 'favorite' at the top.
-									</p>
 								</td>
 							</tr>
 							<tr style="height: 12px"></tr>
