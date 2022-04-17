@@ -1,13 +1,9 @@
+from ast import Sub
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from hackernews.models import Submission, User
-
-
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
-
+from hackernews.models import Submission, User, Comment
 
 def submit(request):
     return render(request, "submit.html")
@@ -15,13 +11,17 @@ def submit(request):
 def news(request):
     submissions_list = Submission.objects.order_by('-points')
     template = loader.get_template('news.html')
+    print("newspage")
     context = {
         'submissions_list' : submissions_list,
     }
     return HttpResponse(template.render(context, request))
 
+def newsWelcome(request):
+    return render(request, "newswelcome.html")
+
 def newsUser(request, username):
-    submissions_list = Submission.objects.filter(author=username)
+    submissions_list = Submission.objects.filter(author__username=username)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
@@ -31,14 +31,7 @@ def newsUser(request, username):
 def newsDate(request, date):
     submissions_list = Submission.objects.filter(posted_at_date=date)
     template = loader.get_template('news.html')
-    context = {
-        'submissions_list' : submissions_list,
-    }
-    return HttpResponse(template.render(context, request))
-
-def newsByDate(request, date, username):
-    submissions_list = Submission.objects.filter(posted_at_date=date)
-    template = loader.get_template('news.html')
+    print("hola "+ date)
     context = {
         'submissions_list' : submissions_list,
     }
@@ -68,6 +61,16 @@ def favorites(request, username):
     }
     return HttpResponse(template.render(context, request))
 
+def threads(request, username):
+    u = User.objects.get(username=username)
+    comments_list = Comment.objects.filter(author = u)
+    template = loader.get_template('threads.html')
+    context = {
+        'user' : u,
+        'comments_list' : comments_list,
+    }
+    return HttpResponse(template.render(context, request))
+
 def ask(request):
     submissions_list = Submission.objects.get(type="ask")
     template = loader.get_template('ask.html')
@@ -75,3 +78,4 @@ def ask(request):
         'submissions_list': submissions_list,
     }
     return HttpResponse(template.render(context, request))
+
