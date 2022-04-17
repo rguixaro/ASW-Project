@@ -7,6 +7,7 @@ urlpatterns = [
     path('submit/', views.submit, name='submit'),
     path('newswelcome/', views.newsWelcome, name='newsWelcome'),
     path('newest/', views.newest, name='newest'),
+    path('ask/', views.newest, name='ask'),
     path('news/', views.news, name='news'),
     path('news/<date>', views.newsDate, name='newsDate'),
     path('user/<username>/', views.user, name='user'),

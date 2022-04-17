@@ -70,3 +70,12 @@ def threads(request, username):
         'comments_list' : comments_list,
     }
     return HttpResponse(template.render(context, request))
+
+def ask(request):
+    submissions_list = Submission.objects.get(type="ask")
+    template = loader.get_template('ask.html')
+    context = {
+        'submissions_list': submissions_list,
+    }
+    return HttpResponse(template.render(context, request))
+
