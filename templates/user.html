@@ -40,11 +40,13 @@
 								<td style="line-height: 12pt; height: 10px">
 									<span class="pagetop">
 										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
-										<a href="{% url 'newest' %}">new</a> | 
+										<a href="{% url 'newest' %}">new</a> |
                     					<a href="{% url 'threads' user.username %}">threads</a> |
 										{% yesterday as the_time %}
-										<a href="{% url 'newsDate' the_time %}">past</a> |										<a href="{% url 'newcomments'}">comments</a> | <a href="{% url 'ask'}">ask</a> |
-										<a href="{% url 'newest' %}">show</a> | 
+										<a href="{% url 'newsDate' the_time %}">past</a> |
+										<a href="{% url 'newcomments'}">comments</a> |
+										<a href="{% url 'ask'}">ask</a> |
+										<a href="{% url 'newest' %}">show</a> |
 										<a href="{% url 'newest' %}">jobs</a> |
 										<a href="{% url 'submit' %}">submit</a>
 									</span>

@@ -37,25 +37,24 @@ class User(models.Model):
         return self.username
 
 class Action(models.Model):
-        UPVOTE_SUBMISSION = 'US'
-        UNVOTE_SUBMISSION = 'DS'
-        UPVOTE_COMMENT = 'UC'
-        UNVOTE_COMMENT = 'DC'
-        ACTION_TYPES = (
-            (UPVOTE_SUBMISSION, 'Upvote submission'),
-            (UNVOTE_SUBMISSION, 'Unvote submission'),
-            (UPVOTE_COMMENT, 'Upvote comment'),
-            (UNVOTE_COMMENT, 'Unvote comment'),
-        )
+    UPVOTE_SUBMISSION = 'US'
+    UNVOTE_SUBMISSION = 'DS'
+    UPVOTE_COMMENT = 'UC'
+    UNVOTE_COMMENT = 'DC'
+    ACTION_TYPES = (
+        (UPVOTE_SUBMISSION, 'Upvote submission'),
+        (UNVOTE_SUBMISSION, 'Unvote submission'),
+        (UPVOTE_COMMENT, 'Upvote comment'),
+        (UNVOTE_COMMENT, 'Unvote comment'),
+    )
 
-        user = models.ForeignKey(User, on_delete=models.CASCADE)
-        action_type = models.CharField(max_length=2, choices=ACTION_TYPES)
-        date = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    action_type = models.CharField(max_length=2, choices=ACTION_TYPES)
+    date = models.DateTimeField(auto_now_add=True)
 
-        content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-        object_id = models.PositiveIntegerField()
-        content_object = GenericForeignKey()
-
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey()
 
 class Submission(models.Model):
     title = models.CharField(max_length=50, default="")
@@ -63,7 +62,6 @@ class Submission(models.Model):
     text = models.TextField(default="")
     type = models.CharField(default="url", max_length=3)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    comments = models.IntegerField(default=0)
     posted_at_date = models.DateField(default=timezone.now)
     posted_at_time = models.TimeField(default=timezone.now)
     upvotes = GenericRelation(Action)
