@@ -35,12 +35,12 @@
 								{% endif %}
 								{% if not forloop.first %}
 								{% with comments_list|prev:forloop.counter0 as prev %}
-								| <a href="#{{ prev.comment_id }}" class="clicky" aria-hidden="true">prev{{ prev.comment_id }}</a>
+								| <a href="#{{ prev.comment_id }}" class="clicky" aria-hidden="true">prev</a>
 								{% endwith %}
 								{% endif %}
 								{% if not forloop.last %}
 								{% with comments_list|next:forloop.counter0 as next %}
-								| <a href="#{{ next.comment_id }}" class="clicky" aria-hidden="true">next{{ next.comment_id }}</a> 
+								| <a href="#{{ next.comment_id }}" class="clicky" aria-hidden="true">next</a> 
 								{% endwith %}
 								{% endif %}
 							</span>
