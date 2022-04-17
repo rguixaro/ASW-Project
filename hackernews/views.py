@@ -65,10 +65,10 @@ def user(request, username):
     }
     return HttpResponse(template.render(context, request))
 
-def favorites(request, username):
+def upvoted(request, username):
     u = User.objects.get(username=username)
     favorites = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
-    template = loader.get_template('favorites.html')
+    template = loader.get_template('upvoted.html')
     context = {
         'user' : u,
         'favorites' : favorites
