@@ -16,7 +16,7 @@ class User(models.Model):
     delay = models.CharField(max_length=16)
     created_at_date = models.DateField(default=timezone.now)
     created_at_time = models.TimeField(default=timezone.now)
-    id_submissions_upvotes = [] 
+    id_submissions_upvotes = []
 
     def age(self):
         today = date.today()
@@ -43,6 +43,7 @@ class Submission(models.Model): #posar id_submission ??
     posted_at_date = models.DateField(default=timezone.now)
     posted_at_time = models.TimeField(default=timezone.now)
     
+    
     def url_domain(self):
         return (self.url).replace('https://www.','')
 
@@ -59,6 +60,33 @@ class Submission(models.Model): #posar id_submission ??
 
     def __str__(self):
         return self.title
+
+
+
+class Singleton(object):
+    def __new__(cls, *args, **kw):
+        if not hasattr(cls, '_instance'):
+            orig = super(Singleton, cls)
+            cls._instance = orig.__new__(cls, *args, **kw)
+        return cls._instance
+
+class DefaultUser(Singleton):
+    username = "user1"
+    karma = 1
+    about = ""
+    email = ""
+    showdead = False
+    noprocrast = False
+    maxvisit = ""
+    minaway = ""
+    delay = ""
+    created_at_date = timezone.now
+    created_at_time = timezone.now
+    id_submissions_upvotes = []
+
+
+
+
 
 
 #Change your models (in models.py).

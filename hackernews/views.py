@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template import loader
 
-from hackernews.models import Submission, User
+from hackernews.models import Submission, User, DefaultUser
 
 
 def index(request):
@@ -69,19 +69,23 @@ def favorites(request, username):
     return HttpResponse(template.render(context, request))
 
 def upvote(request, submission_id):
-    if not request.user.is_authenticated():
-        return HttpResponse('user.html')
-    else :
+#    if not request.user.is_authenticated():
+#        return HttpResponse('user.html')
+#    else :
         s = Submission.objects.get(id=submission_id)
         s.points += 1
         #s.save() ??? 
-        u = User.objects.get(username=request.user) #ARREGLAR! Treure?
+        #u = User.objects.get(username=request.user) #ARREGLAR! Treure?
+        #u.id_submissions_upvotes.append(s.id)
+
+        u = DefaultUser.objects
         u.id_submissions_upvotes.append(s.id)
 
         submissions_list = Submission.objects.order_by('-points')
         template = loader.get_template('news.html')
         context = {
             'submissions_list' : submissions_list,
+            'logged_user' : u
         }
         return HttpResponse(template.render(context, request))
 
