@@ -86,142 +86,140 @@
                                 </td>
                             </tr>
                             </table>
-							<form class="profileform" method="post" action="/xuser">
-                            <input type="hidden" name="id" value="username" /><input type="hidden" name="hmac" value="9c904cf55a56feeb4f21639b7dcfb5805e0a8485" />
-                            <table border="0">
-                                <tr class="athing">
-                                    <td valign="top">user:</td>
-                                    <td timestamp="1649170369">
-                                        <a href="{% url 'user' user.username %}" class="hnuser">
-											<font color="#3c963c">{{ user.username }}</font>
-										</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">created:</td>
-                                    <td>
-										<a href="{% url 'newsDate' user.created_at_date %}"
-											>{{ user.age }}</a
+							<form class="profileform" method="post" action="{% url 'user' user.username %}">
+								{% csrf_token %}
+								<input type="hidden" name="id" value="{{ user.id }}" />
+								<input type="hidden" name="hmac" value="9c904cf55a56feeb4f21639b7dcfb5805e0a8485" />
+								<table border="0">
+									<tr class="athing">
+										<td valign="top">user:</td>
+										<td timestamp="1649170369">
+											<a href="{% url 'user' user.username %}" class="hnuser">
+												<font color="#3c963c">{{ user.username }}</font>
+											</a>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">created:</td>
+										<td>
+											<a href="{% url 'newsDate' user.created_at_date %}"
+												>{{ user.age }}</a
+											>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">karma:</td>
+										<td>{{ user.karma }}</td>
+									</tr>
+									<tr>
+										<td valign="top">about:</td>
+										<td style="overflow: hidden;">
+											{{ form.about }}
+											<font size="-2">
+												<a href="formatdoc" tabindex="-1">
+													<font color="#afafaf">help</font>
+												</a>
+											</font>	
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											<font size="2">Only admins see your email below. To share publicly, add to the 'about' box.</font>
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">email:</td>
+										<td>
+											{{ form.email }}
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">showdead:</td>
+										<td>
+											{{ form.showdead }}
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">noprocrast:</td>
+										<td>
+											{{ form.noprocrast }}
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">maxvisit:</td>
+										<td>
+											{{ form.maxvisit }}
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">minaway:</td>
+										<td>
+											{{ form.minaway }}
+										</td>
+									</tr>
+									<tr>
+										<td valign="top">delay:</td>
+										<td>
+											{{ form.delay }}
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											<a href="changepw"><u>change password</u></a>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+										<a href="{% url 'submissions' user.username %}"
+											><u>submissions</u></a
 										>
 									</td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">karma:</td>
-									<td>{{ user.karma }}</td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">about:</td>
-                                    <td style="overflow: hidden;">
-                                        <textarea cols="60" rows="5" wrap="virtual" name="about">{{ user.about }}</textarea>
-                                        <font size="-2">
-                                            <a href="formatdoc" tabindex="-1"><font color="#afafaf">help</font></a>
-                                        </font>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><font size="2">Only admins see your email below. To share publicly, add to the 'about' box.</font></td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">email:</td>
-                                    <td><input type="text" name="email" value="{{ user.email }}" size="60" /></td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">showdead:</td>
-                                    <td>
-                                        <select name="showd">
-											{% if user.showdead %}
-                                            	<option selected>yes</option>
-                                            	<option>no</option>
-											{% else %}
-                                            	<option>yes</option>
-                                            	<option selected>no</option>
-											{% endif %}
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">noprocrast:</td>
-                                    <td>
-                                        <select name="nopro">
-											{% if user.noprocrast %}
-                                            	<option selected>yes</option>
-                                            	<option>no</option>
-											{% else %}
-	                                            <option>yes</option>
-                                            	<option selected>no</option>
-											{% endif %}
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">maxvisit:</td>
-                                    <td><input type="text" name="maxv" value="{{ user.maxvisit }}" size="16" /></td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">minaway:</td>
-                                    <td><input type="text" name="mina" value="{{ user.minaway }}" size="16" /></td>
-                                </tr>
-                                <tr>
-                                    <td valign="top">delay:</td>
-                                    <td><input type="text" name="delay" value="{{ user.delay }}" size="16" /></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <a href="changepw"><u>change password</u></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-									<a href="{% url 'submissions' user.username %}"
-										><u>submissions</u></a
-									>
-								</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-									<td>
-										<a href="{% url 'threads' user.username %}"
-											><u>comments</u></a
-										>
-									</td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <a href="hidden"><u>hidden</u></a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-									<a href="{% url 'upvoted' user.username %}">
-										<u>upvoted submissions</u>
-									</a> /
-									<a href="upvoted?id=user&amp;comments=t">
-										<u>comments</u>
-									</a>
-									&nbsp;<span style="font-style: italic;">(private)</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td>
-                                        <a href="favorites?id=user">
-											<u>favorite submissions</u>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											<a href="{% url 'threads' user.username %}"
+												><u>comments</u></a
+											>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											<a href="hidden"><u>hidden</u></a>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+										<a href="{% url 'upvoted' user.username %}">
+											<u>upvoted submissions</u>
 										</a> /
-                                        <a href="favorites?id=user&amp;comments=t">
+										<a href="upvoted?id=user&amp;comments=t">
 											<u>comments</u>
 										</a>
-                                        &nbsp;<span style="font-style: italic;">(public)</span>
-                                    </td>
-                                </tr>
-                            </table>
-                            <br />
-                            <input type="submit" value="update" />
-                        </form>
+										&nbsp;<span style="font-style: italic;">(private)</span>
+										</td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>
+											<a href="favorites?id=user">
+												<u>favorite submissions</u>
+											</a> /
+											<a href="favorites?id=user&amp;comments=t">
+												<u>comments</u>
+											</a>
+											&nbsp;<span style="font-style: italic;">(public)</span>
+										</td>
+									</tr>
+								</table>
+								<br />
+								<input type="submit" value="update" />
+                        	</form>
 						<br />
 						<br />
 					</td>

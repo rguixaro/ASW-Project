@@ -1,10 +1,9 @@
-from ast import Sub
-from re import sub
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 
 from hackernews.models import Submission, User, Comment, Action
+from .forms import UserForm
 
 def submit(request):
     return render(request, "submit.html")
@@ -60,10 +59,31 @@ def newest(request):
 def user(request, username):
     u = User.objects.get(username=username)
     template = loader.get_template('user.html')
-    context = {
-        'user' : u,
-    }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_authenticated:
+        print('logged-in')
+    else:
+        print('not logged-in')
+
+    initialData = {'about': u.about,
+        'email': u.email,
+        'showdead': u.showdead,
+        'noprocrast': u.noprocrast,
+        'maxvisit': u.maxvisit,
+        'minaway': u.minaway,
+        'delay': u.delay}
+
+    #create user
+        #userForm = UserForm(request.POST)
+        #newUser = userForm.save()
+    #update user
+    if request.method == 'POST':
+        userForm = UserForm(request.POST or None, instance=u)
+        if userForm.is_valid():
+            userForm.save()
+    else:
+        userForm = UserForm(initial=initialData)
+
+    return HttpResponse(template.render({'user': u, 'form': userForm}, request))
 
 def upvoted(request, username):
     u = User.objects.get(username=username)
