@@ -85,15 +85,17 @@ def user(request, username):
 
     return HttpResponse(template.render({'user': u, 'form': userForm}, request))
 
-def upvoted(request, username):
+def upvotedSubmissions(request, username):
     u = User.objects.get(username=username)
-    favorites = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
+    upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
     template = loader.get_template('upvoted.html')
-    context = {
-        'user' : u,
-        'favorites' : favorites
-    }
-    return HttpResponse(template.render(context, request))
+    return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
+
+def upvotedComments(request, username):
+    u = User.objects.get(username=username)
+    upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
+    template = loader.get_template('upvoted.html')
+    return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
 
 def threads(request, username):
     u = User.objects.get(username=username)
