@@ -13,5 +13,6 @@ urlpatterns = [
     path('<username>/', views.user, name='user'),
     path('<username>/submissions', views.newsUser, name='submissions'),
     path('<username>/threads', views.threads, name='threads'),
-    path('<username>/upvoted', views.upvoted, name='upvoted'),
+    path('<username>/upvoted', views.upvotedSubmissions, name='upvotedSubmissions'),
+    path('<username>/upvoted&comments', views.upvotedComments, name='upvotedComments'),
 ]
