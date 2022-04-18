@@ -108,7 +108,7 @@
                                         <td class="subtext">
                                             <span class="score" id="score_30784939">{{ submission.upvotes.count }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
-                                            <span class="age" title="2022-03-23T23:36:00">
+                                            <span class="age" title="{{ submission.posted_at_date }} {{ submission.posted_at_time }}">
                                                 <a href="item?id=30784939">{{ submission.age }}</a>
                                             </span>|
                                             <a href="hide?id=30784939&amp;goto=news">hide</a>|
