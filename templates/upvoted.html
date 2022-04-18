@@ -139,9 +139,7 @@
 								<table border="0" cellpadding="0" cellspacing="0" class="itemlist">
 									{% for upvote in upvotes %}
 										<tr class="athing" id="{{ upvote.content_object.id }}">
-											<td align="right" valign="top" class="title">
-												<span class="rank">{{ forloop.counter }}.</span>
-											</td>
+											<td class="ind"></td>
 											<td valign="top" class="votelinks">
 												<center>
 													<a id="up_{{ upvote.content_object.id }}" class="clicky nosee" href="vote?id=31061604&amp;how=up&amp;auth=19deddabdf5eebe190b2bd9b224129db19d1b040&amp;goto=upvoted%3Fid%3Duser1">
@@ -149,37 +147,30 @@
 													</a>
 												</center>
 											</td>
-											<td class="title">
-												<a href="{{ upvote.content_object.url }}" class="titlelink" rel="nofollow">
-													{{ upvote.content_object.title }}
-												</a>
-												<span class="sitebit comhead">
-													(<a href="https://www.{{ upvote.content_object.url }}"><span class="sitestr">{{ upvote.content_object.url_domain }}</span></a>)
-												</span>
-											</td>
-										</tr>
-										<tr>
-											<td colspan="2"></td>
-											<td class="subtext">
-												<span class="score" id="score_{{ upvote.content_object.upvotes }}">{{ upvote.content_object.upvotes.count }} points</span> by
-												<a href="{% url 'user' upvote.user %}" class="hnuser">{{ upvote.user.username }}</a>
-												<span class="age" title="{{ upvote.date }}">
-													<a href="item?id=31061604">{{ upvote.content_object.age }}</a>
-												</span>
-												<span id="unv_{{ upvote.content_object.id }}"> | 
-													<a id="un_31061604" class="clicky" href="vote?id=31061604&amp;how=un&amp;auth=19deddabdf5eebe190b2bd9b224129db19d1b040&amp;goto=upvoted%3Fid%3Duser">unvote</a>
-												</span> |
-												<a href="item?id=31061604">{{ upvote.content_object.comment_set.count }} comments</a>
+											<td class="default">
+												<div style="margin-top: 2px; margin-bottom: -10px;">
+													<span class="comhead">
+														<a href="{% url 'user' upvote.user %}" class="hnuser">{{ upvote.user.username }}</a>
+														<span class="age" title="{{ upvote.content_object.posted_at_date }} {{ upvote.content_object.posted_at_time }}">
+															<a href="item?id=31061604">on {{ upvote.content_object.posted_at_date }}</a>
+														</span>
+														<span class="navs"> | 
+															<a href="item?id=31061604">parent</a> |
+															<a href="item?id=31061604" rel="nofollow">context</a>
+														</span>
+														<span class="onstory"> | on:
+															<a href="item?id=31061604">{{ upvote.content_object.submission.title }}</a>
+														</span>
+													</span>
+												</div>
+												<br />
+												<div class="comment">
+													{{ upvote.content_object.text }}
+												</div>
 											</td>
 										</tr>
 										<tr class="spacer" style="height: 5px;"></tr>
-										</td>
 									{% endfor %}
-									<tr style="height: 6px"></tr>
-									<tr>
-										<td colspan="2">&nbsp;&nbsp;&nbsp;</td>
-									</tr>
-									<tr style="height: 12px"></tr>
 								</table>
 							</td>
 						</tr>
