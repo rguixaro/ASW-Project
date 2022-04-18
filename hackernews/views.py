@@ -75,7 +75,13 @@ def upvote(request, submission_id):
         s = Submission.objects.get(id=submission_id)
         s.points += 1
         #s.save() ??? 
-    u = User.objects.get(username=request.user) #ARREGLAR! Treure?
-    u.id_submissions_upvotes.append(s.id)
-    return HttpResponse.get_template('news.html')
+        u = User.objects.get(username=request.user) #ARREGLAR! Treure?
+        u.id_submissions_upvotes.append(s.id)
+
+        submissions_list = Submission.objects.order_by('-points')
+        template = loader.get_template('news.html')
+        context = {
+            'submissions_list' : submissions_list,
+        }
+        return HttpResponse(template.render(context, request))
 
