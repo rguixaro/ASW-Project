@@ -69,8 +69,13 @@ def favorites(request, username):
     return HttpResponse(template.render(context, request))
 
 def upvote(request, submission_id):
-    s = Submission.objects.get(id=submission_id)
-    s.points += 1
-    #s.save() ??? 
+    if not request.user.is_authenticated():
+        return HttpResponse('user.html')
+    else :
+        s = Submission.objects.get(id=submission_id)
+        s.points += 1
+        #s.save() ??? 
+    u = User.objects.get(username=request.user) #ARREGLAR! Treure?
+    u.id_submissions_upvotes.append(s.id)
     return HttpResponse.get_template('news.html')
 
