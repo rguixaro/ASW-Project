@@ -120,7 +120,7 @@ def upvote(request, submission_id):
 #        return HttpResponse('user.html')
 #    else :
         s = Submission.objects.get(id=submission_id)
-        s.points += 1
+        #s.points += 1, com fer amb upvotes??
         #s.save() ??? 
         #u = User.objects.get(username=request.user) #ARREGLAR! Treure?
         #u.id_submissions_upvotes.append(s.id)
@@ -128,11 +128,18 @@ def upvote(request, submission_id):
         u = User.objects.get(id=1) #fake ought to be the logged user
         u.id_submissions_upvotes.append(s.id)
 
-        submissions_list = Submission.objects.order_by('-points')
-        template = loader.get_template('news.html')
+        submissions_list = Submission.objects.order_by('-upvotes')
+        template = loader.get_template('news.html') #Fer un redirect to /news?
         context = {
             'submissions_list' : submissions_list,
             'user' : u,
         }
         return HttpResponse(template.render(context, request))
 
+def comments(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    template = loader.get_template('comment.html')
+    context = {
+        'submission' : s,
+    }
+    return HttpResponse(template.render(context, request))

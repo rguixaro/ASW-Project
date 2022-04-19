@@ -86,7 +86,7 @@
 										{% if not submission.id in user.submissions_id_upvotes %}
                                             <a
                                                 id="up_{{ submission.id }}"
-                                                href="vote?id={{ submission.id }}&amp;how=up&amp;goto=news"
+                                                href="vote/{{ submission.id }}&amp;how=up&amp;goto=news"
                                                 >
                                                 <div class="votearrow" title="upvote">-</div>
                                             </a>
@@ -108,7 +108,7 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <td class="subtext">
-                                            <span class="score" id="score_{{ submission.id }}">{{ submission.points }} points </span> by
+                                            <span class="score" id="score_{{ submission.id }}">{{ submission.upvotes }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
                                             <span class="age" title="2022-03-23T23:36:00">
                                                 <a href="item?id={{ submission.id }}">{{ submission.age }}</a>
