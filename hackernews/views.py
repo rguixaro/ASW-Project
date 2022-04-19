@@ -125,14 +125,14 @@ def upvote(request, submission_id):
         #u = User.objects.get(username=request.user) #ARREGLAR! Treure?
         #u.id_submissions_upvotes.append(s.id)
 
-        u = DefaultUser.objects
+        u = User.objects.get(id=1) #fake ought to be the logged user
         u.id_submissions_upvotes.append(s.id)
 
         submissions_list = Submission.objects.order_by('-points')
         template = loader.get_template('news.html')
         context = {
             'submissions_list' : submissions_list,
-            'logged_user' : u
+            'user' : u,
         }
         return HttpResponse(template.render(context, request))
 

@@ -83,13 +83,14 @@
                                         <span class="rank">{{ forloop.counter }}. </span>
                                     </td>
                                     <td valign="top" class="votelinks">
+										{% if not submission.id in user.submissions_id_upvotes %}
                                             <a
                                                 id="up_{{ submission.id }}"
                                                 href="vote?id={{ submission.id }}&amp;how=up&amp;goto=news"
                                                 >
-												{% if not logged_user.id_submissions_upvotes. %} <!--ARREGLAR!!!!-->
-                                                <div class="votearrow" title="upvote">-</div
-                                            ></a>
+                                                <div class="votearrow" title="upvote">-</div>
+                                            </a>
+										{% endif %}
                                     </td>
                                     <td class="title">
     									<a
