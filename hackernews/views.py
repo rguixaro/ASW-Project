@@ -1,10 +1,10 @@
-from ast import Sub
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 
-from hackernews.models import Submission, User, Comment
 from .forms import SubmitForm
+from hackernews.models import Submission, User, Comment, Action
+from .forms import UserForm
 
 def submit(request):
     # if this is a POST request we need to process the form data
@@ -26,7 +26,7 @@ def submit(request):
 
 
 def news(request):
-    submissions_list = Submission.objects.order_by('-points')
+    submissions_list = set(Submission.objects.order_by('-upvotes'))
     user = User.objects.get(id=1) #fake ought to be the logged user
     template = loader.get_template('news.html')
     context = {
@@ -75,18 +75,43 @@ def newest(request):
 def user(request, username):
     u = User.objects.get(username=username)
     template = loader.get_template('user.html')
-    context = {
-        'user' : u,
-    }
-    return HttpResponse(template.render(context, request))
+    if request.user.is_authenticated:
+        print('logged-in')
+    else:
+        print('not logged-in')
 
-def favorites(request, username):
+    initialData = {'about': u.about,
+        'email': u.email,
+        'showdead': u.showdead,
+        'noprocrast': u.noprocrast,
+        'maxvisit': u.maxvisit,
+        'minaway': u.minaway,
+        'delay': u.delay}
+
+    #create user
+        #userForm = UserForm(request.POST)
+        #newUser = userForm.save()
+    #update user
+    if request.method == 'POST':
+        userForm = UserForm(request.POST or None, instance=u)
+        if userForm.is_valid():
+            userForm.save()
+    else:
+        userForm = UserForm(initial=initialData)
+
+    return HttpResponse(template.render({'user': u, 'form': userForm}, request))
+
+def upvotedSubmissions(request, username):
     u = User.objects.get(username=username)
-    template = loader.get_template('favorites.html')
-    context = {
-        'user' : u,
-    }
-    return HttpResponse(template.render(context, request))
+    upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
+    template = loader.get_template('upvoted.html')
+    return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
+
+def upvotedComments(request, username):
+    u = User.objects.get(username=username)
+    upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
+    template = loader.get_template('upvoted.html')
+    return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
 
 def threads(request, username):
     u = User.objects.get(username=username)

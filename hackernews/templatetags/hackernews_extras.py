@@ -17,17 +17,10 @@ def prev(value, arg):
     except:
         return None
 
-        
-@register.filter(name='yesterday')
-def yesterday():
-    print((datetime.now() - timedelta(1)).strftime('%Y-%m-%d'))
-    return (datetime.now() - timedelta(1)).strftime('%Y-%m-%d')
-    
 @register.simple_tag(name="yesterday")
 def current_time():
     return (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
 
 register.filter(next)
 register.filter(prev)
-register.filter(yesterday)
 register.tag(current_time)
