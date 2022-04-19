@@ -4,9 +4,26 @@ from django.shortcuts import render
 from django.template import loader
 
 from hackernews.models import Submission, User, Comment
+from .forms import SubmitForm
 
 def submit(request):
-    return render(request, "submit.html")
+    # if this is a POST request we need to process the form data
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = SubmitForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            newest()
+
+    # if a GET (or any other method) we'll create a blank form
+    else:
+        form = SubmitForm()
+
+    return render(request, "submit.html", {'form': form})
+
 
 def news(request):
     submissions_list = Submission.objects.order_by('-points')
