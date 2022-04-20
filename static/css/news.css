@@ -232,7 +232,7 @@ table.padtab td {
 	only screen and (min-device-pixel-ratio: 2) {
 	.votearrow {
 		background-size: 10px;
-		background-image: url("grayarrow2x.gif");
+		background-image: url("/static/gif/grayarrow2x.gif");
 	}
 }
 
