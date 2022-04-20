@@ -21,7 +21,7 @@ class User(models.Model):
     delay = models.CharField(max_length=16)
     created_at_date = models.DateField(default=timezone.now)
     created_at_time = models.TimeField(default=timezone.now)
-    id_submissions_upvotes = [] # treure?
+    #id_submissions_upvotes = []  treure?
 
     def age(self):
         today = date.today()

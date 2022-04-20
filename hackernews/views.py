@@ -12,9 +12,11 @@ def submit(request):
 def news(request):
     submissions_list = set(Submission.objects.order_by('-upvotes'))
     user = User.objects.get(id=1) #fake ought to be the logged user
+    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
+        'upvotes' : upvotes,
         'title' : '',
         'user' : user
     }

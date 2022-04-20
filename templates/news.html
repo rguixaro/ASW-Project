@@ -83,7 +83,7 @@
                                         <span class="rank">{{ forloop.counter }}. </span>
                                     </td>
                                     <td valign="top" class="votelinks">
-										{% if not submission in Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION) %}
+										{% if not submission in upvotes %}					
                                             <a
                                                 id="up_{{ submission.id }}"
                                                 href="vote/{{ submission.id }}"
@@ -113,6 +113,11 @@
                                             <span class="age" title="2022-03-23T23:36:00">
                                                 <a href="item/{{ submission.id }}">{{ submission.age }}</a>
                                             </span>|
+
+											{% if submission in upvotes %}
+											<a id="un_{{ submission.id }}" class="clicky" href="vote/{{ submission.id }}">unvote</a> |
+											{% endif %}
+
                                             <a href="hide?id={{ submission.id }}&amp;goto=news">hide</a>|
                                             <a href="item/{{ submission.id }}">{{ submission.comment_set.count }}&nbsp;comments</a>
                                         </td>
