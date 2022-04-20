@@ -163,9 +163,12 @@ def upvote(request, submission_id):
 
 def comments(request, submission_id):
     s = Submission.objects.get(id=submission_id)
-    
+    c = Comment.objects.filter(submission=s)
+    user = User.objects.get(id=1) #fake ought to be the logged user
+
     template = loader.get_template('comment.html')
     context = {
-        'submission' : s,
+        'comments_list' : c,
+        'user' : user
     }
     return HttpResponse(template.render(context, request))
