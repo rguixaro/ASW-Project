@@ -58,10 +58,13 @@
 								</td>
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
+										{% if request.user.is_authenticated %}
 										<a id="me" href="{{user.username}}">{{user.username}}</a>
 										<span id="karma">({{user.karma}})</span> |
 										<a id="logout" href="logout">logout</a>
+										{% else %}
 										<a href="login">login</a>
+										{% endif %}
 									</span>
 								</td>
 							</tr>
@@ -79,12 +82,14 @@
                                         <span class="rank">{{ forloop.counter }}. </span>
                                     </td>
                                     <td valign="top" class="votelinks">
+										{% if not submission in upvotes %}					
                                             <a
-                                                id="up_30784939"
-                                                href="vote?id=30784939&amp;how=up&amp;goto=news"
+                                                id="up_{{ submission.id }}"
+                                                href="vote/{{ submission.id }}"
                                                 >
-                                                <div class="votearrow" title="upvote">-</div
-                                            ></a>
+                                                <div class="votearrow" title="upvote">-</div>
+                                            </a>
+										{% endif %}
                                     </td>
                                     <td class="title">
     									<a
@@ -102,13 +107,18 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <td class="subtext">
-                                            <span class="score" id="score_30784939">{{ submission.upvotes.count }} points </span> by
+                                            <span class="score" id="score_{{ submission.id }}">{{ submission.upvotes.count }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
-                                            <span class="age" title="{{ submission.posted_at_date }} {{ submission.posted_at_time }}">
-                                                <a href="item?id=30784939">{{ submission.age }}</a>
+                                            <span class="age" title="2022-03-23T23:36:00">
+                                                <a href="item/{{ submission.id }}">{{ submission.age }}</a>
                                             </span>|
-                                            <a href="hide?id=30784939&amp;goto=news">hide</a>|
-                                            <a href="{% url 'detailedSubmission' user.username submission.title %}">{{ submission.comment_set.count }}&nbsp;comments</a>
+
+											{% if submission in upvotes %}
+											<a id="un_{{ submission.id }}" class="clicky" href="vote/{{ submission.id }}">unvote</a> |
+											{% endif %}
+
+                                            <a href="hide?id={{ submission.id }}&amp;goto=news">hide</a>|
+                                            <a href="item/{{ submission.id }}">{{ submission.comment_set.count }}&nbsp;comments</a>
                                         </td>
                                     </tr>
                                 <tr class="spacer" style="height: 5px"></tr>

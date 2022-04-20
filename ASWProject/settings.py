@@ -70,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.contrib.auth.context_processors.auth',
             ],
         },
     },
@@ -155,3 +156,23 @@ SITE_ID = 3
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+ALLOWED_HOSTS = []
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = ['https://aswprojectdjango.herokuapp.com']
+
+CORS_REPLACE_HTTPS_REFERER = True
+
+CSRF_COOKIE_DOMAIN = 'herokuapp.com'
+
+CORS_ORIGIN_WHITELIST = (
+    'https://aswprojectdjango.herokuapp.com/',
+    'aswprojectdjango.herokuapp.com',
+    'herokuapp.com',
+)
