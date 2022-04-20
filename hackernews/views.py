@@ -1,28 +1,29 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
-from django.contrib import auth
-from django.contrib.auth.models import User as UserDjango
+from django.contrib.auth.decorators import login_required
 
-from .forms import SubmitForm
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
 
-def currentUser():
-    username = auth.get_user().username()
-
+@login_required(login_url='/login/')
 def submit(request):
     if request.method == 'POST':
         title = request.POST['title']
+        if title == "":
+            return HttpResponse("Title no pot ser buit")
         url = request.POST['url']
         text = request.POST['text']
         author = User.objects.get(id=1) #fake ought to be the logged user
 
         if url != "":
             newSubmission = Submission(title=title, url=url, author=author)
-        else:
+        elif text != "":
             newSubmission = Submission(title=title, text=text, type="text", author=author)
+        else:
+            return HttpResponse("URL i Text no pot ser buit")
         newSubmission.save()
+        return HttpResponseRedirect('/')
 
     return render(request, "submit.html")
 
