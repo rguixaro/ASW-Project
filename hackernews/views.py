@@ -1,6 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
+from django.shortcuts import redirect
 
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
@@ -128,13 +129,27 @@ def upvote(request, submission_id):
         u = User.objects.get(id=1) #fake ought to be the logged user
         u.id_submissions_upvotes.append(s.id)
 
-        submissions_list = Submission.objects.order_by('-upvotes')
-        template = loader.get_template('news.html') #Fer un redirect to /news?
-        context = {
-            'submissions_list' : submissions_list,
-            'user' : u,
-        }
-        return HttpResponse(template.render(context, request))
+        #news(request)
+
+
+        #submissions_list = Submission.objects.order_by('-upvotes')
+        #template = loader.get_template('news.html') #Fer un redirect to /news?
+        #context = {
+        #    'submissions_list' : submissions_list,
+        #    'user' : u,
+        #}
+
+        
+        current_url = request.path
+        
+        if current_url[0:5] == '/news':
+            return redirect('/news')
+
+        elif current_url[0:7] == '/newest':
+            return redirect('/newest')
+
+        else: return redirect('/')
+        
 
 def comments(request, submission_id):
     s = Submission.objects.get(id=submission_id)

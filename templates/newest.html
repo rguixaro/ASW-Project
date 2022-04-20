@@ -66,8 +66,8 @@
                                     </td>
                                     <td valign="top" class="votelinks">
                                             <a
-                                                id="up_30784939"
-                                                href="vote?id=30784939&amp;how=up&amp;goto=news"
+                                                id="up_{{ submission.id }}"
+                                                href="vote/{{ submission.id }}"
                                                 >
                                                 <div class="votearrow" title="upvote">-</div
                                             ></a>
@@ -88,13 +88,13 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <td class="subtext">
-                                            <span class="score" id="score_30784939">{{ submission.points }} points </span> by
+                                            <span class="score" id="score_{{ submission.id }}">{{ submission.points }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
                                             <span class="age" title="2022-03-23T23:36:00">
-                                                <a href="item?id=30784939">{{ submission.age }}</a>
+                                                <a href="item?id={{ submission.id }}">{{ submission.age }}</a>
                                             </span>|
-                                            <a href="hide?id=30784939&amp;goto=news">hide</a>|
-                                            <a href="item?id=30784939">{{ submission.comments }}&nbsp;comments</a>
+                                            <a href="hide?id={{ submission.id }}">hide</a>|
+                                            <a href="item?id={{ submission.id }}">{{ submission.comments }}&nbsp;comments</a>
                                         </td>
                                     </tr>
                                 <tr class="spacer" style="height: 5px"></tr>
