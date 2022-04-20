@@ -1,28 +1,30 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
+from django.contrib import auth
+from django.contrib.auth.models import User as UserDjango
 
 from .forms import SubmitForm
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
 
+def currentUser():
+    username = auth.get_user().username()
+
 def submit(request):
-    # if this is a POST request we need to process the form data
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = SubmitForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            newest()
+        title = request.POST['title']
+        url = request.POST['url']
+        text = request.POST['text']
+        author = User.objects.get(id=1) #fake ought to be the logged user
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = SubmitForm()
+        if url != "":
+            newSubmission = Submission(title=title, url=url, author=author)
+        else:
+            newSubmission = Submission(title=title, text=text, type="text", author=author)
+        newSubmission.save()
 
-    return render(request, "submit.html", {'form': form})
+    return render(request, "submit.html")
 
 
 def news(request):
