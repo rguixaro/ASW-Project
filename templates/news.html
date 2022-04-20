@@ -92,8 +92,8 @@
 										{% endif %}
                                     </td>
                                     <td class="title">
-										{% if submission.type='url' %}
-    									<a
+										{% if submission.type == {{ 'url' }} %}
+										<a
 										    href="{{ submission.url }}"
 										    class="titlelink"
 										    >{{ submission.title }}</a
