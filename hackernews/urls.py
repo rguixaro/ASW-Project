@@ -17,7 +17,7 @@ urlpatterns = [
     path('vote/<submission_id>', views.upvote, name='upvote'),
     path('news/vote/<submission_id>', views.upvote, name='upvote'),
     path('newest/vote/<submission_id>', views.upvote, name='upvote'),
-    path('item/?id=<submission_id>', views.comments, name='comments'),
+    path('item/<submission_id>', views.comments, name='comments'),
     path('<username>/', views.user, name='user'),
     path('<username>/submissions', views.newsUser, name='submissions'),
     path('<username>/threads', views.threads, name='threads'),

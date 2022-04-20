@@ -111,10 +111,10 @@
                                             <span class="score" id="score_{{ submission.id }}">{{ submission.upvotes.count }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
                                             <span class="age" title="2022-03-23T23:36:00">
-                                                <a href="item?id={{ submission.id }}">{{ submission.age }}</a>
+                                                <a href="item/{{ submission.id }}">{{ submission.age }}</a>
                                             </span>|
                                             <a href="hide?id={{ submission.id }}&amp;goto=news">hide</a>|
-                                            <a href="item?id={{ submission.id }}">{{ submission.comments }}&nbsp;comments</a>
+                                            <a href="item/{{ submission.id }}">{{ submission.comments }}&nbsp;comments</a>
                                         </td>
                                     </tr>
                                 <tr class="spacer" style="height: 5px"></tr>

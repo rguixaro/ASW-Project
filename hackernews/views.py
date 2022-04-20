@@ -129,6 +129,10 @@ def upvote(request, submission_id):
         u = User.objects.get(id=1) #fake ought to be the logged user
         u.id_submissions_upvotes.append(s.id)
 
+        #upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
+
+        
+
         #news(request)
 
 
@@ -153,6 +157,7 @@ def upvote(request, submission_id):
 
 def comments(request, submission_id):
     s = Submission.objects.get(id=submission_id)
+    
     template = loader.get_template('comment.html')
     context = {
         'submission' : s,
