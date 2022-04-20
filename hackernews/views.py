@@ -131,7 +131,7 @@ def upvote(request, submission_id):
 
         #upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
 
-        
+        #s.upvotes += 1;
 
         #news(request)
 
