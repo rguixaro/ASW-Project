@@ -103,7 +103,7 @@
 											    ><span class="sitestr">{{ submission.url_domain }}</span></a
 										    >)
 									    </span>
-										{% if submission.type='url' %}
+										{% else %}
 										<a
 										    href="{% url 'submission' user.username submission.id %}"
 										    class="titlelink"
