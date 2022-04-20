@@ -135,9 +135,9 @@ def threads(request, username):
     }
     return HttpResponse(template.render(context, request))
 
-def detailedSubmission(request, username, submission_id):
+def detailedSubmission(request, username):
     u = User.objects.get(username=username)
-    s = Submission.objects.get(id=submission_id)
+    s = Submission.objects.get(id=1)
     comments_list = Comment.objects.filter(submission=s)
     template = loader.get_template('detailedSubmission.html')
     context = {
