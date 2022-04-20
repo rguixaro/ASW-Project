@@ -108,7 +108,7 @@
                                     <tr>
                                         <td colspan="2"></td>
                                         <td class="subtext">
-                                            <span class="score" id="score_{{ submission.id }}">{{ submission.upvotes }} points </span> by
+                                            <span class="score" id="score_{{ submission.id }}">{{ submission.upvotes.count }} points </span> by
 											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
                                             <span class="age" title="2022-03-23T23:36:00">
                                                 <a href="item?id={{ submission.id }}">{{ submission.age }}</a>
