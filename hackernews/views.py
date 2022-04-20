@@ -138,3 +138,6 @@ def ask(request):
     }
     return HttpResponse(template.render(context, request))
 
+def login(request):
+    return render(request, "login.html")
+
