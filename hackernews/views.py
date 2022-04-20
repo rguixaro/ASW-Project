@@ -14,10 +14,14 @@ def submit(request):
             return HttpResponse("Title no pot ser buit")
         url = request.POST['url']
         text = request.POST['text']
-        author = User.objects.get(id=1) #fake ought to be the logged user
+        author = User.objects.get(username=request.user.username)
 
         if url != "":
-            newSubmission = Submission(title=title, url=url, author=author)
+            if Submission.objects.filter(url=url).exists():
+                # redirect a la pagina de la submission existent
+                return HttpResponseRedirect('/')
+            else:
+                newSubmission = Submission(title=title, url=url, author=author)
         elif text != "":
             newSubmission = Submission(title=title, text=text, type="text", author=author)
         else:
