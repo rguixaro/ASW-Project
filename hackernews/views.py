@@ -111,7 +111,7 @@ def detailedSubmission(request, username, title):
     u = User.objects.get(username=username)
     submission = Submission.objects.filter(title=title)
     comments_list = Comment.objects.filter(submission=submission)
-    template = loader.get_template('submission.html')
+    template = loader.get_template('detailedSubmission.html')
     context = {
         'user' : u,
         'submission' : submission,
