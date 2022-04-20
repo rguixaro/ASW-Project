@@ -99,7 +99,7 @@
                                                 <a href="item?id=30784939">{{ submission.age }}</a>
                                             </span>|
                                             <a href="hide?id=30784939&amp;goto=news">hide</a>|
-                                            <a href="{% url 'detailedSubmission' user.username submission %}">{{ submission.comments }}&nbsp;comments</a>
+                                            <a href="{% url 'detailedSubmission' user.username submission.title %}">{{ submission.comments }}&nbsp;comments</a>
                                         </td>
                                     </tr>
                                 <tr class="spacer" style="height: 5px"></tr>
