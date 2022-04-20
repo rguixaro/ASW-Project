@@ -1,8 +1,13 @@
-from django.urls import path
+from django.urls import path, include
+from django.views.generic import TemplateView
+from django.contrib.auth.views import LogoutView
 
 from . import views
 
 urlpatterns = [
+    path('login', TemplateView.as_view(template_name="login.html")),
+    path('accounts/', include('allauth.urls')),
+    path('logout', LogoutView.as_view()),
     path('', views.news, name='main'),
     path('submit/', views.submit, name='submit'),
     path('newswelcome/', views.newsWelcome, name='newsWelcome'),
