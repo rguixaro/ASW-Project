@@ -31,7 +31,7 @@ SECRET_KEY = 'django-insecure-atnao@x&*58bk(xi39mfs5r%sxcyl7n@-ynkfq@cr6&aj8n)mn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['aswprojectdjango.herokuapp.com']
+ALLOWED_HOSTS = ['aswprojectdjango.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -90,11 +90,14 @@ WSGI_APPLICATION = 'ASWProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd4lq9fpsuggo6l',
+        'HOST': 'ec2-44-199-143-43.compute-1.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'ppajddwmbmodeu',
+        'PASSWORD': '1f67ad3e1a383aafb2cab90f1450a59a7b1189318509ba372364403fe456b0cc'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
