@@ -38,6 +38,7 @@
 										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
 										<a href="{% url 'newest' %}">new</a> |
                     					<a href="{% url 'threads' user.username %}">threads</a> |
+										{% yesterday as the_time %}
 										<a href="{% url 'newsDate' the_time %}">past</a> |
 										<a href="{% url 'newest' %}">comments</a> |
 										<a href="{% url 'ask' %}">ask</a> |
