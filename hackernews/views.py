@@ -2,7 +2,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 from django.contrib.auth.decorators import login_required
-
+from django.shortcuts import redirect
+from hackernews.models import Submission, User, Comment, Action
+from .forms import UserForm
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
 
@@ -35,9 +37,11 @@ def submit(request):
 def news(request):
     submissions_list = set(Submission.objects.order_by('-upvotes'))
     user = User.objects.get(id=1) #fake ought to be the logged user
+    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
+        'upvotes' : upvotes,
         'title' : '',
         'user' : user
     }
@@ -138,3 +142,31 @@ def ask(request):
     }
     return HttpResponse(template.render(context, request))
 
+def upvote(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    u = User.objects.get(id=1) #fake ought to be the logged user
+
+    s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=u)
+
+    current_url = request.path
+        
+    if current_url[0:5] == '/news':
+        return redirect('/news')
+
+    elif current_url[0:7] == '/newest':
+        return redirect('/newest')
+
+    else: return redirect('/')
+        
+
+def comments(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    c = Comment.objects.filter(submission=s)
+    user = User.objects.get(id=1) #fake ought to be the logged user
+
+    template = loader.get_template('comment.html')
+    context = {
+        'comments_list' : c,
+        'user' : user
+    }
+    return HttpResponse(template.render(context, request))
