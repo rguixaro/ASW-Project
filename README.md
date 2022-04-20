@@ -13,3 +13,5 @@ Students:
 Framework: Django (Python)
 
 Taiga: https://tree.taiga.io/project/pauantonio-asw-project/
+
+Heroku: https://aswprojectdjango.herokuapp.com/
