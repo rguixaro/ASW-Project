@@ -1,6 +1,5 @@
 from dataclasses import field
 from django import forms
-from matplotlib import widgets
 from .models import User
 from django.forms import ModelForm
 
