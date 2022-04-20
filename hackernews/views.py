@@ -135,8 +135,8 @@ def threads(request, username):
     }
     return HttpResponse(template.render(context, request))
 
-def detailedSubmission(request, username, submission_id):
-    u = User.objects.get(username=username)
+def detailedSubmission(request, submission_id):
+    u = User.objects.get(id=1) #fake ought to be the logged user
     s = Submission.objects.get(id=submission_id)
     comments_list = Comment.objects.filter(submission=s)
     template = loader.get_template('submission.html')
