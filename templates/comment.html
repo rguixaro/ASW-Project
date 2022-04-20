@@ -46,7 +46,7 @@
 							</span>
 							<a class="togg clicky" id="{{ comment.comment_id }}" n="{{ comment.descendant_count }}" href="javascript:void(0)">[-]</a>	
 							{% if idx == 0 %}
-							<span class="onstory"> | on: <a href="item?id=30983269">{{ comment.submission.title }}</a> </span>
+							<span class="onstory"> | on: <a href="{% url 'detailedSubmission' comment.author comment.submission.id %}">{{ comment.submission.title }}</a> </span>
 							{% endif %}
 						</span>
 					</div>

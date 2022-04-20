@@ -93,8 +93,8 @@ class Comment(MPTTModel):
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     upvotes = GenericRelation(Action)
 
-    class Meta:
-        ordering = ('-posted_at_date', '-posted_at_time')
+class Meta:
+    ordering = ('-posted_at_date', '-posted_at_time')
 
     def _str_(self):
         return self.comment_id

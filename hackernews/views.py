@@ -107,8 +107,20 @@ def threads(request, username):
     }
     return HttpResponse(template.render(context, request))
 
+def submission(request, username, submid):
+    u = User.objects.get(username=username)
+    s = Submission.objects.get(id=submid)
+    comments_list = Comment.objects.filter(submission = s)
+    template = loader.get_template('submission.html')
+    context = {
+        'user' : u,
+        'submission' : s,
+        'comments_list' : comments_list,
+    }
+    return HttpResponse(template.render(context, request))
+
 def ask(request):
-    submissions_list = Submission.objects.get(type="ask")
+    submissions_list = Submission.objects.filter(type="ask")
     template = loader.get_template('ask.html')
     context = {
         'submissions_list': submissions_list,
