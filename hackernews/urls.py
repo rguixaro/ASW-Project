@@ -28,6 +28,6 @@ urlpatterns = [
     path('<username>/threads', views.threads, name='threads'),
     path('<username>/upvoted', views.upvotedSubmissions, name='upvotedSubmissions'),
     path('<username>/upvoted&comments', views.upvotedComments, name='upvotedComments'),
-    path('itemsubmission', views.detailedSubmission, name='detailedSubmission'),
+    path('<username>/itemm', views.detailedSubmission, name='detailedSubmission'),
 
 ]
