@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
+
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
 
@@ -149,7 +150,7 @@ def upvote(request, submission_id):
     s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=u)
 
     current_url = request.path
-        
+
     if current_url[0:5] == '/news':
         return redirect('/news')
 
@@ -157,7 +158,7 @@ def upvote(request, submission_id):
         return redirect('/newest')
 
     else: return redirect('/')
-        
+
 
 def comments(request, submission_id):
     s = Submission.objects.get(id=submission_id)
@@ -170,3 +171,8 @@ def comments(request, submission_id):
         'user' : user
     }
     return HttpResponse(template.render(context, request))
+
+
+def login(request):
+    return render(request, "login.html")
+
