@@ -35,11 +35,16 @@
 								</td>
 								<td style="line-height: 12pt; height: 10px">
 									<span class="pagetop">
-										<b class="hnname"><a href="../news">Hacker News</a></b>
-										<a href="../newest">new</a> | <a href="../front">past</a> |
-										<a href="../newcomments">comments</a> | <a href="../ask">ask</a> |
-										<a href="../show">show</a> | <a href="../jobs">jobs</a> |
-										<a href= "../submit" >submit</a>
+										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
+										<a href="{% url 'newest' %}">new</a> |
+                    					<a href="{% url 'threads' user.username %}">threads</a> |
+										{% yesterday as the_time %}
+										<a href="{% url 'newsDate' the_time %}">past</a> |
+										<a href="{% url 'newest' %}">comments</a> |
+										<a href="{% url 'ask' %}">ask</a> |
+										<a href="{% url 'newest' %}">show</a> |
+										<a href="{% url 'newest' %}">jobs</a> |
+										<a href="{% url 'submit' %}">submit</a>
 									</span>
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
@@ -67,24 +72,40 @@
                                         </a>
                                     </center>
                                 </td>
+								{% if submission.type='url' %}
                                 <td class="title">
-                                    <a href="item?id=31026659" class="titlelink">{{submission.title}}</a>
+                                    <a href="{{ submission.url }}"
+									   class="titlelink">
+										{{ submission.title }}
+									</a>
+									<span class="sitebit comhead">
+										(<a href="https://www.{{ submission.url }}">
+										<span class="sitestr">{{ submission.url_domain }}
+										</span>
+										</a>)
+									</span>
                                 </td>
+								{% else %}
+								<td class="title">
+                                    <a href="{% url 'submission' user.username submission.id %}"
+									   class="titlelink">
+										{{ submission.title }}
+									</a>
+                                </td>
+								{% endif %}
                             </tr>
                             <tr>
-                                <td colspan="2"></td>
-                                <td class="subtext">
-                                    <span class="score" id="score_31026659">{{submission.points}} points</span> by
-                                    <a href="{% url 'user' submission.author %}" class="hnuser">{{submission.author}}</a>
-                                    <span class="age" title="2022-04-14T13:26:38">
-                                        <a href="item?id=31026659">{{submission.age}}</a>
-                                    </span>
-                                    <span id="unv_31026659"></span>
-                                    <a href="hide?id=31026659&amp;goto=item%3Fid%3D31026659">hide</a>
-                                    <a href="https://hn.algolia.com/?query=Ask%20HN%3A%20Why%20did%20HN%20just%20go%20down%3F&amp;type=story&amp;dateRange=all&amp;sort=byDate&amp;storyText=false&amp;prefix&amp;page=0" class="hnpast">past</a>
-                                    <a href="fave?id=31026659&amp;auth=b292a61be04fcce0d54dc565455de2a892ff0156">favorite</a>
-                                    <a href="item?id=31026659">{{submission.comments}}&nbsp;comments</a>
-                                </td>
+								<td colspan="2"></td>
+								<td class="subtext">
+									<span class="score" id="score_30784939">{{ submission.upvotes.count }} points </span> by
+									<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
+									<span class="age" title="{{ submission.posted_at_date }} {{ submission.posted_at_time }}">
+										<a href="item?id=30784939">{{ submission.age }}</a>
+									</span>|
+									<a href="hide?id=30784939&amp;goto=news">hide</a>|
+									<a href="{% url 'user' submission.author %}">favorite</a>|
+									<a href="{% url 'detailedSubmission' submission.author submission.id %}">{{ submission.comment_set.count }}&nbsp;comments</a>
+								</td>
                             </tr>
                             <tr style="height:2px"></tr>
                             <tr>
