@@ -83,7 +83,7 @@
                                         <span class="rank">{{ forloop.counter }}. </span>
                                     </td>
                                     <td valign="top" class="votelinks">
-										{% if not submission.id in user.submissions_id_upvotes %}
+										{% if not submission in Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION) %}
                                             <a
                                                 id="up_{{ submission.id }}"
                                                 href="vote/{{ submission.id }}"

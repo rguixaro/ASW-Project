@@ -127,7 +127,11 @@ def upvote(request, submission_id):
         #u.id_submissions_upvotes.append(s.id)
 
         u = User.objects.get(id=1) #fake ought to be the logged user
-        u.id_submissions_upvotes.append(s.id)
+        #u.id_submissions_upvotes.append(s.id)
+
+        #Action.objects.create(content_object=submissionx, action_type=Action.UPVOTE_SUBMISSION, user=request.user)
+
+        s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=u)
 
         #upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
 

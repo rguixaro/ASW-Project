@@ -125,7 +125,6 @@ class Comment(MPTTModel):
         return result
 
 
-    
 
 
 #Change your models (in models.py).
