@@ -139,7 +139,7 @@ def detailedSubmission(request, username):
     u = User.objects.get(username=username)
     s = Submission.objects.get(id=1)
     comments_list = Comment.objects.filter(submission=s)
-    template = loader.get_template('detailedSubmission.html')
+    template = loader.get_template('submission.html')
     context = {
         'user' : u,
         'submission' : s,
