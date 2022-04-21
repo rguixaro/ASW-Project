@@ -92,7 +92,8 @@
 										{% endif %}
                                     </td>
                                     <td class="title">
-    									<a
+										{% if "url" == submission.type %}
+										<a
 										    href="{{ submission.url }}"
 										    class="titlelink"
 										    >{{ submission.title }}</a
@@ -102,6 +103,13 @@
 											    ><span class="sitestr">{{ submission.url_domain }}</span></a
 										    >)
 									    </span>
+										{% else %}
+										<a
+										    href="{% url 'detailedSubmission' submission.id %}"
+										    class="titlelink"
+										    >{{ submission.title }}</a
+									    >
+										{% endif %}
 								    </td>
                                     </tr>
                                     <tr>
@@ -118,7 +126,7 @@
 											{% endif %}
 
                                             <a href="hide?id={{ submission.id }}&amp;goto=news">hide</a>|
-                                            <a href="item/{{ submission.id }}">{{ submission.comment_set.count }}&nbsp;comments</a>
+                                            <a href="{% url 'detailedSubmission' submission.id %}">{{ submission.comment_set.count }}&nbsp;comments</a>
                                         </td>
                                     </tr>
                                 <tr class="spacer" style="height: 5px"></tr>
