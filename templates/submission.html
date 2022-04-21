@@ -112,7 +112,7 @@
 									</span>|
 									<a href="hide?id=30784939&amp;goto=news">hide</a>|
 									<a href="{% url 'user' submission.author %}">favorite</a>|
-									<a href="{% url 'detailedSubmission' submission.id %}"">{{ submission.comment_set.count }}&nbsp;comments</a>
+									<a href="{% url 'detailedSubmission' submission.id %}">{{ submission.comment_set.count }}&nbsp;comments</a>
 								</td>
                             </tr>
                             <tr style="height:2px"></tr>
@@ -126,7 +126,7 @@
                             <tr>
                                 <td colspan="2"></td>
                                 <td>
-                                    <form method="post" action="comment">
+                                    <form method="post" action="{% url 'detailedSubmission' submission.id %}">
 										{% csrf_token %}
                                         <input type="hidden" name="parent" value="{{submission.id}}">
                                         <input type="hidden" name="goto" value="item?id={{submission.id}}">
@@ -134,7 +134,7 @@
                                         <textarea name="text" rows="8" cols="80"></textarea>
                                         <br>
                                         <br>
-                                        <input type="submit" value="add comment"></form>
+                                        <input type="submit" value="submitComment"></form>
                                 </td>
                             </tr>
                             </tbody>
