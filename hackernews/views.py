@@ -10,6 +10,21 @@ from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
 
 @login_required(login_url='/login/')
+def submitComment(request):
+    if request.method == 'POST':
+        text = request.POST['text']
+        if text == "":
+            return HttpResponse("Text no pot ser buit")
+        id = request.POST['parent']
+        s = Submission.objects.get(id=id)
+        author = User.objects.get(username=request.user.username)
+        newComment = Comment(text=text, author=author, submission=s)
+        newComment.save()
+        return HttpResponseRedirect('/')
+
+    return render(request, "submission.html")
+
+@login_required(login_url='/login/')
 def submit(request):
     if request.method == 'POST':
         title = request.POST['title']
@@ -37,7 +52,6 @@ def submit(request):
         return HttpResponseRedirect('/')
 
     return render(request, "submit.html")
-
 
 def news(request):
     submissions_list = set(Submission.objects.order_by('-upvotes'))
