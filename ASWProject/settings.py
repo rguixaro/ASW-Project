@@ -183,6 +183,8 @@ CORS_REPLACE_HTTPS_REFERER = True
 
 CSRF_COOKIE_DOMAIN = 'herokuapp.com'
 
+CSRF_COOKIE_SECURE = False
+
 CORS_ORIGIN_WHITELIST = (
     'https://aswprojectdjango.herokuapp.com/',
     'aswprojectdjango.herokuapp.com',
