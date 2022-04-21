@@ -88,12 +88,12 @@
 								</tr>
 							</table>
 						{% endif %}
-						{% if  user.is_authenticated %} <!-- REMOVE NOT should check real user -->
+						{% if  request.user.is_authenticated and request.user.id == user.id %} <!-- REMOVE NOT should check real user -->
 							<!-- {% if user.id == user.id %} user (model) and user(logged) -->
 								<form class="profileform" method="post" action="{% url 'user' user.username %}">
 									{% csrf_token %}
 									<input type="hidden" name="id" value="{{ user.id }}" />
-									<input type="hidden" name="hmac" value="9c904cf55a56feeb4f21639b7dcfb5805e0a8485" />
+									<input type="hidden" name="hmac" vaSlue="9c904cf55a56feeb4f21639b7dcfb5805e0a8485" />
 									<table border="0">
 										<tr class="athing">
 											<td valign="top">user:</td>
