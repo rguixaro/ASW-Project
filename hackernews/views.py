@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
+from django.views.decorators.csrf import csrf_exempt
 
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
@@ -206,6 +207,7 @@ def comments(request, submission_id):
     return HttpResponse(template.render(context, request))
 
 
+@csrf_exempt
 def login(request):
     return render(request, "login.html")
 
