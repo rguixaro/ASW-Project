@@ -188,9 +188,3 @@ CORS_ORIGIN_WHITELIST = (
     'aswprojectdjango.herokuapp.com',
     'herokuapp.com',
 )
-
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
-    )
-}
