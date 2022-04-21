@@ -5,7 +5,7 @@
 		<meta name="referrer" content="origin" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="{% static "css/news.css" %}" />
-		<link rel="shortcut icon" href="/staticfiles/gif/y18.gif" />
+		<link rel="shortcut icon" href="/static/gif/y18.gif" />
 		<link rel="alternate" type="application/rss+xml" title="RSS" href="rss" />
 		<title>Hacker News</title>
 	</head>
@@ -59,7 +59,7 @@
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
 										{% if request.user.is_authenticated %}
-										<a id="me" href="{{user.username}}">{{user.username}}</a>
+										<a id="me" href="{% url 'user' user.username %}">{{user.username}}</a>
 										<span id="karma">({{user.karma}})</span> |
 										<a id="logout" href="logout">logout</a>
 										{% else %}
