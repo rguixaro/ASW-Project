@@ -22,7 +22,9 @@ def submit(request):
         if url != "":
             if Submission.objects.filter(url=url).exists():
                 # redirect a la pagina de la submission existent
-                return HttpResponseRedirect('/')
+                id = Submission.objects.get(url=url).id
+                return detailedSubmission(request, id)
+                #return HttpResponseRedirect('/')
             else:
                 newSubmission = Submission(title=title, url=url, author=author)
         elif text != "":
