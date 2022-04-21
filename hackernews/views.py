@@ -21,17 +21,19 @@ def submit(request):
 
         if url != "":
             if Submission.objects.filter(url=url).exists():
-                # redirect a la pagina de la submission existent
                 id = Submission.objects.get(url=url).id
                 return detailedSubmission(request, id)
-                #return HttpResponseRedirect('/')
             else:
                 newSubmission = Submission(title=title, url=url, author=author)
+                newSubmission.save()
+                if text != "":
+                    newComment = Comment(author=author, submission=newSubmission, text=text)
+                    newComment.save()
         elif text != "":
             newSubmission = Submission(title=title, text=text, type="ask", author=author)
+            newSubmission.save()
         else:
             return HttpResponse("URL i Text no pot ser buit")
-        newSubmission.save()
         return HttpResponseRedirect('/')
 
     return render(request, "submit.html")
@@ -157,6 +159,7 @@ def ask(request):
     }
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 def upvote(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     u = User.objects.get(id=1) #fake ought to be the logged user
