@@ -26,7 +26,7 @@ def submit(request):
             else:
                 newSubmission = Submission(title=title, url=url, author=author)
         elif text != "":
-            newSubmission = Submission(title=title, text=text, type="text", author=author)
+            newSubmission = Submission(title=title, text=text, type="ask", author=author)
         else:
             return HttpResponse("URL i Text no pot ser buit")
         newSubmission.save()
