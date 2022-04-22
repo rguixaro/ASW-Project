@@ -50,8 +50,8 @@ def submit(request):
 
 def news(request):
     submissions_list = set(Submission.objects.order_by('-upvotes'))
-    user = User.objects.get(id=1) #fake ought to be the logged user
-    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT)
+    user = User.objects.get(username=request.user.username)
+    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
@@ -177,7 +177,7 @@ def ask(request):
 @login_required(login_url='/login/')
 def upvote(request, submission_id):
     s = Submission.objects.get(id=submission_id)
-    u = User.objects.get(id=1) #fake ought to be the logged user
+    u = User.objects.get(username=request.user.username)
 
     s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=u)
 
