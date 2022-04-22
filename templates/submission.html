@@ -128,9 +128,8 @@
                                 <td>
                                     <form method="post" action="{% url 'detailedSubmission' submission.id %}">
 										{% csrf_token %}
+                                        <input type="hidden" name="submission" value="{{submission.id}}">
                                         <input type="hidden" name="parent" value="{{submission.id}}">
-                                        <input type="hidden" name="goto" value="item?id={{submission.id}}">
-                                        <input type="hidden" name="hmac" value="32d70634c8d9a5b29f8cac0b6ae067f79bfa9136">
                                         <textarea name="text" rows="8" cols="80"></textarea>
                                         <br>
                                         <br>
