@@ -156,7 +156,7 @@ def detailedSubmission(request, submission_id):
     if request.method == 'POST':
         submitComment(request)
 
-    u = User.objects.get(id=1) #fake ought to be the logged user
+    u = User.objects.get(username=request.user.username)
     s = Submission.objects.get(id=submission_id)
     comments_list = Comment.objects.filter(submission=s)
     template = loader.get_template('submission.html')
@@ -204,6 +204,15 @@ def comments(request, submission_id):
         'user' : user
     }
     return HttpResponse(template.render(context, request))
+
+
+def upvoteComment(request, comment_id):
+    c = Comment.objects.get(id = comment_id)
+    u = User.objects.get(username=request.user.username)
+
+    c.upvotes.create(action_type=Action.UPVOTE_COMMENT, user=u)
+
+    return redirect('item/'+str(c.submission.id))
 
 
 def login(request):

@@ -1,14 +1,14 @@
 {% load static %} 
 {% load hackernews_extras %}
 {% for comment in comments_list %}
-<tr class="athing comtr" id={{ comment.comment_id }}>
+<tr class="athing comtr" id={{ comment.id }}>
 	<td>
 		<table border="0">
 			<tr>
 				<td class="ind" indent="0"><img src="s.gif" height="1" width={{ idx }} /></td>
 				<td valign="top" class="votelinks">
 					<center>
-						<a id="up_30983757" class="clicky" href="vote?id=30983757&amp;how=up&amp;auth=a6b1&amp;goto=threads%3Fid%3Dchizhik-pyzhik#30983757">
+						<a id="up_{{ comment.id }}" class="clicky" href="vote_comment/{{ comment.id }}">
 							<div class="votearrow" title="upvote"></div>
 						</a>
 					</center>
@@ -35,16 +35,16 @@
 								{% endif %}
 								{% if not forloop.first %}
 								{% with comments_list|prev:forloop.counter0 as prev %}
-								| <a href="#{{ prev.comment_id }}" class="clicky" aria-hidden="true">prev</a>
+								| <a href="#{{ prev.id }}" class="clicky" aria-hidden="true">prev</a>
 								{% endwith %}
 								{% endif %}
 								{% if not forloop.last %}
 								{% with comments_list|next:forloop.counter0 as next %}
-								| <a href="#{{ next.comment_id }}" class="clicky" aria-hidden="true">next</a> 
+								| <a href="#{{ next.id }}" class="clicky" aria-hidden="true">next</a> 
 								{% endwith %}
 								{% endif %}
 							</span>
-							<a class="togg clicky" id="{{ comment.comment_id }}" n="{{ comment.descendant_count }}" href="javascript:void(0)">[-]</a>	
+							<a class="togg clicky" id="{{ comment.id }}" n="{{ comment.descendant_count }}" href="javascript:void(0)">[-]</a>	
 							{% if idx == 0 %}
 							<span class="onstory"> | on: <a href="{% url 'detailedSubmission' comment.submission.id %}">{{ comment.submission.title }}</a> </span>
 							{% endif %}
