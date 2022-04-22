@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.db.models import Count
 
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
@@ -49,8 +50,8 @@ def submit(request):
     return render(request, "submit.html")
 
 def news(request):
-    submissions_list = set(Submission.objects.order_by('-upvotes'))
-    user = User.objects.get(username=request.user.username)
+    submissions_list = Submission.objects.annotate(count=Count('upvotes')).order_by('-count')
+    user = User.objects.get(id=1) #fake ought to be the logged user
     upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
     template = loader.get_template('news.html')
     context = {
@@ -168,7 +169,7 @@ def detailedSubmission(request, submission_id):
 
 def ask(request):
     submissions_list = Submission.objects.filter(type="ask")
-    template = loader.get_template('ask.html')
+    template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
     }
