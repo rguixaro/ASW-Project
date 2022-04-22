@@ -1,5 +1,6 @@
 {% load static %}
 {% load hackernews_extras %}
+{% load account %}
 <html lang="en" op="news">
 	<head>
 		<meta name="referrer" content="origin" />
@@ -82,12 +83,12 @@
                                         <span class="rank">{{ forloop.counter }}. </span>
                                     </td>
                                     <td valign="top" class="votelinks">
-										{% if not submission in upvotes %}					
+										{% if not submission.id in upvotesId %}					
                                             <a
                                                 id="up_{{ submission.id }}"
                                                 href="vote/{{ submission.id }}"
                                                 >
-                                                <div class="votearrow" title="upvote">-</div>
+                                                <div class="votearrow" title="upvote"></div>
                                             </a>
 										{% endif %}
                                     </td>

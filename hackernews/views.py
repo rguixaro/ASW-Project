@@ -55,11 +55,12 @@ def submit(request):
 def news(request):
     submissions_list = set(Submission.objects.order_by('-upvotes'))
     user = User.objects.get(id=1) #fake ought to be the logged user
-    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT)
+    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
-        'upvotes' : upvotes,
+        'upvotesId' : upvotesId,
         'title' : '',
         'user' : user
     }
@@ -207,5 +208,6 @@ def comments(request, submission_id):
 
 
 def login(request):
+    print("hola")
     return render(request, "login.html")
 
