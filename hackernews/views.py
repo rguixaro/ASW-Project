@@ -45,7 +45,7 @@ def submit(request):
             newSubmission.save()
         else:
             return HttpResponse("URL i Text no pot ser buit")
-        return HttpResponseRedirect('/newest')
+        return HttpResponseRedirect('/news')
 
     return render(request, "submit.html")
 
