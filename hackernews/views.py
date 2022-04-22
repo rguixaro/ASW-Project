@@ -20,9 +20,8 @@ def submitComment(request):
         author = User.objects.get(username=request.user.username)
         newComment = Comment(text=text, author=author, submission=s)
         newComment.save()
-        return HttpResponseRedirect('/')
 
-    return render(request, "submission.html")
+    #return render(request, "submission.html")
 
 @login_required(login_url='/login/')
 def submit(request):
@@ -154,6 +153,9 @@ def threads(request, username):
     return HttpResponse(template.render(context, request))
 
 def detailedSubmission(request, submission_id):
+    if request.method == 'POST':
+        submitComment(request)
+
     u = User.objects.get(id=1) #fake ought to be the logged user
     s = Submission.objects.get(id=submission_id)
     comments_list = Comment.objects.filter(submission=s)
