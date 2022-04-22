@@ -3,8 +3,6 @@ from django.shortcuts import render
 from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from hackernews.models import Submission, User, Comment, Action
-from .forms import UserForm
 
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
@@ -20,8 +18,6 @@ def submitComment(request):
         author = User.objects.get(username=request.user.username)
         newComment = Comment(text=text, author=author, submission=s)
         newComment.save()
-
-    #return render(request, "submission.html")
 
 @login_required(login_url='/login/')
 def submit(request):
@@ -48,7 +44,7 @@ def submit(request):
             newSubmission.save()
         else:
             return HttpResponse("URL i Text no pot ser buit")
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect('/newest')
 
     return render(request, "submit.html")
 
@@ -130,18 +126,21 @@ def user(request, username):
 
     return HttpResponse(template.render({'user': u, 'form': userForm}, request))
 
+@login_required(login_url='/login/')
 def upvotedSubmissions(request, username):
     u = User.objects.get(username=username)
     upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
     template = loader.get_template('upvoted.html')
     return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
 
+@login_required(login_url='/login/')
 def upvotedComments(request, username):
     u = User.objects.get(username=username)
     upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
     template = loader.get_template('upvoted.html')
     return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
 
+@login_required(login_url='/login/')
 def threads(request, username):
     u = User.objects.get(username=username)
     comments_list = Comment.objects.filter(author = u)
