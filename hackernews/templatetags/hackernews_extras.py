@@ -21,6 +21,11 @@ def prev(value, arg):
 def current_time():
     return (datetime.now() - timedelta(1)).strftime("%Y-%m-%d")
 
+@register.filter(name="isUpvoted")
+def isUpvoted(upvotedIds, submission_id ):
+    return submission_id in upvotedIds
+
 register.filter(next)
 register.filter(prev)
 register.tag(current_time)
+register.filter(isUpvoted)
