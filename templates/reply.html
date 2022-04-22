@@ -67,7 +67,7 @@
                                                     {% if forloop.counter == 0 %}
                                                     | <a href="{% url 'detailedSubmission' comment.submission.id %}">parent</a>
                                                     {% else %}
-                                                    | <a href="{% url 'reply' comment.parent.id %}" class="clicky" aria-hidden="true">parent</a>
+                                                    | <a href="{% url 'reply' comment.id %}" class="clicky" aria-hidden="true">parent</a>
                                                     {% endif %}
                                                     | <a href="{% url 'detailedSubmission' comment.submission.id %}"> context</a>
                                                 </span>
@@ -89,10 +89,10 @@
                     <tr>
                         <td colspan="2"></td>
                         <td>
-                            <form method="post" action="comment">
+                            <form method="post" action="{% url 'reply' comment.id %}">
                                 {% csrf_token %}
-                                <input type="hidden" name="parent" value="{{comment}}">
-                                <input type="hidden" name="submission" value="{{ comment.submission }}">
+                                <input type="hidden" name="parent" value="{{comment.id}}">
+                                <input type="hidden" name="submission" value="{{ comment.submission.id }}">
                                 <textarea name="text" rows="8" cols="80" autofocus="true"></textarea>
                                 <br>
                                 <br>

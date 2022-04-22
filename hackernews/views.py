@@ -34,8 +34,6 @@ def submitReply(request):
         newComment = Comment(text=text, author=author, submission=s, parent=p)
         newComment.save()
 
-    #return render(request, "submission.html")
-
 @login_required(login_url='/login/')
 def submit(request):
     if request.method == 'POST':
@@ -186,7 +184,7 @@ def detailedSubmission(request, submission_id):
 
 def reply(request, comment_id):
     if request.method == 'POST':
-        submitComment(request)
+        submitReply(request)
 
     u = User.objects.get(id=1) #fake ought to be the logged user
     c = Comment.objects.get(id=comment_id)
