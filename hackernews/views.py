@@ -33,6 +33,8 @@ def submitReply(request):
         author = User.objects.get(username=request.user.username)
         newComment = Comment(text=text, author=author, submission=s, parent=p)
         newComment.save()
+        request.method = 'GET'
+        return detailedSubmission(request, id)
 
 @login_required(login_url='/login/')
 def submit(request):
@@ -172,7 +174,7 @@ def detailedSubmission(request, submission_id):
 
     u = User.objects.get(id=1) #fake ought to be the logged user
     s = Submission.objects.get(id=submission_id)
-    comments_list = Comment.objects.filter(submission=s)
+    comments_list = Comment.objects.filter(submission=s, parent=None)
     template = loader.get_template('submission.html')
     context = {
         'user' : u,
