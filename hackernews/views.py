@@ -194,6 +194,25 @@ def upvote(request, submission_id):
     else: return redirect('/')
 
 
+@login_required(login_url='/login/')
+def unvote(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    u = User.objects.get(username=request.user.username)
+
+    s.upvotes.erase(action_type=Action.UPVOTE_SUBMISSION, user=u)
+    s.upvotes.create(action_type=Action.UNVOTE_SUBMISSION, user=u)
+
+    current_url = request.path
+
+    if current_url[0:5] == '/news':
+        return redirect('/news')
+
+    elif current_url[0:7] == '/newest':
+        return redirect('/newest')
+
+    else: return redirect('/')
+
+
 def comments(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     c = Comment.objects.filter(submission=s)
