@@ -77,6 +77,7 @@ class Submission(models.Model):
     posted_at_date = models.DateField(default=timezone.now)
     posted_at_time = models.TimeField(default=timezone.now)
     upvotes = GenericRelation(Action)
+    unvotes = GenericRelation(Action)
     
     def url_domain(self):
         return (self.url).replace('https://www.','')

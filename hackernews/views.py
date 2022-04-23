@@ -67,7 +67,7 @@ def submit(request):
 
 def news(request):
     submissions_list = Submission.objects.annotate(count=Count('upvotes')).order_by('-count')
-    user = User.objects.get(id=1) #fake ought to be the logged user
+    user = User.objects.get(id=request.user.id)
     upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
     upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
@@ -84,7 +84,7 @@ def newsWelcome(request):
 
 def newsUser(request, username):
     submissions_list = Submission.objects.filter(author__authUser__username=username)
-    user = User.objects.get(id=request.user.id) #fake ought to be the logged user
+    user = User.objects.get(id=request.user.id)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
@@ -95,7 +95,7 @@ def newsUser(request, username):
 
 def newsDate(request, date):
     submissions_list = Submission.objects.filter(posted_at_date=date)
-    user = User.objects.get(id=1) #fake ought to be the logged user
+    user = User.objects.get(id=request.user.id)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
@@ -106,7 +106,7 @@ def newsDate(request, date):
 
 def newest(request):
     submissions_list = Submission.objects.order_by('-posted_at_date', '-posted_at_time')
-    user = User.objects.get(id=1) #fake ought to be the logged user
+    user = User.objects.get(id=request.user.id)
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
@@ -189,7 +189,7 @@ def reply(request, comment_id):
     if request.method == 'POST':
         submitReply(request)
 
-    u = User.objects.get(id=1) #fake ought to be the logged user
+    u = User.objects.get(id=request.user.id)
     c = Comment.objects.get(id=comment_id)
     template = loader.get_template('reply.html')
     context = {
@@ -212,6 +212,9 @@ def ask(request):
 def upvote(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     user = User.objects.get(id=request.user.id)
+
+    if s.unvotes.filter(action_type=Action.UNVOTE_SUBMISSION, user=user).exists():
+        s.unvotes.filter(action_type=Action.UNVOTE_SUBMISSION, user=user).delete()
     if not s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).exists():
         s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=user)
 
@@ -230,27 +233,11 @@ def upvote(request, submission_id):
 def unvote(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     user = User.objects.get(id=request.user.id)
-    if Action.objects.filter(action_type=Action.UPVOTE_SUBMISSION, user=user, content_object=s).exists():
-        Action.objects.get(action_type=Action.UPVOTE_SUBMISSION, user=user, content_object=submission_id).delete()
 
-    current_url = request.path
-
-    if current_url[0:5] == '/news':
-        return redirect('/news')
-
-    elif current_url[0:7] == '/newest':
-        return redirect('/newest')
-
-    else: return redirect('/')
-
-
-@login_required(login_url='/login/')
-def unvote(request, submission_id):
-    s = Submission.objects.get(id=submission_id)
-    u = User.objects.get(username=request.user.username)
-
-    s.upvotes.erase(action_type=Action.UPVOTE_SUBMISSION, user=u)
-    s.upvotes.create(action_type=Action.UNVOTE_SUBMISSION, user=u)
+    if s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).exists():
+        s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).delete()
+    if not s.unvotes.filter(action_type=Action.UNVOTE_SUBMISSION, user=user).exists():
+        s.unvotes.create(action_type=Action.UNVOTE_SUBMISSION, user=user)
 
     current_url = request.path
 
@@ -266,7 +253,7 @@ def unvote(request, submission_id):
 def comments(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     c = Comment.objects.filter(submission=s)
-    user = User.objects.get(id=1) #fake ought to be the logged user
+    user = User.objects.get(id=request.user.id)
 
     template = loader.get_template('comment.html')
     context = {
