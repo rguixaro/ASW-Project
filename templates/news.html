@@ -45,6 +45,8 @@
 										{% if request.user.is_authenticated %}
                     					<a href="{% url 'threads' user.username %}">threads</a> |
 										{% endif %}
+										{% yesterday as the_time %}
+										<a href="{% url 'newsDate' the_time %}">past</a> |
 										<a href="{% url 'ask' %}">ask</a> |
 										<a href="{% url 'submit' %}">submit</a>
 										{% if title %}
