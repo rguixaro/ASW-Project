@@ -69,14 +69,16 @@ def news(request):
     submissions_list = Submission.objects.annotate(count=Count('upvotes')).order_by('-count')
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
-        upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+        unvotesId = set(Submission.objects.values_list("id", flat=True)) - set(Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values_list("id", flat=True))
     else:
-        upvotes = Action.objects.none()
-    upvotesId = upvotes.values_list("id", flat=True)
+        unvotes = Action.objects.none()
+    
+    
+    print(unvotesId)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
-        'upvotesId' : upvotesId,
+        'unvotesId' : unvotesId,
         'title' : '',
     }
     return HttpResponse(template.render(context, request))
