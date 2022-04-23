@@ -173,7 +173,7 @@ def detailedSubmission(request, submission_id):
 
     u = User.objects.get(id=request.user.id) #fake ought to be the logged user
     s = Submission.objects.get(id=submission_id)
-    comments_list = Comment.objects.filter(submission=s, parent=None)
+    comments_list = Comment.objects.filter(submission=s)
     template = loader.get_template('submission.html')
     context = {
         'user' : u,
@@ -183,6 +183,7 @@ def detailedSubmission(request, submission_id):
 
     return HttpResponse(template.render(context, request))
 
+@login_required(login_url='/login/')
 def reply(request, comment_id):
     if request.method == 'POST':
         submitReply(request)
