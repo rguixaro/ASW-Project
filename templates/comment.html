@@ -1,6 +1,7 @@
 {% load static %} 
 {% load hackernews_extras %}
 {% for comment in comments_list %}
+{% if not comment.parent in comments_list %}
 <tr class="athing comtr" id={{ comment.comment_id }}>
 	<td>
 		<table border="0">
@@ -69,4 +70,5 @@
 		{% include "comment.html" with comments_list=comment.children.all idx=idx|add:20 %}
 	</td>
 </tr>
+{% endif %}
 {% endfor %}
