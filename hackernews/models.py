@@ -39,10 +39,13 @@ class User(models.Model):
         days = today.day - self.created_at_date.day
         result = str(days)+" days ago"
         if(days == 0):
-            time = datetime.now()
+            time = timezone.now()
             hours = time.hour - self.created_at_time.hour
             result = str(hours)+" hours ago"
-        #check days, weeks, etc...
+            if (hours == 0):
+                time = timezone.now()
+                hours = time.minute - self.created_at_time.minute
+                result = str(hours) + " minutes ago"
         return result
 
     def __str__(self):
@@ -85,12 +88,15 @@ class Submission(models.Model):
     def age(self):
         today = date.today()
         days = today.day - self.posted_at_date.day
-        result = str(days)+" days ago"
-        if(days == 0):
-            time = datetime.now()
+        result = str(days) + " days ago"
+        if (days == 0):
+            time = timezone.now()
             hours = time.hour - self.posted_at_time.hour
-            result = str(hours)+" hours ago"
-        #check days, weeks, etc...
+            result = str(hours) + " hours ago"
+            if (hours == 0):
+                time = timezone.now()
+                hours = time.minute - self.posted_at_time.minute
+                result = str(hours) + " minutes ago"
         return result
 
     def __str__(self):
@@ -128,10 +134,13 @@ class Meta:
         days = today.day - self.posted_at_date.day
         result = str(days)+" days ago"
         if(days == 0):
-            time = datetime.now()
+            time = timezone.now()
             hours = time.hour - self.posted_at_time.hour
             result = str(hours)+" hours ago"
-        #check days, weeks, etc...
+            if (hours == 0):
+                time = timezone.now()
+                hours = time.minute - self.posted_at_time.minute
+                result = str(hours) + " minutes ago"
         return result
 
 
