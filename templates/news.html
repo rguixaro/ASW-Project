@@ -1,5 +1,6 @@
 {% load static %}
 {% load hackernews_extras %}
+{% load account %}
 <html lang="en" op="news">
 	<head>
 		<meta name="referrer" content="origin" />
@@ -75,60 +76,59 @@
 					<td>
                         <table border="0" cellpadding="0" cellspacing="0" class="itemlist">
                             {% if submissions_list %}
-                            <tr>
                                 {% for submission in submissions_list %}
-                                    <td align="right" valign="top" class="title">
-                                        <span class="rank">{{ forloop.counter }}. </span>
-                                    </td>
-                                    <td valign="top" class="votelinks">
-										{% if not submission in upvotes %}
-                                            <a
-                                                id="up_{{ submission.id }}"
-                                                href="vote/{{ submission.id }}"
-                                                >
-                                                <div class="votearrow" title="upvote">-</div>
-                                            </a>
-										{% endif %}
-                                    </td>
-                                    <td class="title">
-										{% if "url" == submission.type %}
-										<a
-										    href="{{ submission.url }}"
-										    class="titlelink"
-										    >{{ submission.title }}</a
-									    >
-									    <span class="sitebit comhead">
-    										(<a href="{{ submission.url }}"
-											    ><span class="sitestr">{{ submission.url_domain }}</span></a
-										    >)
-									    </span>
-										{% else %}
-										<a
-										    href="{% url 'detailedSubmission' submission.id %}"
-										    class="titlelink"
-										    >{{ submission.title }}</a
-									    >
-										{% endif %}
-								    </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2"></td>
-                                        <td class="subtext">
-                                            <span class="score" id="score_{{ submission.id }}">{{ submission.upvotes.count }} points </span> by
-											<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
-                                            <span class="age">
-                                                <a href="item/{{ submission.id }}">{{ submission.age }}</a>
-                                            </span>|
-
-											{% if submission in upvotes %}
-											<a id="un_{{ submission.id }}" class="clicky" href="vote/{{ submission.id }}">unvote</a> |
+									{% with upvotesId|isUpvoted:submission.id as alreadyUpvoted %}
+										<td align="right" valign="top" class="title">
+											<span class="rank">{{ forloop.counter }}. </span>
+										</td>
+										<td valign="top" class="votelinks">
+											{% if not alreadyUpvoted %}
+												<a
+													id="up_{{ submission.id }}"
+													href="vote/{{ submission.id }}"
+													>
+													<div class="votearrow" title="upvote"></div>
+												</a>
 											{% endif %}
+										</td>
+										<td class="title">
+											{% if "url" == submission.type %}
+											<a
+												href="{{ submission.url }}"
+												class="titlelink"
+												>{{ submission.title }}</a
+											>
+											<span class="sitebit comhead">
+												(<a href="{{ submission.url }}"
+													><span class="sitestr">{{ submission.url_domain }}</span></a
+												>)
+											</span>
+											{% else %}
+											<a
+												href="{% url 'detailedSubmission' submission.id %}"
+												class="titlelink"
+												>{{ submission.title }}</a
+											>
+											{% endif %}
+										</td>
+										<tr>
+											<td colspan="2"></td>
+											<td class="subtext">
+												<span class="score" id="score_{{ submission.id }}">{{ submission.upvotes.count }} points </span> by
+												<a href="{% url 'user' submission.author %}">{{ submission.author }}</a>
+												<span class="age" title="2022-03-23T23:36:00">
+													<a href="item/{{ submission.id }}">{{ submission.age }}</a>
+												</span>|
+												{% if alreadyUpvoted %}
+												<a id="un_{{ submission.id }}" class="clicky" href="unvote/{{ submission.id }}">unvote</a> |
+												{% endif %}
 
-                                            <a href="hide?id={{ submission.id }}&amp;goto=news">hide</a>|
-                                            <a href="{% url 'detailedSubmission' submission.id %}">{{ submission.comment_set.count }}&nbsp;comments</a>
-                                        </td>
-                                    </tr>
-                                <tr class="spacer" style="height: 5px"></tr>
+												<a href="hide?id={{ submission.id }}&amp;goto=news">hide</a>|
+												<a href="{% url 'detailedSubmission' submission.id %}">{{ submission.comment_set.count }}&nbsp;comments</a>
+											</td>
+										</tr>
+										<tr class="spacer" style="height: 5px"></tr>
+									{% endwith %}
                                 {% endfor %}
                             </tr>
                             {% else %}

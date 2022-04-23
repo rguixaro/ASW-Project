@@ -15,8 +15,10 @@ urlpatterns = [
     path('news/', views.news, name='news'),
     path('news/<date>', views.newsDate, name='newsDate'),
     path('vote/<submission_id>', views.upvote, name='upvote'),
+    path('unvote/<submission_id>', views.unvote, name='unvote'),
     path('news/vote/<submission_id>', views.upvote, name='upvote'),
-    path('newest/vote/<submission_id>', views.upvote, name='upvote'),
+    path('news/unvote/<submission_id>', views.unvote, name='unvote'),
+    path('newest/vote/<submission_id>', views.upvote, name='upvote'), #treure?
     path('item/<submission_id>/comments', views.comments, name='comments'),
     path('<username>/', views.user, name='user'),
     path('<username>/submissions', views.newsUser, name='submissions'),
@@ -25,5 +27,4 @@ urlpatterns = [
     path('<username>/upvoted&comments', views.upvotedComments, name='upvotedComments'),
     path('item/<submission_id>', views.detailedSubmission, name='detailedSubmission'),
     path('reply/<comment_id>', views.reply, name='reply'),
-    path('unvote/<submission_id>', views.unvote, name='unvote'),
 ]
