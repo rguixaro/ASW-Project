@@ -67,15 +67,17 @@ def submit(request):
 
 def news(request):
     submissions_list = Submission.objects.annotate(count=Count('upvotes')).order_by('-count')
-    user = User.objects.get(id=request.user.id)
-    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    else:
+        upvotes = Action.objects.none()
     upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
         'upvotesId' : upvotesId,
         'title' : '',
-        'user' : user
     }
     return HttpResponse(template.render(context, request))
 
@@ -84,34 +86,49 @@ def newsWelcome(request):
 
 def newsUser(request, username):
     submissions_list = Submission.objects.filter(author__authUser__username=username)
-    user = User.objects.get(id=request.user.id)
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    else:
+        upvotes = Action.objects.none()
+    upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
         'title' : username+"'s submissions",
-        'user' : user
+        'upvotesId' : upvotesId
     }
     return HttpResponse(template.render(context, request))
 
 def newsDate(request, date):
     submissions_list = Submission.objects.filter(posted_at_date=date)
-    user = User.objects.get(id=request.user.id)
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    else:
+        upvotes = Action.objects.none()
+    upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
         'title' : date,
-        'user' : user
+        'upvotesId' : upvotesId,
     }
     return HttpResponse(template.render(context, request))
 
 def newest(request):
     submissions_list = Submission.objects.order_by('-posted_at_date', '-posted_at_time')
-    user = User.objects.get(id=request.user.id)
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    else:
+        upvotes = Action.objects.none()
+    upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
         'title' : '',
-        'user' : user
+        'upvotesId' : upvotesId,
     }
     return HttpResponse(template.render(context, request))
 
@@ -172,12 +189,10 @@ def detailedSubmission(request, submission_id):
     if request.method == 'POST':
         submitComment(request)
 
-    u = User.objects.get(id=request.user.id) #fake ought to be the logged user
     s = Submission.objects.get(id=submission_id)
     comments_list = Comment.objects.filter(submission=s)
     template = loader.get_template('submission.html')
     context = {
-        'user' : u,
         'submission' : s,
         'comments_list' : comments_list,
     }
@@ -200,11 +215,16 @@ def reply(request, comment_id):
 
 def ask(request):
     submissions_list = Submission.objects.filter(type="ask")
-    user = User.objects.get(id=request.user.id)
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
+    else:
+        upvotes = Action.objects.none()
+    upvotesId = upvotes.values_list("id", flat=True)
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
-        'user' : user,
+        'upvotesId' : upvotesId,
     }
     return HttpResponse(template.render(context, request))
 
