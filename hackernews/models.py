@@ -1,3 +1,4 @@
+from pyexpat import model
 from statistics import mode
 from django.db import models
 from django.utils import timezone
@@ -6,21 +7,32 @@ from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.auth.models import User as AuthUser
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 # Create your models here.
 
 class User(models.Model):
-    username = models.CharField(max_length=15)
+    authUser = models.OneToOneField(AuthUser, on_delete=models.CASCADE, null=True)
     karma = models.IntegerField(default=1)
     about = models.TextField(default="")
-    email = models.EmailField(max_length=60)
-    showdead = models.BooleanField()
-    noprocrast = models.BooleanField()
-    maxvisit = models.CharField(max_length=16) #integerField?
-    minaway = models.CharField(max_length=16)
-    delay = models.CharField(max_length=16)
+    showdead = models.BooleanField(default=False)
+    noprocrast = models.BooleanField(default=False)
+    maxvisit = models.CharField(max_length=16, default=0) #integerField?
+    minaway = models.CharField(max_length=16,default=0)
+    delay = models.CharField(max_length=16,default=0)
     created_at_date = models.DateField(default=timezone.now)
     created_at_time = models.TimeField(default=timezone.now)
+
+    @receiver(post_save, sender=AuthUser)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            User.objects.create(authUser = instance)
+
+    @receiver(post_save, sender=AuthUser)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.user.save()
 
     def age(self):
         today = date.today()
@@ -34,7 +46,7 @@ class User(models.Model):
         return result
 
     def __str__(self):
-        return self.username
+        return self.authUser.username
 
 class Action(models.Model):
     UPVOTE_SUBMISSION = 'US'

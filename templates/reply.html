@@ -58,7 +58,7 @@
                                     <td class="default">
                                         <div style="margin-top: 2px; margin-bottom: -10px">
                                             <span class="comhead">
-                                                <a href="{% url 'user' comment.author.username %}" class="hnuser">{{ comment.author.username }}</a>
+                                                <a href="{% url 'user' comment.author.authUser.username %}" class="hnuser">{{ comment.author.username }}</a>
                                                 <span class="age" title={{ comment.posted_at_date }}>
                                                     <a href="item?id=30983757">{{ comment.age }}</a>
                                                 </span>
