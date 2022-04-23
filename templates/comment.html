@@ -1,6 +1,7 @@
 {% load static %} 
 {% load hackernews_extras %}
 {% for comment in comments_list %}
+{% if not comment.parent in comments_list %}
 <tr class="athing comtr" id={{ comment.comment_id }}>
 	<td>
 		<table border="0">
@@ -58,7 +59,7 @@
 						<div class="reply">
 							<p>
 								<font size="1">
-									<u><a href="reply?id=30983757&amp;goto=threads%3Fid%3Dchizhik-pyzhik%2330983757">reply</a></u>
+									<u><a href="{% url 'reply' comment.id %}">reply</a></u>
 								</font>
 							</p>
 						</div>		
@@ -69,4 +70,5 @@
 		{% include "comment.html" with comments_list=comment.children.all idx=idx|add:20 %}
 	</td>
 </tr>
+{% endif %}
 {% endfor %}

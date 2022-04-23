@@ -26,5 +26,6 @@ urlpatterns = [
     path('<username>/upvoted', views.upvotedSubmissions, name='upvotedSubmissions'),
     path('<username>/upvoted&comments', views.upvotedComments, name='upvotedComments'),
     path('item/<submission_id>', views.detailedSubmission, name='detailedSubmission'),
+    path('reply/<comment_id>', views.reply, name='reply'),
 
 ]

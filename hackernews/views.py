@@ -21,6 +21,22 @@ def submitComment(request):
         newComment.save()
 
 @login_required(login_url='/login/')
+def submitReply(request):
+    if request.method == 'POST':
+        text = request.POST['text']
+        if text == "":
+            return HttpResponse("Text no pot ser buit")
+        id = request.POST['submission']
+        s = Submission.objects.get(id=id)
+        idc = request.POST['parent']
+        p = Comment.objects.get(id=idc)
+        author = User.objects.get(username=request.user.username)
+        newComment = Comment(text=text, author=author, submission=s, parent=p)
+        newComment.save()
+        request.method = 'GET'
+        return detailedSubmission(request, id)
+
+@login_required(login_url='/login/')
 def submit(request):
     if request.method == 'POST':
         title = request.POST['title']
@@ -165,6 +181,21 @@ def detailedSubmission(request, submission_id):
         'user' : u,
         'submission' : s,
         'comments_list' : comments_list,
+    }
+
+    return HttpResponse(template.render(context, request))
+
+@login_required(login_url='/login/')
+def reply(request, comment_id):
+    if request.method == 'POST':
+        submitReply(request)
+
+    u = User.objects.get(id=1) #fake ought to be the logged user
+    c = Comment.objects.get(id=comment_id)
+    template = loader.get_template('reply.html')
+    context = {
+        'user' : u,
+        'comment' : c,
     }
     return HttpResponse(template.render(context, request))
 
