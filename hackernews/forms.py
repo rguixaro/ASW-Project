@@ -9,10 +9,9 @@ class UserForm(ModelForm):
     
     class Meta:
         model = User
-        fields = ('about', 'email', 'showdead', 'noprocrast', 'maxvisit', 'minaway', 'delay')
+        fields = ('about','showdead', 'noprocrast', 'maxvisit', 'minaway', 'delay')
         widgets = {
             'about' : forms.Textarea(attrs={'cols':"60", 'rows':"5", 'wrap':"virtual"}),
-            'email' : forms.EmailInput(attrs={'size':"60"}),
             'maxvisit' : forms.TextInput(attrs={'size':'16'}),
             'minaway' : forms.TextInput(attrs={'size':'16'}),
             'delay' : forms.TextInput(attrs={'size':'16'}),

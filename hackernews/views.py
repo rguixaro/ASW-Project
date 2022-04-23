@@ -16,7 +16,7 @@ def submitComment(request):
             return HttpResponse("Text no pot ser buit")
         id = request.POST['parent']
         s = Submission.objects.get(id=id)
-        author = User.objects.get(username=request.user.username)
+        author = User.objects.get(id=request.user.id)
         newComment = Comment(text=text, author=author, submission=s)
         newComment.save()
 
@@ -30,7 +30,7 @@ def submitReply(request):
         s = Submission.objects.get(id=id)
         idc = request.POST['parent']
         p = Comment.objects.get(id=idc)
-        author = User.objects.get(username=request.user.username)
+        author = User.objects.get(id=request.user.id)
         newComment = Comment(text=text, author=author, submission=s, parent=p)
         newComment.save()
         request.method = 'GET'
@@ -44,7 +44,7 @@ def submit(request):
             return HttpResponse("Title no pot ser buit")
         url = request.POST['url']
         text = request.POST['text']
-        author = User.objects.get(username=request.user.username)
+        author = User.objects.get(id=request.user.id)
 
         if url != "":
             if Submission.objects.filter(url=url).exists():
@@ -82,8 +82,8 @@ def newsWelcome(request):
     return render(request, "newswelcome.html")
 
 def newsUser(request, username):
-    submissions_list = Submission.objects.filter(author__username=username)
-    user = User.objects.get(id=1) #fake ought to be the logged user
+    submissions_list = Submission.objects.filter(author__authUser__username=username)
+    user = User.objects.get(id=request.user.id) #fake ought to be the logged user
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
@@ -115,7 +115,7 @@ def newest(request):
     return HttpResponse(template.render(context, request))
 
 def user(request, username):
-    u = User.objects.get(username=username)
+    u = User.objects.get(authUser__username=username)
     template = loader.get_template('user.html')
     if request.user.is_authenticated:
         print('logged-in')
@@ -123,7 +123,6 @@ def user(request, username):
         print('not logged-in')
 
     initialData = {'about': u.about,
-        'email': u.email,
         'showdead': u.showdead,
         'noprocrast': u.noprocrast,
         'maxvisit': u.maxvisit,
@@ -145,21 +144,21 @@ def user(request, username):
 
 @login_required(login_url='/login/')
 def upvotedSubmissions(request, username):
-    u = User.objects.get(username=username)
-    upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_SUBMISSION)
+    user = User.objects.get(authUser__username=username)
+    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION)
     template = loader.get_template('upvoted.html')
-    return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
+    return HttpResponse(template.render({'user' : user,'upvotes' : upvotes}, request))
 
 @login_required(login_url='/login/')
 def upvotedComments(request, username):
-    u = User.objects.get(username=username)
-    upvotes = Action.objects.filter(user=u, action_type=Action.UPVOTE_COMMENT)
+    user = User.objects.get(authUser__username=username)
+    upvotes = Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT)
     template = loader.get_template('upvoted.html')
-    return HttpResponse(template.render({'user' : u,'upvotes' : upvotes}, request))
+    return HttpResponse(template.render({'user' : user,'upvotes' : upvotes}, request))
 
 @login_required(login_url='/login/')
 def threads(request, username):
-    u = User.objects.get(username=username)
+    u = User.objects.get(authUser__username=username)
     comments_list = Comment.objects.filter(author = u)
     template = loader.get_template('threads.html')
     context = {
@@ -172,7 +171,7 @@ def detailedSubmission(request, submission_id):
     if request.method == 'POST':
         submitComment(request)
 
-    u = User.objects.get(id=1) #fake ought to be the logged user
+    u = User.objects.get(id=request.user.id) #fake ought to be the logged user
     s = Submission.objects.get(id=submission_id)
     comments_list = Comment.objects.filter(submission=s)
     template = loader.get_template('submission.html')
@@ -200,18 +199,38 @@ def reply(request, comment_id):
 
 def ask(request):
     submissions_list = Submission.objects.filter(type="ask")
+    user = User.objects.get(id=request.user.id)
     template = loader.get_template('news.html')
     context = {
         'submissions_list': submissions_list,
+        'user' : user,
     }
     return HttpResponse(template.render(context, request))
 
 @login_required(login_url='/login/')
 def upvote(request, submission_id):
     s = Submission.objects.get(id=submission_id)
-    u = User.objects.get(username=request.user.username)
+    user = User.objects.get(id=request.user.id)
+    if not s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).exists():
+        s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=user)
 
-    s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=u)
+    current_url = request.path
+
+    if current_url[0:5] == '/news':
+        return redirect('/news')
+
+    elif current_url[0:7] == '/newest':
+        return redirect('/newest')
+
+    else: return redirect('/')
+
+
+@login_required(login_url='/login/')
+def unvote(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    user = User.objects.get(id=request.user.id)
+    if Action.objects.filter(action_type=Action.UPVOTE_SUBMISSION, user=user, content_object=s).exists():
+        Action.objects.get(action_type=Action.UPVOTE_SUBMISSION, user=user, content_object=submission_id).delete()
 
     current_url = request.path
 
