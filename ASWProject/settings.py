@@ -91,12 +91,14 @@ WSGI_APPLICATION = 'ASWProject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd8ftgs2jjuueul',
-        'HOST': 'ec2-44-196-223-128.compute-1.amazonaws.com',
-        'PORT': 5432,
-        'USER': 'hcaursgubuwztk',
-        'PASSWORD': '56fffa87f03ec7651270762f9b81ee04de6ebc6a8eb0a621812e7bf10e17a2a4'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'd8ftgs2jjuueul',
+        #'HOST': 'ec2-44-196-223-128.compute-1.amazonaws.com',
+        #'PORT': 5432,
+        #'USER': 'hcaursgubuwztk',
+        #'PASSWORD': '56fffa87f03ec7651270762f9b81ee04de6ebc6a8eb0a621812e7bf10e17a2a4'
     }
 }
 

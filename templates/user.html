@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" type="text/css" href="{% static 'css/news.css' %}" />
 		<link rel="shortcut icon" href="/static/gif/y18.gif" />
-		<title>Profile: {{ user.username }} | Hacker News</title>
+		<title>Profile: {{ user.authUser.username }} | Hacker News</title>
 	</head>
 	<body>
 		<center>
@@ -41,28 +41,24 @@
 									<span class="pagetop">
 										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
 										<a href="{% url 'newest' %}">new</a> |
-                    					<a href="{% url 'threads' user.username %}">threads</a> |
+                    					{% if request.user.is_authenticated %}
+                    					<a href="{% url 'threads' user.authUser.username %}">threads</a> |
+										{% endif %}
 										{% yesterday as the_time %}
 										<a href="{% url 'newsDate' the_time %}">past</a> |
-										<a href="{% url 'newcomments'}">comments</a> |
-										<a href="{% url 'ask'}">ask</a> |
-										<a href="{% url 'newest' %}">show</a> |
-										<a href="{% url 'newest' %}">jobs</a> |
+										<a href="{% url 'ask' %}">ask</a> |
 										<a href="{% url 'submit' %}">submit</a>
 									</span>
 								</td>
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
-										<a href="{% url 'user' user.username %}" class="hnuser"
-											>{{ user.username }}</a
-										>
-										<a id="me" href="user?id="></a>
-										(1) |
-										<a
-											id="logout"
-											href="logout?auth=51f8c506bb11bff38a0dd6629fb3db0521534dca&amp;goto=user%3Fid%3Divanosqui"
-											>logout</a
-										>
+										{% if request.user.is_authenticated %}
+											<a id="me" href="{% url 'user' request.user.username %}">{{request.user.username}}</a>
+											<span id="karma">({{user.karma}})</span> |
+											<a id="logout" href="{% url 'logout' %}">logout</a>
+										{% else %}
+											<a href="{% url 'login' %}">login</a>
+										{% endif %}
 									</span>
 								</td>
 							</tr>
@@ -72,7 +68,7 @@
 				<tr id="pagespace" title="Profile: {{ user.username }}" style="height: 10px"></tr>
 				<tr>
 					<td>
-						{% if not user.email %}
+						{% if not user.authUser.email %}
 							<table border="0" cellpadding="0" cellspacing="0">
 								<tr>
 									<td bgcolor="#ffffaa">
@@ -90,7 +86,7 @@
 						{% endif %}
 						{% if  request.user.is_authenticated and request.user.id == user.id %} <!-- REMOVE NOT should check real user -->
 							<!-- {% if user.id == user.id %} user (model) and user(logged) -->
-								<form class="profileform" method="post" action="{% url 'user' user.username %}">
+								<form class="profileform" method="post" action="{% url 'user' request.user.username %}">
 									{% csrf_token %}
 									<input type="hidden" name="id" value="{{ user.id }}" />
 									<input type="hidden" name="hmac" vaSlue="9c904cf55a56feeb4f21639b7dcfb5805e0a8485" />
@@ -98,8 +94,8 @@
 										<tr class="athing">
 											<td valign="top">user:</td>
 											<td timestamp="1649170369">
-												<a href="{% url 'user' user.username %}" class="hnuser">
-													<font color="#3c963c">{{ user.username }}</font>
+												<a href="{% url 'user' user.authUser.username %}" class="hnuser">
+													<font color="#3c963c">{{ user.authUser.username }}</font>
 												</a>
 											</td>
 										</tr>
@@ -119,11 +115,6 @@
 											<td valign="top">about:</td>
 											<td style="overflow: hidden;">
 												{{ form.about }}
-												<font size="-2">
-													<a href="formatdoc" tabindex="-1">
-														<font color="#afafaf">help</font>
-													</a>
-												</font>	
 											</td>
 										</tr>
 										<tr>
@@ -134,9 +125,7 @@
 										</tr>
 										<tr>
 											<td valign="top">email:</td>
-											<td>
-												{{ form.email }}
-											</td>
+											<td>{{ user.authUser.email }}</td>
 										</tr>
 										<tr>
 											<td valign="top">showdead:</td>
@@ -171,13 +160,7 @@
 										<tr>
 											<td></td>
 											<td>
-												<a href="changepw"><u>change password</u></a>
-											</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>
-												<a href="{% url 'submissions' user.username %}"
+												<a href="{% url 'submissions' request.user.username %}"
 													><u>submissions</u></a
 												>
 										</td>
@@ -185,7 +168,7 @@
 										<tr>
 											<td></td>
 											<td>
-												<a href="{% url 'threads' user.username %}"
+												<a href="{% url 'threads' request.user.username %}"
 													><u>comments</u></a
 												>
 											</td>
@@ -193,31 +176,13 @@
 										<tr>
 											<td></td>
 											<td>
-												<a href="hidden"><u>hidden</u></a>
-											</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>
-											<a href="{% url 'upvotedSubmissions' user.username %}">
+											<a href="{% url 'upvotedSubmissions' request.user.username %}">
 												<u>upvoted submissions</u>
 											</a> /
-											<a href="{% url 'upvotedComments' user.username %}">
+											<a href="{% url 'upvotedComments' request.user.username %}">
 												<u>comments</u>
 											</a>
 											&nbsp;<span style="font-style: italic;">(private)</span>
-											</td>
-										</tr>
-										<tr>
-											<td></td>
-											<td>
-												<a href="favorites?id=user">
-													<u>favorite submissions</u>
-												</a> /
-												<a href="favorites?id=user&amp;comments=t">
-													<u>comments</u>
-												</a>
-												&nbsp;<span style="font-style: italic;">(public)</span>
 											</td>
 										</tr>
 									</table>
@@ -230,8 +195,8 @@
 								<tr class="athing">
 									<td valign="top">user:</td>
 									<td timestamp="1649170369">
-										<a href="{% url 'user' user.username %}" class="hnuser">
-											<font color="#3c963c">{{ user.username }}</font>
+										<a href="{% url 'user' user.authUser.username %}" class="hnuser">
+											<font color="#3c963c">{{ user.authUser.username }}</font>
 										</a>
 									</td>
 								</tr>
@@ -258,7 +223,7 @@
 								<tr>
 									<td></td>
 									<td>
-										<a href="{% url 'submissions' user.username %}"
+										<a href="{% url 'submissions' user.authUser.username %}"
 											><u>submissions</u></a
 										>
 									</td>
@@ -266,16 +231,8 @@
 								<tr>
 									<td></td>
 									<td>
-										<a href="{% url 'threads' user.username %}"
+										<a href="{% url 'threads' user.authUser.username %}"
 											><u>comments</u></a
-										>
-									</td>
-								</tr>
-								<tr>
-									<td></td>
-									<td>
-										<a href="{% url 'threads' user.username %}"
-											><u>favorites</u></a
 										>
 									</td>
 								</tr>
