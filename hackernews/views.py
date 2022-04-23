@@ -211,7 +211,26 @@ def ask(request):
 def upvote(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     user = User.objects.get(id=request.user.id)
-    s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=user)
+    if not s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).exists():
+        s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=user)
+
+    current_url = request.path
+
+    if current_url[0:5] == '/news':
+        return redirect('/news')
+
+    elif current_url[0:7] == '/newest':
+        return redirect('/newest')
+
+    else: return redirect('/')
+
+
+@login_required(login_url='/login/')
+def unvote(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    user = User.objects.get(id=request.user.id)
+    if Action.objects.filter(action_type=Action.UPVOTE_SUBMISSION, user=user, content_object=s).exists():
+        Action.objects.get(action_type=Action.UPVOTE_SUBMISSION, user=user, content_object=submission_id).delete()
 
     current_url = request.path
 
