@@ -41,7 +41,7 @@
 									<span class="pagetop">
 										<b class="hnname"><a href="{% url 'news' %}">Hacker News</a></b>
 										<a href="{% url 'newest' %}">new</a> |
-                    					<a href="{% url 'threads' user.username %}">threads</a> |
+                    					<a href="{% url 'threads' request.user.username %}">threads</a> |
 										{% yesterday as the_time %}
 										<a href="{% url 'newsDate' the_time %}">past</a> |
 										<a href="{% url 'newcomments'}">comments</a> |
@@ -53,8 +53,8 @@
 								</td>
 								<td style="text-align: right; padding-right: 4px">
 									<span class="pagetop">
-										<a href="{% url 'user' user.username %}" class="hnuser"
-											>{{ user.username }}</a
+										<a href="{% url 'user' request.user.username %}" class="hnuser"
+											>{{ user.authUser.username }}</a
 										>
 										<a id="me" href="user?id="></a>
 										(1) |
@@ -90,7 +90,7 @@
 						{% endif %}
 						{% if  request.user.is_authenticated and request.user.id == user.id %} <!-- REMOVE NOT should check real user -->
 							<!-- {% if user.id == user.id %} user (model) and user(logged) -->
-								<form class="profileform" method="post" action="{% url 'user' user.username %}">
+								<form class="profileform" method="post" action="{% url 'user' request.user.username %}">
 									{% csrf_token %}
 									<input type="hidden" name="id" value="{{ user.id }}" />
 									<input type="hidden" name="hmac" vaSlue="9c904cf55a56feeb4f21639b7dcfb5805e0a8485" />
@@ -98,7 +98,7 @@
 										<tr class="athing">
 											<td valign="top">user:</td>
 											<td timestamp="1649170369">
-												<a href="{% url 'user' user.username %}" class="hnuser">
+												<a href="{% url 'user' request.user.username %}" class="hnuser">
 													<font color="#3c963c">{{ user.username }}</font>
 												</a>
 											</td>
@@ -134,9 +134,7 @@
 										</tr>
 										<tr>
 											<td valign="top">email:</td>
-											<td>
-												{{ form.email }}
-											</td>
+											<td>{{ user.authUser.email }}</td>
 										</tr>
 										<tr>
 											<td valign="top">showdead:</td>
@@ -177,7 +175,7 @@
 										<tr>
 											<td></td>
 											<td>
-												<a href="{% url 'submissions' user.username %}"
+												<a href="{% url 'submissions' request.user.username %}"
 													><u>submissions</u></a
 												>
 										</td>
@@ -185,7 +183,7 @@
 										<tr>
 											<td></td>
 											<td>
-												<a href="{% url 'threads' user.username %}"
+												<a href="{% url 'threads' request.user.username %}"
 													><u>comments</u></a
 												>
 											</td>
@@ -199,10 +197,10 @@
 										<tr>
 											<td></td>
 											<td>
-											<a href="{% url 'upvotedSubmissions' user.username %}">
+											<a href="{% url 'upvotedSubmissions' request.user.username %}">
 												<u>upvoted submissions</u>
 											</a> /
-											<a href="{% url 'upvotedComments' user.username %}">
+											<a href="{% url 'upvotedComments' request.user.username %}">
 												<u>comments</u>
 											</a>
 											&nbsp;<span style="font-style: italic;">(private)</span>
@@ -230,7 +228,7 @@
 								<tr class="athing">
 									<td valign="top">user:</td>
 									<td timestamp="1649170369">
-										<a href="{% url 'user' user.username %}" class="hnuser">
+										<a href="{% url 'user' user.authUser.username %}" class="hnuser">
 											<font color="#3c963c">{{ user.username }}</font>
 										</a>
 									</td>
@@ -258,7 +256,7 @@
 								<tr>
 									<td></td>
 									<td>
-										<a href="{% url 'submissions' user.username %}"
+										<a href="{% url 'submissions' user.authUser.username %}"
 											><u>submissions</u></a
 										>
 									</td>
@@ -266,7 +264,7 @@
 								<tr>
 									<td></td>
 									<td>
-										<a href="{% url 'threads' user.username %}"
+										<a href="{% url 'threads' user.authUser.username %}"
 											><u>comments</u></a
 										>
 									</td>
@@ -274,7 +272,7 @@
 								<tr>
 									<td></td>
 									<td>
-										<a href="{% url 'threads' user.username %}"
+										<a href="{% url 'threads' user.authUser.username %}"
 											><u>favorites</u></a
 										>
 									</td>
