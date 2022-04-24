@@ -60,11 +60,7 @@
 									<span class="pagetop">
 										{% if request.user.is_authenticated %}
 											<a id="me" href="{% url 'user' request.user.username %}">{{request.user.username}}</a>
-<<<<<<< HEAD
 											<span id="karma">({{user.karma}})</span> |
-=======
-											<span id="karma">({{request.user.user.karma}})</span> |
->>>>>>> 639d2696ec5daf59d6870907facbb11d14f6be42
 											<a id="logout" href="{% url 'logout' %}">logout</a>
 										{% else %}
 											<a href="{% url 'login' %}">login</a>
