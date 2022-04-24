@@ -71,10 +71,10 @@ def news(request):
         user = User.objects.get(id=request.user.id)
         unvotesId = set(Submission.objects.values_list("id", flat=True)) - set(Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values_list("id", flat=True))
     else:
-        unvotes = Action.objects.none()
+        unvotesId = Action.objects.none()
     
     
-    print(unvotesId)
+    #print(unvotesId)
     template = loader.get_template('news.html')
     context = {
         'submissions_list' : submissions_list,
@@ -286,6 +286,6 @@ def comments(request, submission_id):
 
 
 def login(request):
-    print("hola")
+    #print("hola")
     return render(request, "login.html")
 
