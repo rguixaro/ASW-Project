@@ -10,7 +10,8 @@ info:
     this case, you must **Authorize** your request by providing the api_key
     vaule you got when you created the tweet."
 servers:
-  - url: "https://aswprojectdjango.herokuapp.com/api/"
+  - url: "https://aswprojectdjango.herokuapp.com/api"
+  - url: "http://127.0.0.1:8000/api"
 paths:
   /{username}:
     get:
@@ -59,7 +60,38 @@ paths:
                 $ref: '#/components/schemas/ErrorResult'
               examples:
                 errorExample:
-                  $ref: '#/components/examples/error404'
+                  $ref: "#/components/examples/error404"
+  /{username}/submissions:
+    get:
+      tags:
+        - submissions
+      summary: Retrieves all submissions by user
+      operationId: submissionsByUser
+      parameters:
+        - name: username
+          in: path
+          description: username to get submissions
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            example: "pau"
+      responses:
+        200:
+          description: submissions Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmissionsByUser"
+        404:
+          description: "Error: Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResult"
+              examples:
+                errorExample:
+                  $ref: "#/components/examples/error404"
 components:
   schemas:
     User:
@@ -165,6 +197,8 @@ components:
         api_key:
           type: string
           example: "MjAyMC0wNC0xOCAxMjoyODo0MSBVVEM=\n"
+    SubmissionsByUser:
+      type: object
     ErrorResult:
       type: object
       properties:
