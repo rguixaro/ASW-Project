@@ -1,7 +1,7 @@
 from django.urls import path, include
 from django.contrib.auth.views import LogoutView
 
-from . import views
+from . import views, api
 
 urlpatterns = [
     path('login/', views.login, name='login'),
@@ -27,4 +27,5 @@ urlpatterns = [
     path('<username>/upvoted&comments', views.upvotedComments, name='upvotedComments'),
     path('item/<submission_id>', views.detailedSubmission, name='detailedSubmission'),
     path('reply/<comment_id>', views.reply, name='reply'),
+    path('api/<username>/submissions', api.newsUser, name='submissions')
 ]
