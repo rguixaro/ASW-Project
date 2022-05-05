@@ -60,7 +60,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResult'
               examples:
                 errorExample:
-                  $ref: "#/components/examples/error404"
+                  $ref: "#/components/examples/error404submssionid"
   /{username}/submissions:
     get:
       tags:
@@ -91,7 +91,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResult"
               examples:
                 errorExample:
-                  $ref: "#/components/examples/error404"
+                  $ref: "#/components/examples/error404user"
 components:
   schemas:
     User:
@@ -160,7 +160,7 @@ components:
         url:
           type: string
           maxLength: 50
-          example: "/submission/2"
+          example: "https://prova.cat"
         text:
           type: string
           format: int32
@@ -170,25 +170,22 @@ components:
           default: "url"
           example: "url"
         author:
-          type: object
-          properties:
-            username:
-              type: string
-              example: "manolo43"
+          type: integer
+          example: "4"
         posted_at_date:
           type: string
-          example: "2012-05-28 11:19:42.897000+00:00"
+          example: "2022-05-05"
         posted_at_time:
           type: string
-          example: "08:55 CEST"
-        upvotes:
-          type: integer
-          format: int64
-          example: 2
-        unvotes:
-          type: integer
-          format: int64
-          example: 1
+          example: "07:37:19.801"
+        #upvotes: - Posem points??
+        #  type: integer
+        #  format: int64
+        #  example: 2
+        #unvotes:
+        #  type: integer
+        #  format: int64
+        #  example: 1
     AddTweetResult:
       type: object
       properties:
@@ -233,11 +230,16 @@ components:
         status: 403
         error: "Forbidden"
         message: "Your api key (X-API-KEY Header) is not valid"
-    error404:
+    error404user:
       value:
         status: 404
         error: "Not Found"
         message: "No User with that username"
+    error404submssionid:
+      value:
+        status: 404
+        error: "Not Found"
+        message: "No Submission with that ID"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
