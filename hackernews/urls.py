@@ -28,4 +28,5 @@ urlpatterns = [
     path('item/<submission_id>', views.detailedSubmission, name='detailedSubmission'),
     path('reply/<comment_id>', views.reply, name='reply'),
     path('api/<username>/submissions', api.newsUser, name='submissions')
+    path('api/submission', api.submission, name='submission')
 ]

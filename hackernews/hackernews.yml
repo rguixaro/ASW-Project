@@ -43,55 +43,9 @@ paths:
               examples:
                 errorExample:
                   $ref: "#/components/examples/error404"
-    delete:
-      tags:
-        - tweets
-      summary: Deletes a Tweet
-      operationId: deleteTweet
-      parameters:
-        - name: tweetId
-          in: path
-          description: Tweet id to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        204:
-          description: Tweet deleted
-          content:
-            application/json: {}
-        404:
-          description: "Error: Not Found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResult"
-              examples:
-                errorExample:
-                  $ref: "#/components/examples/error404"
-        401:
-          description: "Error: Unauthorized"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResult"
-              examples:
-                errorExample:
-                  $ref: "#/components/examples/error401"
-        403:
-          description: "Error: Forbidden"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResult"
-              examples:
-                errorExample:
-                  $ref: "#/components/examples/error403"
-      security:
-        - ApiKeyAuth: []
 
-  /Submission:
+
+  /submission:
     post:
       tags:
         - Submission
