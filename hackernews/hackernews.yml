@@ -10,7 +10,7 @@ info:
     this case, you must **Authorize** your request by providing the api_key
     vaule you got when you created the tweet."
 servers:
-  - url: "https://aswprojectdjango.herokuapp.com/api"
+  - url: "http://aswprojectdjango.herokuapp.com/api"
   - url: "http://127.0.0.1:8000/api"
 paths:
   /{username}:
