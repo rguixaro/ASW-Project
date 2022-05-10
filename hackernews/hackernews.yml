@@ -178,14 +178,14 @@ components:
         posted_at_time:
           type: string
           example: "07:37:19.801"
-        #upvotes: - Posem points??
-        #  type: integer
-        #  format: int64
-        #  example: 2
-        #unvotes:
-        #  type: integer
-        #  format: int64
-        #  example: 1
+        upvotes: 
+          type: integer
+          format: int64
+          example: 2
+        unvotes:
+          type: integer
+          format: int64
+          example: 1
     AddTweetResult:
       type: object
       properties:
