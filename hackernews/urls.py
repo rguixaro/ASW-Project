@@ -28,6 +28,6 @@ urlpatterns = [
     path('item/<submission_id>', views.detailedSubmission, name='detailedSubmission'),
     path('reply/<comment_id>', views.reply, name='reply'),
     path('api/<username>/submissions', api.newsUser, name='submissions'),
-    path('api/<username>', api.user, name='user')
+    path('api/<username>', api.user, name='user'),
     path('api/submission/<submission_id>', api.detailedSubmission, name='detailedSubmission'),
 ]
