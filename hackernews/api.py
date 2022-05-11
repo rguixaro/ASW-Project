@@ -20,7 +20,9 @@ def user(request, username):
 
 def detailedSubmission(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
-    return JsonResponse(model_to_dict(submission), safe=False)
+    s = model_to_dict(submission)
+    s['upvotes'] = submission.upvotes.count()
+    return JsonResponse(s, safe=False)
 
 def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
