@@ -91,37 +91,6 @@ paths:
                 $ref: "#/components/schemas/ErrorResult"
               examples:
                 errorExample:
-                  $ref: "#/components/examples/error404"
-  /{username}/submissions:
-    get:
-      tags:
-        - submissions
-      summary: Retrieves all submissions by user
-      operationId: submissionsByUser
-      parameters:
-        - name: username
-          in: path
-          description: username to get submissions
-          required: true
-          schema:
-            type: string
-            minLength: 1
-            example: "pau"
-      responses:
-        200:
-          description: submissions Retrieved
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/SubmissionsByUser"
-        404:
-          description: "Error: Not Found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResult"
-              examples:
-                errorExample:
                   $ref: "#/components/examples/error404user"
 components:
   schemas:

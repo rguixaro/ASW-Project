@@ -4,6 +4,12 @@ from hackernews.models import Submission, User, Comment, Action
 
 
 def newsUser(request, username):
+    if not User.objects.filter(authUser__username=username).exists():
+        return JsonResponse({
+            "status": 404,
+            "error": "Not Found",
+            "message": "No User with that username"
+        }, status=404)
     submissions = list(Submission.objects.filter(author__authUser__username=username).values())
     return JsonResponse(submissions, safe=False)
 
