@@ -14,3 +14,7 @@ def user(request, username):
 def detailedSubmission(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
     return JsonResponse(model_to_dict(submission), safe=False)
+
+def commentsUser(request, username):
+    com = list(Comment.objects.filter(author__authUser__username=username).values())
+    return JsonResponse(com, safe=False)
