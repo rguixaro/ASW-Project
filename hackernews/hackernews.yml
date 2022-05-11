@@ -29,7 +29,11 @@ paths:
             type: string
       responses:
         200:
-          description: OK
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
     put:
       tags:
         - user
@@ -49,10 +53,22 @@ paths:
           required: true
           schema:
             $ref: "#/components/schemas/User"
+      requestBody:
+        description: User object
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
       responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        400:
+          description: "Invalid username supplied"
+        404:
           description: "User not found"
   /submission/{submissionId}:
     get:
