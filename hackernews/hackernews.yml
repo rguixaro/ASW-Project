@@ -30,14 +30,15 @@ paths:
       responses:
         200:
           description: OK
+
   /submission:
     post:
       tags:
         - Submission
       summary: Post a submission to Hackernews
+      description: Provide the title, url and text required to create the submission
       operationId: POST_Submission
       requestBody:
-        description: Provide the title, url and text required to create the submission
         content:
           application/json:
             schema:
@@ -53,29 +54,27 @@ paths:
                   example: 'My name'
                 url:
                   type: string
-                  minLength: 4
                   example: 'https://editor.swagger.io/#'
                 text:
                   type: string
-                  minLength: 4
                   example: 'Aquest es un enllaç que redirecciona al editor swagger'
             required: true
       responses:
         201:
-          description: Submission posted
+          description: 'Created'
           content:
             application/json:
               schema:
-                $ref: ''
+                $ref: '#/components/schemas/Submission'
         400:
           description: 'Error: Bad Request'
           content:
             application/json:
               schema:
-                $ref: ''
+                $ref: '#/components/schemas/ErrorResult'
               examples:
                 errorExample:
-                  $ref: ''
+                  $ref: "#/components/examples/error400Submission"
     get:
       tags:
         - Submission
@@ -83,13 +82,11 @@ paths:
       operationId: GET_Submission
       responses:
         200:
-          description: successful operation
+          description: 'successful operation'
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: ''
+                $ref: '##/components/schemas/SubmissionsByUser'
 
   /submission/{submissionId}:
     get:
@@ -108,7 +105,7 @@ paths:
           format: int64
       responses:
         200:
-          description: successful operation
+          description: 'successful operation'
           content:
             application/json:
               schema:
@@ -340,6 +337,11 @@ components:
         status: 400
         error: "Bad Request"
         message: "Content is too long (maximum is 280 characters)"
+    error400Submission:
+      value:
+        status: 400
+        error: "Bad Request"
+        message: "A submission with the same url was already posted"
     error401:
       value:
         status: 401
