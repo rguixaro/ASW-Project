@@ -127,6 +127,9 @@ paths:
                 text:
                   minLength: 1
                   example: "This is a new comment"
+                username:
+                  minLength: 1
+                  example: "user32"
         required: true
       responses:
         201:

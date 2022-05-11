@@ -2,7 +2,7 @@ import json
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from hackernews.models import Submission, User, Comment, Action
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -35,7 +35,7 @@ def user(request, username):
         return JsonResponse(model_to_dict(u), safe=False)
 
 
-def detailedSubmission(request, submission_id):
+def detailedSubmission(request, submission_id, ):
     if request.method == 'GET':
         submission = Submission.objects.get(id=submission_id)
         s = model_to_dict(submission)
@@ -43,15 +43,21 @@ def detailedSubmission(request, submission_id):
         return JsonResponse(s, safe=False)
     else:
         if request.method == 'POST':
-            text = request.POST['text']
+            newcomment = request.body.decode('utf-8')
+            body = json.loads(newcomment)
+            comment = Comment()
+            text = body['text']
             if text == "":
                 return JsonResponse({'error': 'Empty comment'}, status=400)
-            id = request.POST['parent']
-            s = Submission.objects.get(id=id)
-            author = User.objects.get(id=request.user.id)
-            newComment = Comment(text=text, author=author, submission=s)
-            newComment.save()
-            return JsonResponse(model_to_dict(newComment), safe=False)
+
+            comment.author = body['username']
+            comment.submission = submission_id
+            comment.posted_at_date = timezone.now()
+            comment.posted_at_time = timezone.now()
+            comment.text = text
+            comment.upvotes = 0
+            comment.save()
+            return JsonResponse(model_to_dict(comment), safe=False)
 
 def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
