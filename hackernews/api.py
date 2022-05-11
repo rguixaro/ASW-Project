@@ -14,3 +14,12 @@ def user(request, username):
 def detailedSubmission(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
     return JsonResponse(model_to_dict(submission), safe=False)
+
+def commentsUser(request, username):
+    comments = list(Comment.objects.filter(author__authUser__username=username).values())
+    return JsonResponse(comments, safe=False)
+
+def commentSubmission(request, submission_id):
+    s = Submission.object.get(id=submission_id)
+    comments = list(Comment.objects.get(submission=s).values())
+    return JsonResponse(comments, safe=False)
