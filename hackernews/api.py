@@ -28,3 +28,8 @@ def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
     submissions = list(Submission.objects.filter(posted_at_date=data).values())
     return JsonResponse(submissions, safe=False)
+
+def upvoteSubmission(request, submission_id):
+    s = Submission.objects.get(id=submission_id)
+    if not s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).exists():
+        s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=user)
