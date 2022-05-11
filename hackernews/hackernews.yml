@@ -145,55 +145,27 @@ components:
     User:
       type: object
       properties:
-        authUser:
-          type: object
-          properties:
-            username:
-              type: string
-              example: "rguixaro"
-            email:
-              type: string
-              example: "ricard.guixaro@estudiantat.upc.edu"
-            firstName:
-              type: string
-              example: "Ricard"
-            lastName:
-              type: string
-              example: "Guixaró"
-            staffStatus:
-              type: boolean
-              example: true
-        karma:
-          type: integer
-          format: int64
-          example: 1
         about:
           type: string
-          example: ""
+          example: "Hello, I'm..."
         showDead:
           type: boolean
           example: false
         noprocrast:
           type: boolean
-          example: false
+          example: true
         maxvisit:
           type: string
           maxLength: 16
-          example: 0
+          example: 100
         minaway:
           type: string
           maxLength: 16
-          example: 0
+          example: 14
         delay:
           type: string
           maxLength: 16
-          example: 0
-        created_at_date:
-          type: string
-          example: "2022/04/23"
-        create_at_time:
-          type: string
-          example: "13:42:20"
+          example: 04
     Submission:
       type: object
       properties:
