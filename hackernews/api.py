@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from hackernews.models import Submission, User, Comment, Action
+from datetime import date, datetime
 
 
 def newsUser(request, username):
@@ -20,3 +21,8 @@ def user(request, username):
 def detailedSubmission(request, submission_id):
     submission = Submission.objects.get(id=submission_id)
     return JsonResponse(model_to_dict(submission), safe=False)
+
+def dateSubmissions(request, date):
+    data = datetime.strptime(date, "%Y-%m-%d").date()
+    submissions = list(Submission.objects.filter(posted_at_date=data).values())
+    return JsonResponse(submissions, safe=False)
