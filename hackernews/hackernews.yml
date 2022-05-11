@@ -66,17 +66,15 @@ paths:
                   type: string
                   minLength: 4
                   example: 'My name'
-                  required: true
                 url:
                   type: string
                   minLength: 4
                   example: 'https://editor.swagger.io/#'
-                  required: false
                 text:
                   type: string
                   minLength: 4
                   example: 'Aquest es un enllaç que redirecciona al editor swagger'
-                  required: false
+            required: true
       responses:
         201:
           description: Submission posted

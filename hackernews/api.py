@@ -1,3 +1,5 @@
+from typing import List, Any
+
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from hackernews.models import Submission, User, Comment, Action
@@ -35,5 +37,5 @@ def submission(request, title, url, text):
             return JsonResponse(newSubmission, safe=False)
 
     elif request.method == 'GET':
-    submissions = list(Submission.objects.values())
+        submissions = list(Submission.objects.values())
     return JsonResponse(submissions, safe=False)
