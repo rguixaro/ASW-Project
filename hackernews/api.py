@@ -63,3 +63,22 @@ def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
     submissions = list(Submission.objects.filter(posted_at_date=data).values())
     return JsonResponse(submissions, safe=False)
+
+@csrf_exempt
+def upvoteSubmission(request, submission_id):
+    user = User.objects.get(authUser__username="pau")  # falta implementar token --> user
+    s = Submission.objects.get(id=submission_id)
+    if s is None:
+        return JsonResponse({
+            "status": 404,
+            "error": "Not Found",
+            "message": "No Submission with that ID"
+        }, status=404)
+    if not s.upvotes.filter(action_type=Action.UPVOTE_SUBMISSION, user=user).exists():
+        s.upvotes.create(action_type=Action.UPVOTE_SUBMISSION, user=user)
+        return JsonResponse({"status": "success"}, safe=False)
+    return JsonResponse({
+        "status": 404,
+        "error": "Already exists",
+        "message": "Exists a user's upvote to this submission"
+    }, status=404)
