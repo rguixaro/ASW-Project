@@ -29,22 +29,7 @@ paths:
             type: string
       responses:
         200:
-          description: successful operation
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
-        404:
-          description: "Error: Not Found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResult"
-              examples:
-                errorExample:
-                  $ref: "#/components/examples/error404"
-
-
+          description: OK
   /submission:
     post:
       tags:
@@ -106,36 +91,37 @@ paths:
                 items:
                   $ref: ''
 
-  /tweets/{tweetId}/likes:
-    post:
+  /submission/{submissionId}:
+    get:
       tags:
-        - tweets
-      summary: Likes a Tweet
-      operationId: likeTweet
-      parameters:
-        - name: tweetId
-          in: path
-          description: Tweet id to like
-          required: true
-          schema:
-            type: integer
-            format: int64
+      - "submissions"
+      summary: Finds a Submission by its ID
+      description: Returns a single Submission
+      operationId: detailedSubmission
+      parameters: 
+      - name: submissionId
+        in: path
+        description: ID of the Submission
+        required: true
+        schema: 
+          type: integer
+          format: int64
       responses:
         200:
-          description: Liked Tweet
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tweet"
+                $ref: '#/components/schemas/Submission'
         404:
-          description: "Error: Not Found"
+          description: 'Error: Not Found'
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ErrorResult"
+                $ref: '#/components/schemas/ErrorResult'
               examples:
                 errorExample:
-                  $ref: "#/components/examples/error404"
+                  $ref: "#/components/examples/error404submssionid"
   /{username}/submissions:
     get:
       tags:
@@ -166,7 +152,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResult"
               examples:
                 errorExample:
-                  $ref: "#/components/examples/error404"
+                  $ref: "#/components/examples/error404user"
 components:
   schemas:
     User:
@@ -221,40 +207,51 @@ components:
         create_at_time:
           type: string
           example: "08:55 CEST"
-    Tweet:
+    Submission:
       type: object
       properties:
         id:
           type: integer
           format: int64
           example: 2
-        author:
+        title:
           type: string
-          minLength: 4
-          example: "My name"
-        content:
+          maxLength: 50
+          example: "Title"
+        url:
           type: string
-          minLength: 4
-          maxLength: 280
-          example: "My content"
-        likes:
-          type: integer
+          maxLength: 50
+          example: "https://prova.cat"
+        text:
+          type: string
           format: int32
-        created_at:
+        type:
           type: string
-          format: date-time
-        _links:
-          type: object
-          properties:
-            self:
-              type: string
-              format: url
-              example: "https://asw-api-demo.herokuapp.com/tweets/2"
+          maxLength: 3
+          default: "url"
+          example: "url"
+        author:
+          type: integer
+          example: "4"
+        posted_at_date:
+          type: string
+          example: "2022-05-05"
+        posted_at_time:
+          type: string
+          example: "07:37:19.801"
+        upvotes: 
+          type: integer
+          format: int64
+          example: 2
+        unvotes:
+          type: integer
+          format: int64
+          example: 1
     AddTweetResult:
       type: object
       properties:
         new_tweet:
-          $ref: "#/components/schemas/Tweet"
+          $ref: "#/components/schemas/Submission"
         api_key:
           type: string
           example: "MjAyMC0wNC0xOCAxMjoyODo0MSBVVEM=\n"
@@ -294,11 +291,16 @@ components:
         status: 403
         error: "Forbidden"
         message: "Your api key (X-API-KEY Header) is not valid"
-    error404:
+    error404user:
       value:
         status: 404
         error: "Not Found"
         message: "No User with that username"
+    error404submssionid:
+      value:
+        status: 404
+        error: "Not Found"
+        message: "No Submission with that ID"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

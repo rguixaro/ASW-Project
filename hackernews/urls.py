@@ -30,4 +30,5 @@ urlpatterns = [
     path('api/<username>/submissions', api.newsUser, name='userSubmissions'),
     path('api/<id>', api.submission, name='submissions'),
     path('api/<username>', api.user, name='user')
+    path('api/submission/<submission_id>', api.detailedSubmission, name='detailedSubmission'),
 ]
