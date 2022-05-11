@@ -15,8 +15,16 @@ def detailedSubmission(request, submission_id):
     if request.method == 'GET':
         submission = Submission.objects.get(id=submission_id)
         return JsonResponse(model_to_dict(submission), safe=False)
-    else if request.method == 'POST':
-        comment = Comment(author=request.user, submission=submission, text=request.POST['text'])
-        comment.save()
-        return JsonResponse(model_to_dict(comment), safe=False)
+    else:
+        if request.method == 'POST':
+            text = request.POST['text']
+            if text == "":
+                return JsonResponse({'error': 'Empty comment'}, status=400)
+            id = request.POST['parent']
+            s = Submission.objects.get(id=id)
+            author = User.objects.get(id=request.user.id)
+            newComment = Comment(text=text, author=author, submission=s)
+            newComment.save()
+            return JsonResponse(model_to_dict(newComment), safe=False)
+
 

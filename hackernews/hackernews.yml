@@ -84,8 +84,7 @@ paths:
               - content
               type: object
               properties:
-                content:
-                  type: string
+                text:
                   minLength: 1
                   example: "This is a new comment"
         required: true
@@ -104,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/ErrorResult'
               examples:
                 errorExample:
-                  $ref: '#/components/examples/error400'  
+                  $ref: '#/components/examples/error400content'  
         404:
           description: 'Error: Not Found'
           content:
