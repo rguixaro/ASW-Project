@@ -92,6 +92,30 @@ paths:
               examples:
                 errorExample:
                   $ref: "#/components/examples/error404user"
+  /date/{date}:
+    get:
+      tags:
+        - submissions
+      summary: Retrieves all submissions by date
+      operationId: submissionsByDate
+      parameters:
+        - name: date
+          in: path
+          description: date to get submissions
+          required: true
+          schema:
+            type: string
+            format: date
+            minLength: 10
+            maxLength: 10
+            example: "2022-04-23"
+      responses:
+        200:
+          description: submissions Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubmissionsByUser"
 components:
   schemas:
     User:
