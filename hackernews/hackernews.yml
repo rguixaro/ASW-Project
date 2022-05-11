@@ -91,7 +91,59 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Submission"
+                $ref: '#/components/schemas/Submission'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: "#/components/examples/error400content"
+    post:
+      tags:
+        - submissions
+      summary: Adds a new comment for the submission
+      description: Returns a single Submission
+      operationId: addComment
+      parameters: 
+      - name: submissionId
+        in: path
+        description: ID of the Submission
+        required: true
+        schema: 
+          type: integer
+          format: int64
+      requestBody:
+        description: Provide the content of the new comment 
+        content:
+          application/json:
+            schema:
+              required:
+              - content
+              type: object
+              properties:
+                text:
+                  minLength: 1
+                  example: "This is a new comment"
+        required: true
+      responses:
+        201:
+          description: Comment added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comment'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: '#/components/examples/error400content'  
         404:
           description: "Error: Not Found"
           content:
@@ -100,7 +152,7 @@ paths:
                 $ref: "#/components/schemas/ErrorResult"
               examples:
                 errorExample:
-                  $ref: "#/components/examples/error404submssionid"
+                  $ref: '#/components/examples/error404submssionid'
   /{username}/submissions:
     get:
       tags:
@@ -285,6 +337,23 @@ components:
             ]
         message:
           type: string
+    Comment:
+      type: object
+      properties:
+        author:
+          type: integer
+        submission:
+          type: integer
+        posted_at_date: 
+          type: string
+        posted_at_time: 
+          type: string
+        text: 
+          type: string
+        parent:
+          type: integer
+        upvotes:
+          type: integer
   examples:
     error400:
       value:
@@ -311,6 +380,11 @@ components:
         status: 404
         error: "Not Found"
         message: "No Submission with that ID"
+    error400content:
+      value:
+        status: 400
+        error: "Bad Request"
+        message: "Content must be provided"
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

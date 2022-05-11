@@ -36,10 +36,22 @@ def user(request, username):
 
 
 def detailedSubmission(request, submission_id):
-    submission = Submission.objects.get(id=submission_id)
-    s = model_to_dict(submission)
-    s['upvotes'] = submission.upvotes.count()
-    return JsonResponse(s, safe=False)
+    if request.method == 'GET':
+        submission = Submission.objects.get(id=submission_id)
+        s = model_to_dict(submission)
+        s['upvotes'] = submission.upvotes.count()
+        return JsonResponse(s, safe=False)
+    else:
+        if request.method == 'POST':
+            text = request.POST['text']
+            if text == "":
+                return JsonResponse({'error': 'Empty comment'}, status=400)
+            id = request.POST['parent']
+            s = Submission.objects.get(id=id)
+            author = User.objects.get(id=request.user.id)
+            newComment = Comment(text=text, author=author, submission=s)
+            newComment.save()
+            return JsonResponse(model_to_dict(newComment), safe=False)
 
 def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
