@@ -232,17 +232,16 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubmissionsByUser"
-
   /{username}/comments:
     get:
       tags:
         - comments
       summary: Retrieves all comments by user
-      operationId: commentsbyUser
+      operationId: commentsByUser
       parameters:
         - name: username
           in: path
-          description: username to get comments
+          description: username to get submissions
           required: true
           schema:
             type: string
@@ -264,7 +263,6 @@ paths:
               examples:
                 errorExample:
                   $ref: "#/components/examples/error404user"
-
   /submission/{submissionId}/comments:
     get:
       tags:
