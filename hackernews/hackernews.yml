@@ -121,6 +121,9 @@ paths:
                 text:
                   minLength: 1
                   example: "This is a new comment"
+                username:
+                  minLength: 1
+                  example: "user32"
         required: true
       responses:
         201:
@@ -138,6 +141,36 @@ paths:
               examples:
                 errorExample:
                   $ref: "#/components/examples/error400content"
+        404:
+          description: "Error: Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResult"
+              examples:
+                errorExample:
+                  $ref: "#/components/examples/error404submssionid"
+  /submission/{submissionId}/upvote:
+    post:
+      tags:
+        - submissions
+      summary: Upvotes a Submission
+      operationId: upvoteSubmission
+      parameters:
+        - name: submissionId
+          in: path
+          description: ID of the Submission
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpvoteSubmission"
         404:
           description: "Error: Not Found"
           content:
@@ -313,6 +346,13 @@ components:
           type: string
           format: date-time
           example: 15:00:00.674
+    UpvoteSubmission:
+      type: object
+      properties:
+        result:
+          type: string
+          maxLength: 10
+          example: "success"
     ErrorResult:
       type: object
       properties:
