@@ -83,6 +83,11 @@ def upvoteSubmission(request, submission_id):
         "message": "Exists a user's upvote to this submission"
     }, status=404)
 
+def upvotedUser(request, username):
+    user = User.objects.get(authUser__username=username)
+    upvoted = list(Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values())
+    return JsonResponse(upvoted, safe=False)
+
 def commentsUser(request, username):
     comments = list(Comment.objects.filter(author__authUser__username=username).values())
     return JsonResponse(comments, safe=False)

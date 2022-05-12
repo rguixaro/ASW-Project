@@ -64,6 +64,27 @@ paths:
           description: "Invalid username supplied"
         404:
           description: "User not found"
+  /{username}/upvoted:
+    get:
+      tags:
+        - "user"
+      summary: Upvoted submissions
+      description: Returns the upvoted submissions
+      operationId: upvotedSubmissions
+      parameters:
+        - name: username
+          in: path
+          description: username of User to return
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
   /submission/{submissionId}:
     get:
       tags:
