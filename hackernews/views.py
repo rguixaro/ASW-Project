@@ -4,6 +4,7 @@ from django.template import loader
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from django.db.models import Count
+from rest_framework.authtoken.models import Token
 
 from hackernews.models import Submission, User, Comment, Action
 from .forms import UserForm
@@ -133,11 +134,11 @@ def newest(request):
 
 def user(request, username):
     u = User.objects.get(authUser__username=username)
-    template = loader.get_template('user.html')
     if request.user.is_authenticated:
-        print('logged-in')
+        token = Token.objects.get_or_create(user=request.user)
     else:
-        print('not logged-in')
+        token = None
+    template = loader.get_template('user.html')
 
     initialData = {'about': u.about,
         'showdead': u.showdead,
@@ -146,10 +147,6 @@ def user(request, username):
         'minaway': u.minaway,
         'delay': u.delay}
 
-    #create user
-        #userForm = UserForm(request.POST)
-        #newUser = userForm.save()
-    #update user
     if request.method == 'POST':
         userForm = UserForm(request.POST or None, instance=u)
         if userForm.is_valid():
@@ -157,7 +154,7 @@ def user(request, username):
     else:
         userForm = UserForm(initial=initialData)
 
-    return HttpResponse(template.render({'user': u, 'form': userForm}, request))
+    return HttpResponse(template.render({'user': u, 'form': userForm, 'token': token[0].key}, request))
 
 @login_required(login_url='/login/')
 def upvotedSubmissions(request, username):
