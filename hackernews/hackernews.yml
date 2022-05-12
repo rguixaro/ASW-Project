@@ -201,7 +201,7 @@ paths:
   /{username}/submissions:
     get:
       tags:
-        - submissions
+        - user
       summary: Retrieves all submissions by user
       operationId: submissionsByUser
       parameters:
