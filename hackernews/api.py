@@ -50,7 +50,7 @@ def detailedSubmission(request, submission_id, ):
             if text == "":
                 return JsonResponse({'error': 'Empty comment'}, status=400)
 
-            comment.author = body['username']
+            comment.author = "ferran" #arreglar
             comment.submission = submission_id
             comment.posted_at_date = timezone.now()
             comment.posted_at_time = timezone.now()
@@ -82,3 +82,12 @@ def upvoteSubmission(request, submission_id):
         "error": "Already exists",
         "message": "Exists a user's upvote to this submission"
     }, status=404)
+
+def commentsUser(request, username):
+    comments = list(Comment.objects.filter(author__authUser__username=username).values())
+    return JsonResponse(comments, safe=False)
+
+def commentSubmission(request, submission_id):
+    s = Submission.object.get(id=submission_id)
+    comments = list(Comment.objects.get(submission=s).values())
+    return JsonResponse(comments, safe=False)
