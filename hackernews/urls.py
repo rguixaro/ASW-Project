@@ -34,5 +34,6 @@ urlpatterns = [
     path('api/date/<date>', api.dateSubmissions, name='api-dateSubmissions'),
     path('api/submission/<submission_id>/upvote', api.upvoteSubmission, name='api-upvoteSubmission'),
     path('api/<username>/comments', api.commentsUser, name='api-commentsUser'),
-    path('api/submission/<submission_id>/comments', api.commentSubmission, name='api-commentSubmission')
+    path('api/submission/<submission_id>/comments', api.commentSubmission, name='api-commentSubmission'),
+    path('api/submission', api.submission, name='api-Submission'),
 ]

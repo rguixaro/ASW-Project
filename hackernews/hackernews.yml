@@ -85,6 +85,61 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
+  /submission:
+    post:
+      tags:
+        - Submission
+      summary: Post a submission to Hackernews
+      description: Provide the title, url and text required to create the submission
+      operationId: POST_Submission
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+                - url
+                - text
+              type: object
+              properties:
+                title:
+                  type: string
+                  minLength: 4
+                  example: 'My name'
+                url:
+                  type: string
+                  example: 'https://editor.swagger.io/#'
+                text:
+                  type: string
+                  example: 'Aquest es un enllaç que redirecciona al editor swagger'
+      responses:
+        201:
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Submission'
+        400:
+          description: 'Error: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResult'
+              examples:
+                errorExample:
+                  $ref: "#/components/examples/error400Submission"
+    get:
+      tags:
+        - Submission
+      summary: Retrieves all the submissions
+      operationId: GET_Submission
+      responses:
+        200:
+          description: 'successful operation'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmissionsByUser'
   /submission/{submissionId}:
     get:
       tags:
@@ -320,6 +375,28 @@ components:
     User:
       type: object
       properties:
+        authUser:
+          type: object
+          properties:
+            username:
+              type: string
+              example: "user43"
+            email:
+              type: string
+              example: "user43@email.com"
+            firstName:
+              type: string
+              example: "userFirstName"
+            lastName:
+              type: string
+              example: "userLastName"
+            staffStatus:
+              type: boolean
+              example: false
+        karma:
+          type: integer
+          format: int64
+          example: 2
         about:
           type: string
           example: "Hello, I'm..."
@@ -340,7 +417,13 @@ components:
         delay:
           type: string
           maxLength: 16
-          example: 04
+          example: 24
+        created_at_date:
+          type: string
+          example: "14/02/2094"
+        create_at_time:
+          type: string
+          example: "08:55 CEST"
     Submission:
       type: object
       properties:
@@ -478,6 +561,11 @@ components:
         status: 400
         error: "Bad Request"
         message: "Content is too long (maximum is 280 characters)"
+    error400Submission:
+      value:
+        status: 400
+        error: "Bad Request"
+        message: "A submission with the same url was already posted"
     error401:
       value:
         status: 401
