@@ -238,6 +238,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubmissionsByUser"
+
+  /{username}/comments:
+    get:
+      tags:
+        - comments
+      summary: Retrieves all comments by user
+      operationId: commentsByUser
+      parameters:
+        - name: username
+          in: path
+          description: username to get submissions
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            example: "joan"
+      responses:
+        200:
+          description: comments Retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CommentsByUser"
+        404:
+          description: "Error: Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResult"
+              examples:
+                errorExample:
+                  $ref: "#/components/examples/error404user"
 components:
   schemas:
     User:
@@ -313,6 +345,8 @@ components:
           type: string
           example: "MjAyMC0wNC0xOCAxMjoyODo0MSBVVEM=\n"
     SubmissionsByUser:
+      type: object
+    CommentsByUser:
       type: object
       properties:
         id:

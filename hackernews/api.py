@@ -82,3 +82,7 @@ def upvoteSubmission(request, submission_id):
         "error": "Already exists",
         "message": "Exists a user's upvote to this submission"
     }, status=404)
+
+def commentsUser(request, username):
+    com = list(Comment.objects.filter(author__authUser__username=username).values())
+    return JsonResponse(com, safe=False)
