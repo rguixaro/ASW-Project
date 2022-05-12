@@ -46,12 +46,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mptt',
     'django.contrib.sites',
-    # 'oauth_app',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'corsheaders',
+    'rest_framework.authtoken',
     ]
 
 MIDDLEWARE = [
@@ -183,19 +183,13 @@ ALLOWED_HOSTS=['*']
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com']
-'''
-CORS_ALLOWED_ORIGINS = [
-    "https://herokuapp.com",
-    "https://aswprojectdjango.herokuapp.com",
-    "http://127.0.0.1:9000"
-]
 
-CORS_REPLACE_HTTPS_REFERER = True
-
-CSRF_COOKIE_DOMAIN = 'herokuapp.com'
-
-CORS_ORIGIN_WHITELIST = (
-    'https://aswprojectdjango.herokuapp.com/',
-    'aswprojectdjango.herokuapp.com',
-    'herokuapp.com',
-)'''
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+}
