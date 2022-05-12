@@ -84,5 +84,10 @@ def upvoteSubmission(request, submission_id):
     }, status=404)
 
 def commentsUser(request, username):
-    com = list(Comment.objects.filter(author__authUser__username=username).values())
-    return JsonResponse(com, safe=False)
+    comments = list(Comment.objects.filter(author__authUser__username=username).values())
+    return JsonResponse(comments, safe=False)
+
+def commentSubmission(request, submission_id):
+    s = Submission.object.get(id=submission_id)
+    comments = list(Comment.objects.get(submission=s).values())
+    return JsonResponse(comments, safe=False)
