@@ -50,7 +50,7 @@ def detailedSubmission(request, submission_id, ):
             if text == "":
                 return JsonResponse({'error': 'Empty comment'}, status=400)
 
-            comment.author = body['username']
+            comment.author = "ferran" #arreglar
             comment.submission = submission_id
             comment.posted_at_date = timezone.now()
             comment.posted_at_time = timezone.now()
