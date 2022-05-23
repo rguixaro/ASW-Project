@@ -1,3 +1,4 @@
+from ast import Sub
 import json
 from django.db.models import Count
 from django.http import JsonResponse
@@ -50,6 +51,9 @@ def submit(request):
 
 def news(request):
     submissions = list(Submission.objects.values().annotate(count=Count('upvotes')).order_by('-count'))
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        s['authorUsername'] = u.authUser.username
     return JsonResponse(submissions, safe=False)
 
 def newest(request):
@@ -62,12 +66,19 @@ def ask(request):
 
 def user(request, username):
     u = User.objects.get(authUser__username=username)
-    return JsonResponse(model_to_dict(u), safe=False)
+    tmp1 = model_to_dict(u);
+    tmp2 = model_to_dict(u.authUser)
+    tmp1['username'] = tmp2['username'];
+    tmp1['email'] = tmp2['email'];
+    tmp1['age'] = u.age()
+    return JsonResponse(tmp1, safe=False)
 
 def detailedSubmission(request, submission_id, ):
     submission = Submission.objects.get(id=submission_id)
     s = model_to_dict(submission)
     s['upvotes'] = submission.upvotes.count()
+    s['age'] = submission.age()
+    s['authorUsername'] = submission.author.authUser.username
     return JsonResponse(s, safe=False)
 
 def dateSubmissions(request, date):
