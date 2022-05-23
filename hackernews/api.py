@@ -20,6 +20,12 @@ def newsUser(request, username):
             "message": "No User with that username"
         }, status=404)
     submissions = list(Submission.objects.filter(author__authUser__username=username).values())
+    for s in submissions:
+        sub = Submission.objects.get(id=s['id'])
+        u = User.objects.get(id=s['author_id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
     return JsonResponse(submissions, safe=False)
 
 @csrf_exempt
@@ -53,7 +59,10 @@ def news(request):
     submissions = list(Submission.objects.values().annotate(count=Count('upvotes')).order_by('-count'))
     for s in submissions:
         u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
     return JsonResponse(submissions, safe=False)
 
 def newest(request):
@@ -79,6 +88,7 @@ def detailedSubmission(request, submission_id, ):
     s['upvotes'] = submission.upvotes.count()
     s['age'] = submission.age()
     s['authorUsername'] = submission.author.authUser.username
+    s['comments'] = submission.comment_set.count()
     return JsonResponse(s, safe=False)
 
 def dateSubmissions(request, date):
