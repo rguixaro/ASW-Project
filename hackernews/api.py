@@ -241,6 +241,11 @@ def commentsUser(request, username):
 def commentsSubmission(request, submission_id):
     s = Submission.objects.get(id=submission_id)
     comments = list(Comment.objects.filter(submission=s).values())
+    for comment in comments:
+        u = User.objects.get(id=comment['author_id']);
+        c = Comment.objects.get(id=comment["id"]);
+        comment['age'] = c.age()
+        comment['authorUsername'] = u.authUser.username
     return JsonResponse(comments, safe=False)
 
 @csrf_exempt
