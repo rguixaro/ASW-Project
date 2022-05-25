@@ -225,6 +225,13 @@ def upvotedComments(request):
     username = getUserByToken(token).username
     user = User.objects.get(authUser__username=username)
     upvoted = list(Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT).values())
+    for comment in upvoted:
+        u = User.objects.get(id=comment['author_id']);
+        sub = Submission.objects.get(id=comment['submission_id'])
+        c = Comment.objects.get(id=comment["id"]);
+        comment['age'] = c.age()
+        comment['authorUsername'] = u.authUser.username
+        comment['title'] = sub.title
     return JsonResponse(upvoted, safe=False)
 
 def commentsUser(request, username):
