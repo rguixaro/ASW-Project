@@ -160,14 +160,19 @@ def upvotedSubmissions(request):
     token = request.GET.get('token')
     username = getUserByToken(token).username
     user = User.objects.get(authUser__username=username)
-    upvoted = list(Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values())
-    for s in upvoted:
-        u = User.objects.get(id=s['author_id']);
-        sub = Submission.objects.get(id=s['id'])
+    upvoted = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values()
+    news = list()
+    for a in upvoted:
+        id = a['object_id']
+        sub = Submission.objects.get(id=id)
+        s = model_to_dict(sub)
+        u = User.objects.get(id=s['author'])
         s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
         s['comments'] = sub.comment_set.count()
-    return JsonResponse(upvoted, safe=False)
+        s['count'] = sub.upvotes.count()
+        news.append(s)
+    return JsonResponse(news, safe=False)
 
 @csrf_exempt
 def upvoteComment(request, comment_id):
