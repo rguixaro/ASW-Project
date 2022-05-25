@@ -229,10 +229,11 @@ def upvotedComments(request):
     for comment in upvoted:
         id = comment['object_id']
         c = Comment.objects.get(id=id)
+        sub = Submission.objects.get(id=comment['submission_id'])
         com = model_to_dict(c)
         com['age'] = c.age()
         com['authorUsername'] = username
-        com['title'] = c.title
+        com['title'] = sub.title
         comments.append(com)
     return JsonResponse(comments, safe=False)
 
