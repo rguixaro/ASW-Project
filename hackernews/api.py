@@ -26,6 +26,7 @@ def newsUser(request, username):
         s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
         s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 @csrf_exempt
@@ -67,10 +68,24 @@ def news(request):
 
 def newest(request):
     submissions = list(Submission.objects.values().order_by('-posted_at_date', '-posted_at_time'))
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 def ask(request):
     submissions = list(Submission.objects.values().filter(type="ask"))
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 def user(request, username):
@@ -94,6 +109,13 @@ def detailedSubmission(request, submission_id, ):
 def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
     submissions = list(Submission.objects.filter(posted_at_date=data).values())
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 @csrf_exempt
@@ -142,8 +164,19 @@ def upvotedSubmissions(request):
     token = request.GET.get('token')
     username = getUserByToken(token).username
     user = User.objects.get(authUser__username=username)
-    upvoted = list(Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values())
-    return JsonResponse(upvoted, safe=False)
+    upvoted = Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values()
+    news = list()
+    for a in upvoted:
+        id = a['object_id']
+        sub = Submission.objects.get(id=id)
+        s = model_to_dict(sub)
+        u = User.objects.get(id=s['author'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
+        news.append(s)
+    return JsonResponse(news, safe=False)
 
 @csrf_exempt
 def upvoteComment(request, comment_id):
