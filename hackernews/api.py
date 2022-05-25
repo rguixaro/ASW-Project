@@ -196,6 +196,13 @@ def upvotedComments(request):
 
 def commentsUser(request, username):
     comments = list(Comment.objects.filter(author__authUser__username=username).values())
+    for comment in comments:
+        u = User.objects.get(id=comment['author_id']);
+        sub = Submission.objects.get(id=comment['submission_id'])
+        c = Comment.objects.get(id=comment["id"]);
+        comment['age'] = c.age()
+        comment['authorUsername'] = u.authUser.username
+        comment['title'] = sub.title
     return JsonResponse(comments, safe=False)
 
 def commentsSubmission(request, submission_id):

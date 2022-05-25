@@ -112,6 +112,20 @@ class Comment(MPTTModel):
     parent = TreeForeignKey('self', blank=True, null=True, related_name='children', on_delete=models.CASCADE)
     upvotes = GenericRelation(Action)
 
+    def age(self):
+            today = date.today()
+            days = today.day - self.posted_at_date.day
+            result = str(days)+" days ago"
+            if(days == 0):
+                time = timezone.now()
+                hours = time.hour - self.posted_at_time.hour
+                result = str(hours)+" hours ago"
+                if (hours == 0):
+                    time = timezone.now()
+                    hours = time.minute - self.posted_at_time.minute
+                    result = str(hours) + " minutes ago"
+            return result
+
 class Meta:
     ordering = ('-posted_at_date', '-posted_at_time')
 
