@@ -74,6 +74,7 @@ def newest(request):
         s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
         s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 def ask(request):
@@ -84,6 +85,7 @@ def ask(request):
         s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
         s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 def user(request, username):
@@ -113,6 +115,7 @@ def dateSubmissions(request, date):
         s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
         s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 @csrf_exempt
