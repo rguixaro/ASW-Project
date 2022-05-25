@@ -67,10 +67,22 @@ def news(request):
 
 def newest(request):
     submissions = list(Submission.objects.values().order_by('-posted_at_date', '-posted_at_time'))
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
     return JsonResponse(submissions, safe=False)
 
 def ask(request):
     submissions = list(Submission.objects.values().filter(type="ask"))
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
     return JsonResponse(submissions, safe=False)
 
 def user(request, username):
@@ -94,6 +106,12 @@ def detailedSubmission(request, submission_id, ):
 def dateSubmissions(request, date):
     data = datetime.strptime(date, "%Y-%m-%d").date()
     submissions = list(Submission.objects.filter(posted_at_date=data).values())
+    for s in submissions:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
     return JsonResponse(submissions, safe=False)
 
 @csrf_exempt
@@ -143,6 +161,12 @@ def upvotedSubmissions(request):
     username = getUserByToken(token).username
     user = User.objects.get(authUser__username=username)
     upvoted = list(Action.objects.filter(user=user, action_type=Action.UPVOTE_SUBMISSION).values())
+    for s in upvoted:
+        u = User.objects.get(id=s['author_id']);
+        sub = Submission.objects.get(id=s['id'])
+        s['age'] = sub.age()
+        s['authorUsername'] = u.authUser.username
+        s['comments'] = sub.comment_set.count()
     return JsonResponse(upvoted, safe=False)
 
 @csrf_exempt
