@@ -26,6 +26,7 @@ def newsUser(request, username):
         s['age'] = sub.age()
         s['authorUsername'] = u.authUser.username
         s['comments'] = sub.comment_set.count()
+        s['count'] = sub.upvotes.count()
     return JsonResponse(submissions, safe=False)
 
 @csrf_exempt
