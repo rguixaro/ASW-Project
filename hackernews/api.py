@@ -225,14 +225,16 @@ def upvotedComments(request):
     username = getUserByToken(token).username
     user = User.objects.get(authUser__username=username)
     upvoted = list(Action.objects.filter(user=user, action_type=Action.UPVOTE_COMMENT).values())
+    comments = list()
     for comment in upvoted:
-        u = User.objects.get(id=comment['author_id']);
-        sub = Submission.objects.get(id=comment['submission_id'])
-        c = Comment.objects.get(id=comment["id"]);
-        comment['age'] = c.age()
-        comment['authorUsername'] = u.authUser.username
-        comment['title'] = sub.title
-    return JsonResponse(upvoted, safe=False)
+        id = comment['object_id']
+        c = Comment.objects.get(id=id)
+        com = model_to_dict(c)
+        com['age'] = c.age()
+        com['authorUsername'] = username
+        com['title'] = c.title
+        comments.append(com)
+    return JsonResponse(comments, safe=False)
 
 def commentsUser(request, username):
     comments = list(Comment.objects.filter(author__authUser__username=username).values())
